@@ -1,0 +1,132 @@
+# Supply-chain hardening (optional, recommended once stable): pin each
+# third-party action to a full commit SHA instead of a version tag, e.g.
+#   uses: cloudflare/wrangler-action@<40-char-sha>  # v4.0.0
+# Tags are mutable; SHAs are not. This workflow holds a Cloudflare API token,
+# so a compromised action tag is the main way that token could leak.
+name: Nightly refresh and deploy
+
+on:
+  schedule:
+    # 06:17 UTC daily. Off-the-hour on purpose: GitHub's scheduler is heavily
+    # oversubscribed at :00 and jobs get delayed or dropped.
+    - cron: "17 6 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      skip_data_refresh:
+        description: "Deploy current files without hitting the GitHub API"
+        type: boolean
+        default: false
+
+# Never let two runs deploy at once.
+concurrency:
+  group: nightly-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Refresh dataset from GitHub API
+        if: inputs.skip_data_refresh != true
+        env:
+          # The built-in token authenticates our API calls: 30 search req/min
+          # instead of 10, and 5,000 core req/hr. No PAT needed.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAGES_PER_QUERY: "6"
+          REQUEST_SLEEP: "2.5"
+        run: python3 scripts/pipeline.py
+
+      - name: Rebuild sitemap
+        run: python3 scripts/build_sitemap.py
+
+      - name: Sanity check before deploy
+        run: |
+          set -euo pipefail
+          for f in public/index.html public/robots.txt public/license.xml \
+                   public/llms.txt public/licensing.html public/sitemap.xml \
+                   public/data/mcp_servers.csv; do
+            test -s "$f" || { echo "MISSING OR EMPTY: $f"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json, sys, pathlib
+          p = pathlib.Path("public/data/mcp_servers.json")
+          if not p.exists():
+              sys.exit("MISSING: public/data/mcp_servers.json")
+          d = json.loads(p.read_text())
+          n = d.get("count", 0)
+          print(f"dataset OK: {n} active servers, generated {d.get('generated_at')}")
+          # Refuse to publish a collapsed dataset — a bad API day should not
+          # wipe the directory out from under anyone citing it.
+          if n < 200:
+              sys.exit(f"REFUSING TO DEPLOY: only {n} servers (expected 200+)")
+          PY
+
+      - name: Commit refreshed data
+        # Note on recursion: this push does NOT re-trigger the workflow's
+        # `push:` event. Commits made with the built-in GITHUB_TOKEN never
+        # start new workflow runs — that's GitHub's own loop guard.
+        run: |
+          set -euo pipefail
+          git config user.name "mcpjunction-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data public/sitemap.xml
+          if git diff --staged --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "data: nightly refresh $(date -u +%Y-%m-%d)"
+            # Rebase first: if a human pushed to main while this ran, a bare
+            # push is rejected and the whole run dies after the API work is
+            # already done. Rebasing our one data commit on top is always safe.
+            git pull --rebase origin main
+            git push
+          fi
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Verify live URLs
+        run: |
+          set -euo pipefail
+          sleep 15
+          for u in / /robots.txt /license.xml /llms.txt /licensing.html \
+                   /sitemap.xml /data/mcp_servers.json; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://mcpjunction.ai$u")
+            echo "$code  $u"
+            [ "$code" = "200" ] || exit 1
+          done
+
+      - name: Verify robots.txt directives survived the edge
+        # Cloudflare's managed robots.txt is documented as prepending to your
+        # file but was observed replacing it, which silently drops the two
+        # directives the whole licensing posture depends on. A 200 is not
+        # enough — check the content actually made it through.
+        run: |
+          set -euo pipefail
+          live=$(curl -s https://mcpjunction.ai/robots.txt)
+          fail=0
+          echo "$live" | grep -q "^Sitemap: https://mcpjunction.ai/sitemap.xml" \
+            || { echo "::error::Sitemap directive missing from live robots.txt"; fail=1; }
+          echo "$live" | grep -q "^License: https://mcpjunction.ai/license.xml" \
+            || { echo "::error::License (RSL) directive missing from live robots.txt"; fail=1; }
+          echo "$live" | grep -q "^Content-Signal:" \
+            || { echo "::error::Content-Signal directive missing from live robots.txt"; fail=1; }
+          if [ "$fail" = "1" ]; then
+            echo "::error::Managed robots.txt is likely re-enabled and overwriting the file."
+            echo "Fix: Cloudflare dashboard -> AI Crawl Control -> robots.txt -> turn OFF managed robots.txt."
+            exit 1
+          fi
+          echo "robots.txt directives intact."

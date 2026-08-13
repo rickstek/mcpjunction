@@ -1,0 +1,35 @@
+{
+  // ---------------------------------------------------------------------
+  // mcpjunction.ai — assets-only Worker (no server code, just static files).
+  //
+  // ⚠️ CRITICAL: "name" must EXACTLY match the Worker you already created in
+  // the dashboard (the one mcpjunction.ai + www are attached to). Check it at
+  // Workers & Pages → your Worker → the name in the header. If this string
+  // differs by even one character, wrangler creates a SECOND Worker, the
+  // deploy "succeeds", and the live site never changes — because your custom
+  // domain is still bound to the original one.
+  //
+  // Custom domains are attached to the Worker, not to a deployment, so they
+  // survive every deploy. Nothing here needs to mention mcpjunction.ai.
+  // ---------------------------------------------------------------------
+
+  "name": "mcpjunction",
+
+  "compatibility_date": "2026-08-13",
+
+  "assets": {
+    "directory": "./public",
+    // Serve public/404.html for unknown paths instead of a bare Cloudflare
+    // error. Do NOT use "single-page-application" — it would return index.html
+    // with a 200 for every bad URL, which poisons crawlers and agents.
+    "not_found_handling": "404-page"
+  },
+
+  // Keeps the workers.dev preview URL alive as a staging check. Set to false
+  // once you'd rather the content only be reachable on the real domain.
+  "workers_dev": true,
+
+  "observability": {
+    "enabled": true
+  }
+}

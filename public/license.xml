@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsl xmlns="https://rslstandard.org/rsl">
+
+  <!-- ==========================================================
+       mcpjunction.ai - RSL licensing terms
+       Phase: LAUNCH (authority-building)
+       Posture: search free | agent/inference free-with-attribution
+                | AI training requires a paid license
+       Review this file quarterly. When agent traffic is material,
+       change the ai-input block from attribution to paid.
+       ========================================================== -->
+
+  <!-- Site-wide default -->
+  <content url="/">
+
+    <!-- Web search indexing: free, unconditional -->
+    <license>
+      <permits type="usage">search</permits>
+      <payment type="free"/>
+    </license>
+
+    <!-- AI agents / RAG / inference-time retrieval:
+         free during launch phase, attribution required.
+         This is deliberate - we want citations while building authority. -->
+    <license>
+      <permits type="usage">ai-input</permits>
+      <payment type="attribution">
+        <custom>https://mcpjunction.ai/licensing</custom>
+      </payment>
+    </license>
+
+    <!-- AI model training: licensed, not free. -->
+    <license>
+      <permits type="usage">ai-train</permits>
+      <payment type="subscription">
+        <custom>https://mcpjunction.ai/licensing</custom>
+      </payment>
+    </license>
+
+  </content>
+
+  <!-- Bulk structured data endpoint - stricter terms.
+       This is the high-value asset: the full directory as JSON.
+       Bulk retrieval is a licensing conversation, not a free crawl. -->
+  <content url="/data/">
+    <license>
+      <permits type="usage">search</permits>
+      <payment type="free"/>
+    </license>
+    <license>
+      <permits type="usage">ai-input ai-train</permits>
+      <payment type="subscription">
+        <custom>https://mcpjunction.ai/licensing</custom>
+      </payment>
+    </license>
+  </content>
+
+</rsl>
