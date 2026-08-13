@@ -22,7 +22,12 @@
     // Serve public/404.html for unknown paths instead of a bare Cloudflare
     // error. Do NOT use "single-page-application" — it would return index.html
     // with a 200 for every bad URL, which poisons crawlers and agents.
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+
+    // Pinned explicitly rather than relying on the default. Serves
+    // licensing.html at /licensing and 307s /licensing.html there. The
+    // sitemap emits the canonical form to match.
+    "html_handling": "auto-trailing-slash"
   },
 
   // Keeps the workers.dev preview URL alive as a staging check. Set to false

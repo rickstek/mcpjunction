@@ -29,7 +29,7 @@ EXTRA_PATHS = ["/data/mcp_servers.json", "/data/mcp_servers.csv"]
 
 PRIORITY = {
     "/": "1.0",
-    "/licensing.html": "0.8",
+    "/licensing": "0.8",
     "/data/mcp_servers.json": "0.9",
 }
 
@@ -39,9 +39,22 @@ def iso(ts: float) -> str:
 
 
 def url_path(p: Path) -> str:
+    """Return the CANONICAL url Cloudflare serves at 200.
+
+    html_handling is auto-trailing-slash, so:
+      index.html         -> /
+      licensing.html     -> /licensing        (/licensing.html 307s here)
+      folder/index.html  -> /folder/
+    Listing the .html form in a sitemap would advertise a redirect, which
+    wastes crawl budget and muddies canonicalisation.
+    """
     rel = p.relative_to(PUBLIC).as_posix()
     if rel == "index.html":
         return "/"
+    if rel.endswith("/index.html"):
+        return "/" + rel[: -len("index.html")]
+    if rel.endswith(".html"):
+        return "/" + rel[: -len(".html")]
     return "/" + rel
 
 

@@ -102,11 +102,21 @@ jobs:
         run: |
           set -euo pipefail
           sleep 15
-          for u in / /robots.txt /license.xml /llms.txt /licensing.html \
+          # -L follows redirects. Cloudflare's default html_handling is
+          # auto-trailing-slash: /foo.html 307s to /foo. That is correct
+          # behaviour, not a failure, so we check the FINAL status and report
+          # the hop separately.
+          for u in / /robots.txt /license.xml /llms.txt /licensing \
                    /sitemap.xml /data/mcp_servers.json; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "https://mcpjunction.ai$u")
-            echo "$code  $u"
-            [ "$code" = "200" ] || exit 1
+            read -r first final <<<"$(curl -sL -o /dev/null \
+              -w "%{http_code} %{url_effective}" "https://mcpjunction.ai$u")"
+            if [ "$first" != "200" ]; then
+              echo "::error::$u -> HTTP $first (final: $final)"; exit 1
+            fi
+            case "$final" in
+              "https://mcpjunction.ai$u") echo "200  $u" ;;
+              *) echo "200  $u  (redirected to $final)" ;;
+            esac
           done
 
       - name: Verify robots.txt directives survived the edge
