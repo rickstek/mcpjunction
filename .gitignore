@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 __pycache__/
+.claude/
 .wrangler/
 .dev.vars
 *.tmp
