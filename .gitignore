@@ -1,4 +1,7 @@
 node_modules/
+dist/
+.astro/
+__pycache__/
 .wrangler/
 .dev.vars
 *.tmp

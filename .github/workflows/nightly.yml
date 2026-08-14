@@ -1,8 +1,9 @@
-# Supply-chain hardening (optional, recommended once stable): pin each
-# third-party action to a full commit SHA instead of a version tag, e.g.
-#   uses: cloudflare/wrangler-action@<40-char-sha>  # v4.0.0
-# Tags are mutable; SHAs are not. This workflow holds a Cloudflare API token,
-# so a compromised action tag is the main way that token could leak.
+# Supply-chain hardening: every action is pinned to a full commit SHA (the
+# trailing comment records the tag it resolved from). Tags are mutable; SHAs
+# are not. This workflow holds a Cloudflare API token, so a compromised action
+# tag is the main way that token could leak. To bump a pin, resolve the new
+# tag with:  curl -s https://api.github.com/repos/<owner>/<repo>/commits/<tag>
+# and update both the SHA and the comment.
 name: Nightly refresh and deploy
 
 on:
@@ -34,7 +35,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          # Astro 7 requires >=22.12; 24 matches the env the lockfile was
+          # generated with.
+          node-version: "24"
+          cache: npm
 
       - name: Refresh dataset from GitHub API
         if: inputs.skip_data_refresh != true
@@ -46,40 +55,77 @@ jobs:
           REQUEST_SLEEP: "2.5"
         run: python3 scripts/pipeline.py
 
-      - name: Rebuild sitemap
-        run: python3 scripts/build_sitemap.py
-
-      - name: Sanity check before deploy
+      - name: Sanity check dataset before build
+        # Runs BEFORE the build so a gutted dataset never produces a gutted
+        # site. If the API had a bad day and returned < 200 servers, we
+        # refuse to deploy — the previous good version stays live.
         run: |
           set -euo pipefail
-          for f in public/index.html public/robots.txt public/license.xml \
-                   public/llms.txt public/licensing.html public/sitemap.xml \
-                   public/data/mcp_servers.csv; do
+          test -s public/data/mcp_servers.json || { echo "MISSING: public/data/mcp_servers.json"; exit 1; }
+          test -s public/data/mcp_servers.csv  || { echo "MISSING: public/data/mcp_servers.csv"; exit 1; }
+          test -s categories.json              || { echo "MISSING: categories.json"; exit 1; }
+          for f in public/robots.txt public/license.xml public/llms.txt; do
             test -s "$f" || { echo "MISSING OR EMPTY: $f"; exit 1; }
           done
           python3 - <<'PY'
           import json, sys, pathlib
-          p = pathlib.Path("public/data/mcp_servers.json")
-          if not p.exists():
-              sys.exit("MISSING: public/data/mcp_servers.json")
-          d = json.loads(p.read_text())
+          d = json.loads(pathlib.Path("public/data/mcp_servers.json").read_text())
           n = d.get("count", 0)
           print(f"dataset OK: {n} active servers, generated {d.get('generated_at')}")
-          # Refuse to publish a collapsed dataset — a bad API day should not
-          # wipe the directory out from under anyone citing it.
           if n < 200:
               sys.exit(f"REFUSING TO DEPLOY: only {n} servers (expected 200+)")
           PY
+
+      - name: Install site dependencies
+        run: npm ci
+
+      - name: Astro build
+        env:
+          ASTRO_TELEMETRY_DISABLED: "1"
+        run: npm run build
+
+      - name: Build sitemap
+        # Walks dist/ (the just-built site) so the sitemap only lists URLs
+        # that actually exist. Runs AFTER astro build; dist/ is not committed.
+        run: python3 scripts/build_sitemap.py
+
+      - name: Post-build verification
+        # Every URL the licensing surface depends on must exist in dist/
+        # before we ship. This catches regressions like accidentally deleting
+        # a passthrough file, breaking the sitemap builder, or an Astro
+        # route silently dropping.
+        run: |
+          set -euo pipefail
+          for f in dist/index.html dist/licensing.html dist/404.html \
+                   dist/data.html dist/categories.html \
+                   dist/robots.txt dist/license.xml dist/llms.txt \
+                   dist/sitemap.xml \
+                   dist/data/mcp_servers.json dist/data/mcp_servers.csv; do
+            test -s "$f" || { echo "MISSING OR EMPTY in dist/: $f"; exit 1; }
+          done
+          # Sanity: at least one server page and one category page emitted.
+          test "$(find dist/servers -name '*.html' | wc -l)" -gt 100 \
+            || { echo "Too few server pages emitted"; exit 1; }
+          test "$(find dist/categories -name '*.html' | wc -l)" -gt 5 \
+            || { echo "Too few category pages emitted"; exit 1; }
+          # Passthrough files must be byte-identical to their public/ source.
+          for f in robots.txt license.xml llms.txt data/mcp_servers.json data/mcp_servers.csv; do
+            diff -q "public/$f" "dist/$f" > /dev/null || { echo "PASSTHROUGH MISMATCH: $f"; exit 1; }
+          done
+          echo "post-build OK"
 
       - name: Commit refreshed data
         # Note on recursion: this push does NOT re-trigger the workflow's
         # `push:` event. Commits made with the built-in GITHUB_TOKEN never
         # start new workflow runs — that's GitHub's own loop guard.
+        #
+        # Only public/data is committed. dist/ and dist/sitemap.xml are
+        # build artifacts, regenerated on each run.
         run: |
           set -euo pipefail
           git config user.name "mcpjunction-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data public/sitemap.xml
+          git add public/data
           if git diff --staged --quiet; then
             echo "No data changes."
           else
@@ -92,32 +138,87 @@ jobs:
           fi
 
       - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
 
-      - name: Verify live URLs
+      - name: Verify licensing surface + declared URL sample
+        # This step enforces the zero-redirect contract:
+        #  1. Every URL in the core licensing surface returns 200 with zero
+        #     redirects on the first hop.
+        #  2. A sample of declared URLs (from the sitemap and JSON-LD `url`
+        #     fields) also returns 200 zero-redirect.
+        # Under Pay Per Crawl metering, agent fetchers often don't follow
+        # redirects — a 307 costs a fetch. The served and declared surfaces
+        # must be identical.
         run: |
           set -euo pipefail
           sleep 15
-          # -L follows redirects. Cloudflare's default html_handling is
-          # auto-trailing-slash: /foo.html 307s to /foo. That is correct
-          # behaviour, not a failure, so we check the FINAL status and report
-          # the hop separately.
-          for u in / /robots.txt /license.xml /llms.txt /licensing \
-                   /sitemap.xml /data/mcp_servers.json; do
-            read -r first final <<<"$(curl -sL -o /dev/null \
-              -w "%{http_code} %{url_effective}" "https://mcpjunction.ai$u")"
-            if [ "$first" != "200" ]; then
-              echo "::error::$u -> HTTP $first (final: $final)"; exit 1
+          BASE="https://mcpjunction.ai"
+
+          check_zero_redirect() {
+            local url="$1"
+            # -w prints the first-hop status code (no -L, so we don't follow).
+            local code
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$url")
+            if [ "$code" != "200" ]; then
+              echo "::error::REDIRECT/FAIL  $url -> HTTP $code"
+              return 1
             fi
-            case "$final" in
-              "https://mcpjunction.ai$u") echo "200  $u" ;;
-              *) echo "200  $u  (redirected to $final)" ;;
-            esac
+            echo "200  $url"
+            return 0
+          }
+
+          fail=0
+          # Core licensing surface — MUST be byte-perfect and zero-redirect.
+          for p in / /robots.txt /license.xml /llms.txt /licensing \
+                   /sitemap.xml /data /data/mcp_servers.json /data/mcp_servers.csv \
+                   /categories; do
+            check_zero_redirect "$BASE$p" || fail=1
           done
+
+          # Sample 25 URLs from the live sitemap and check them too.
+          # NOTE: mapfile, not `| while read` — a while-loop fed by a pipe
+          # runs in a subshell, so `fail=1` set inside it would silently
+          # never propagate and the sample would be decorative.
+          echo "--- sitemap sample ---"
+          mapfile -t sample_urls < <(curl -sS "$BASE/sitemap.xml" \
+            | grep -oE 'https://mcpjunction\.ai[^<]+' \
+            | shuf -n 25)
+          test "${#sample_urls[@]}" -gt 0 || { echo "::error::sitemap sample came back empty"; fail=1; }
+          for u in "${sample_urls[@]}"; do
+            check_zero_redirect "$u" || fail=1
+          done
+
+          # Pull one server page and check its declared JSON-LD url is also
+          # 200. The JSON-LD is emitted minified, so the url field is
+          # greppable without a JSON parser.
+          echo "--- JSON-LD url check ---"
+          server_page=$(curl -sS "$BASE/sitemap.xml" \
+            | grep -oE 'https://mcpjunction\.ai/servers/[^<]+' \
+            | head -1)
+          if [ -n "$server_page" ]; then
+            declared=$(curl -sS "$server_page" \
+              | grep -o '"url":"https://mcpjunction.ai[^"]*"' \
+              | head -1 | cut -d'"' -f4)
+            if [ -n "$declared" ]; then
+              check_zero_redirect "$declared" || fail=1
+            else
+              echo "::error::no JSON-LD url found on $server_page"
+              fail=1
+            fi
+          else
+            echo "::error::no server pages found in sitemap"
+            fail=1
+          fi
+
+          if [ "$fail" = "1" ]; then
+            echo "::error::One or more declared URLs failed the zero-redirect check."
+            exit 1
+          fi
+          echo "All declared URLs served 200 zero-redirect."
 
       - name: Verify robots.txt directives survived the edge
         # Cloudflare's managed robots.txt is documented as prepending to your

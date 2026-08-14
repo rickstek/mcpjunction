@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import dataset from '../../../public/data/mcp_servers.json';
+import categoriesFile from '../../../categories.json';
+
+const activeServers = dataset.servers.filter((s: any) => s.status === 'active');
+const counts: Record<string, number> = {};
+for (const s of activeServers) counts[s.category] = (counts[s.category] || 0) + 1;
+
+const categories = categoriesFile.categories.map((c: any) => ({
+  ...c,
+  count: counts[c.slug] || 0,
+}));
+---
+<Base
+  title="Categories — MCP Junction"
+  description="Browse MCP servers by category — AI Agents, AI Coding Assistants, Databases, Search, and more."
+  canonical="/categories"
+>
+<h1>Categories</h1>
+<p>{categories.length} categories, {activeServers.length} MCP servers total.</p>
+
+<ul class="servers">
+  {categories.map((c) => (
+    <li>
+      <a href={`/categories/${c.slug}`}><strong>{c.name}</strong></a>
+      <span class="meta"> — {c.count} server{c.count === 1 ? '' : 's'}</span>
+      <div class="meta">{c.description}</div>
+    </li>
+  ))}
+</ul>
+</Base>

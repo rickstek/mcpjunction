@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import ServerBadges from '../../components/ServerBadges.astro';
+import dataset from '../../../public/data/mcp_servers.json';
+import categoriesFile from '../../../categories.json';
+
+export async function getStaticPaths() {
+  return categoriesFile.categories.map((c: any) => ({
+    params: { slug: c.slug },
+    props: { category: c },
+  }));
+}
+
+const { category } = Astro.props;
+
+const members = dataset.servers
+  .filter((s: any) => s.status === 'active' && s.category === category.slug)
+  .sort((a: any, b: any) => (b.stars || 0) - (a.stars || 0));
+
+const canonicalPath = `/categories/${category.slug}`;
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/, '');
+const generatedAt = (dataset as any).generated_at;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${category.name} — MCP Junction`,
+  description: category.description,
+  url: canonicalUrl,
+  dateModified: generatedAt,
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: members.length,
+    itemListElement: members.map((s: any, i: number) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(`/servers/${s.id}`, Astro.site).toString().replace(/\/$/, ''),
+      name: s.name,
+    })),
+  },
+};
+---
+<Base
+  title={`${category.name} — MCP Junction`}
+  description={category.description}
+  canonical={canonicalPath}
+  jsonLd={jsonLd}
+>
+<p class="meta"><a href="/categories">All categories</a></p>
+<h1>{category.name}</h1>
+<p>{category.description}</p>
+<p class="meta">{members.length} server{members.length === 1 ? '' : 's'} · updated {generatedAt}</p>
+
+{members.length === 0 ? (
+  <p><em>No servers currently listed in this category. The nightly refresh picks up new servers as they appear on GitHub.</em></p>
+) : (
+  <ul class="servers">
+    {members.map((s: any) => (
+      <li>
+        <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
+        <span class="meta"> — {s.owner} · {s.language || 'unknown language'} · ★ {s.stars?.toLocaleString?.() ?? s.stars}</span>
+        <ServerBadges
+          securityReviewed={s.security_reviewed}
+          sponsorTier={s.sponsor_tier}
+          status={s.status}
+        />
+        {s.description && <div class="meta">{s.description}</div>}
+      </li>
+    ))}
+  </ul>
+)}
+</Base>

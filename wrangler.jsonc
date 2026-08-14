@@ -18,8 +18,11 @@
   "compatibility_date": "2026-08-13",
 
   "assets": {
-    "directory": "./public",
-    // Serve public/404.html for unknown paths instead of a bare Cloudflare
+    // Astro build output. Contains passthrough files from public/ (data/,
+    // robots.txt, license.xml, llms.txt) plus generated .html pages for
+    // every route.
+    "directory": "./dist",
+    // Serve dist/404.html for unknown paths instead of a bare Cloudflare
     // error. Do NOT use "single-page-application" — it would return index.html
     // with a 200 for every bad URL, which poisons crawlers and agents.
     "not_found_handling": "404-page",
@@ -30,9 +33,9 @@
     "html_handling": "auto-trailing-slash"
   },
 
-  // Keeps the workers.dev preview URL alive as a staging check. Set to false
-  // once you'd rather the content only be reachable on the real domain.
-  "workers_dev": true,
+  // Only the real domain is public — hides the workers.dev preview URL so
+  // there's a single canonical origin for crawlers and agents.
+  "workers_dev": false,
 
   "observability": {
     "enabled": true

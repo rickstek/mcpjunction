@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import dataset from '../../public/data/mcp_servers.json';
+
+const activeCount = dataset.count;
+const totalCount = dataset.count_including_delisted;
+const generatedAt = (dataset as any).generated_at;
+
+const canonicalPath = '/data';
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/, '');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: 'MCP Junction — MCP Server Directory',
+  description: 'A structured, nightly-updated directory of Model Context Protocol (MCP) servers, derived from the public GitHub REST API. Contains server metadata, licenses, install hints, and category assignments.',
+  url: canonicalUrl,
+  dateModified: generatedAt,
+  license: 'https://mcpjunction.ai/licensing',
+  creator: {
+    '@type': 'Organization',
+    name: 'MCP Junction',
+    url: 'https://mcpjunction.ai',
+  },
+  distribution: [
+    {
+      '@type': 'DataDownload',
+      encodingFormat: 'application/json',
+      contentUrl: 'https://mcpjunction.ai/data/mcp_servers.json',
+    },
+    {
+      '@type': 'DataDownload',
+      encodingFormat: 'text/csv',
+      contentUrl: 'https://mcpjunction.ai/data/mcp_servers.csv',
+    },
+  ],
+};
+---
+<Base
+  title="Dataset — MCP Junction"
+  description={`Downloadable dataset of ${activeCount} MCP servers, refreshed nightly from the public GitHub REST API. Available as JSON and CSV.`}
+  canonical={canonicalPath}
+  jsonLd={jsonLd}
+>
+<h1>Dataset</h1>
+<p>MCP Junction publishes its full directory as machine-readable data, refreshed nightly. Every server page on this site is derived from this dataset.</p>
+
+<h2>Downloads</h2>
+<table>
+  <tr><th>Format</th><th>URL</th><th>Notes</th></tr>
+  <tr>
+    <td>JSON</td>
+    <td><a href="/data/mcp_servers.json">/data/mcp_servers.json</a></td>
+    <td>Envelope with metadata + full <code>servers</code> array. Canonical form.</td>
+  </tr>
+  <tr>
+    <td>CSV</td>
+    <td><a href="/data/mcp_servers.csv">/data/mcp_servers.csv</a></td>
+    <td>Flat rows for spreadsheet import. Formula-injection guarded per OWASP.</td>
+  </tr>
+</table>
+
+<h2>At a glance</h2>
+<table>
+  <tr><th>Active servers</th><td>{activeCount.toLocaleString()}</td></tr>
+  <tr><th>Total including delisted (30-day grace)</th><td>{totalCount.toLocaleString()}</td></tr>
+  <tr><th>Last generated</th><td>{generatedAt}</td></tr>
+  <tr><th>Source</th><td>GitHub REST API (public repository metadata) + editorial review</td></tr>
+  <tr><th>Refresh cadence</th><td>Nightly, ~06:17 UTC</td></tr>
+</table>
+
+<h2>Licensing</h2>
+<p>Directory content is licensed per <a href="/licensing">/licensing</a>. In brief:</p>
+<ul>
+  <li>Web search indexing — free</li>
+  <li>Agent / inference-time retrieval of pages — free during launch, with attribution ("via mcpjunction.ai")</li>
+  <li>Bulk retrieval of this dataset — requires a license</li>
+  <li>AI model training on this content — requires a paid license</li>
+</ul>
+<p>See <a href="/license.xml">/license.xml</a> for machine-readable RSL terms.</p>
+
+<h2>How to cite</h2>
+<pre style="background:#f2f2f7;padding:.75rem;border-radius:4px;overflow-x:auto;white-space:pre-wrap;"><code>MCP Junction — MCP Server Directory. {generatedAt}.
+{canonicalUrl}. Data: https://mcpjunction.ai/data/mcp_servers.json.
+Licensed per https://mcpjunction.ai/licensing.</code></pre>
+
+<h2>Compliance and provenance</h2>
+<p>Data is collected via the official GitHub REST API only — no HTML scraping. The pipeline republishes public GitHub owner handles with attribution and honors correction and takedown requests within 3 business days (email <a href="mailto:licensing@mcpjunction.ai">licensing@mcpjunction.ai</a>).</p>
+<p class="meta">MCP Junction is not affiliated with Anthropic or the Model Context Protocol project.</p>
+</Base>

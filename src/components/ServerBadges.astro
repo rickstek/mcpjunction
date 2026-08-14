@@ -1,0 +1,34 @@
+---
+// Structural editorial guardrail (Rule 3, Rule 7 of Standing Rules):
+//
+//   - security_reviewed:true  -> reviewed badge.
+//   - sponsor_tier truthy     -> sponsor placement WITH visible "Sponsored"
+//                                label baked into this component and a link
+//                                to the editorial-independence policy.
+//                                It must be IMPOSSIBLE to render a sponsor
+//                                slot without its disclosure.
+//   - status:"archived_or_removed" -> delisted notice.
+//
+// These are display-only: automation never sets them (see pipeline.py
+// EDITORIAL_FIELDS). Do not add heuristics that infer any of these.
+
+export interface Props {
+  securityReviewed?: boolean;
+  sponsorTier?: string | null;
+  status?: string;
+}
+
+const { securityReviewed = false, sponsorTier = null, status = 'active' } = Astro.props;
+---
+{status === 'archived_or_removed' && (
+  <span class="badge badge-delisted" title="This server has been archived or removed from GitHub. Kept published during a 30-day grace window for stable citation.">Delisted</span>
+)}
+{securityReviewed && (
+  <span class="badge badge-reviewed" title="Manually reviewed by MCP Junction editorial staff.">Reviewed</span>
+)}
+{sponsorTier && (
+  <span class="badge badge-sponsored">
+    Sponsored
+    <a href="/licensing#editorial-independence" style="margin-left:.35rem;font-weight:normal;font-size:.7rem;">Why?</a>
+  </span>
+)}

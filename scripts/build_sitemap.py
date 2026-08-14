@@ -2,11 +2,13 @@
 """
 mcpjunction.ai sitemap builder
 
-Walks public/ and emits public/sitemap.xml containing ONLY files that actually
-exist on disk at build time. This is deliberate: the standing rule is no dead
-links on day one, and a sitemap full of 404s is the fastest way to lose search
-and agent trust. When the Astro server pages ship, they land in public/ and
-get picked up automatically — no edit needed here.
+Walks dist/ (the Astro build output) and emits dist/sitemap.xml containing
+ONLY files that actually exist on disk at build time. This is deliberate: the
+standing rule is no dead links on day one, and a sitemap full of 404s is the
+fastest way to lose search and agent trust.
+
+Must run AFTER `astro build`. dist/ is cleared on each build, so this step is
+part of the build pipeline (never committed to git).
 
 lastmod comes from the dataset's generated_at for data-derived pages and from
 file mtime for hand-written pages.
@@ -18,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "public"
+DIST = ROOT / "dist"
 BASE = "https://mcpjunction.ai"
 
 # Files that exist but should not be advertised to crawlers.
@@ -48,7 +50,7 @@ def url_path(p: Path) -> str:
     Listing the .html form in a sitemap would advertise a redirect, which
     wastes crawl budget and muddies canonicalisation.
     """
-    rel = p.relative_to(PUBLIC).as_posix()
+    rel = p.relative_to(DIST).as_posix()
     if rel == "index.html":
         return "/"
     if rel.endswith("/index.html"):
@@ -60,7 +62,7 @@ def url_path(p: Path) -> str:
 
 def main() -> None:
     dataset_date = None
-    ds = PUBLIC / "data" / "mcp_servers.json"
+    ds = DIST / "data" / "mcp_servers.json"
     if ds.exists():
         try:
             gen = json.loads(ds.read_text()).get("generated_at", "")
@@ -71,7 +73,7 @@ def main() -> None:
     entries = []
     seen = set()
 
-    for p in sorted(PUBLIC.rglob("*.html")):
+    for p in sorted(DIST.rglob("*.html")):
         if p.name in EXCLUDE_NAMES:
             continue
         loc = url_path(p)
@@ -81,7 +83,7 @@ def main() -> None:
         entries.append((loc, iso(p.stat().st_mtime)))
 
     for extra in EXTRA_PATHS:
-        f = PUBLIC / extra.lstrip("/")
+        f = DIST / extra.lstrip("/")
         if f.exists() and extra not in seen:
             seen.add(extra)
             entries.append((extra, dataset_date or iso(f.stat().st_mtime)))
@@ -97,7 +99,7 @@ def main() -> None:
         ET.SubElement(el, "priority").text = PRIORITY.get(loc, "0.6")
 
     ET.indent(urlset, space="  ")
-    out = PUBLIC / "sitemap.xml"
+    out = DIST / "sitemap.xml"
     out.write_bytes(
         b'<?xml version="1.0" encoding="UTF-8"?>\n'
         + ET.tostring(urlset, encoding="utf-8")

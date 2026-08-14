@@ -1,0 +1,94 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+  jsonLd?: unknown;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+// Extensionless, no trailing slash — except the site root, which is
+// canonically "https://mcpjunction.ai/" (matches the sitemap entry).
+function toCanonical(path: string): string {
+  const url = new URL(path, Astro.site).toString();
+  const stripped = url.replace(/\/$/, '');
+  return stripped === 'https://mcpjunction.ai' ? stripped + '/' : stripped;
+}
+const canonicalHref = toCanonical(
+  canonical ?? (Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'),
+);
+---
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+{description && <meta name="description" content={description}>}
+<link rel="canonical" href={canonicalHref}>
+<link rel="license" type="application/rsl+xml" href="/license.xml">
+{noindex && <meta name="robots" content="noindex">}
+<style>
+:root { color-scheme: light dark; }
+body {
+  font-family: Georgia, serif;
+  max-width: 780px;
+  margin: 6vh auto;
+  padding: 0 24px;
+  color: #1a1a2e;
+  line-height: 1.6;
+}
+h1 { font-size: 1.9rem; margin-bottom: .2rem; }
+h2 { font-size: 1.3rem; margin-top: 2rem; }
+.tag { color: #5b6b8c; font-style: italic; }
+a { color: #1f4e79; }
+nav.site { margin: 1rem 0 2rem; font-size: .95rem; }
+nav.site a { margin-right: 1.25rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+td, th { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: .95rem; }
+th { background: #f2f2f7; }
+code { background: #f2f2f7; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+ul.servers { list-style: none; padding: 0; }
+ul.servers li { padding: .75rem 0; border-bottom: 1px solid #eee; }
+.meta { color: #666; font-size: .9rem; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: .75rem;
+  font-weight: bold;
+  margin-left: .5rem;
+  vertical-align: middle;
+}
+.badge-reviewed { background: #d4edda; color: #155724; }
+.badge-sponsored { background: #fff3cd; color: #856404; }
+.badge-delisted { background: #f8d7da; color: #721c24; }
+footer { margin-top: 3rem; font-size: .85rem; color: #777; border-top: 1px solid #ddd; padding-top: 1rem; }
+</style>
+{/* set:html is required for JSON-LD (escaped entities would corrupt the JSON),
+    so the payload itself must be made script-safe: descriptions come from
+    arbitrary GitHub repos, and a "</script>" inside one would otherwise close
+    the tag and inject markup. \u003c is valid JSON and neutralizes it. */}
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}></script>}
+</head>
+<body>
+<nav class="site">
+  <a href="/">Home</a>
+  <a href="/categories">Categories</a>
+  <a href="/data">Dataset</a>
+  <a href="/licensing">Licensing</a>
+</nav>
+<slot />
+<footer>MCP Junction is an independent directory. Not affiliated with, or
+endorsed by, Anthropic or the Model Context Protocol project. Data derived
+from public GitHub API metadata; correction and takedown requests honored
+promptly via the <a href="/licensing">licensing page</a> contact.</footer>
+</body>
+</html>

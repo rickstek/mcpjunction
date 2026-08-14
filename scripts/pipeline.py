@@ -46,6 +46,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "public" / "data"
 JSON_PATH = DATA_DIR / "mcp_servers.json"
 CSV_PATH = DATA_DIR / "mcp_servers.csv"
+CATEGORIES_PATH = ROOT / "categories.json"
 
 CONTACT = "admin@mcpjunction.ai"
 USER_AGENT = f"mcpjunction.ai-pipeline/0.2 (+https://mcpjunction.ai; {CONTACT})"
@@ -72,20 +73,29 @@ EDITORIAL_FIELDS = {
     "editorial_notes": "",
 }
 
-# Compiled once at import: categorize() runs 10 rules x ~1,500 repos nightly.
-CATEGORY_RULES = [
-    ("databases", r"\b(postgres|mysql|sqlite|mongo|redis|clickhouse|duckdb|snowflake|bigquery|neo4j|supabase|database|sql|elasticsearch|qdrant|pinecone|weaviate|chroma|vector\s*db)\b"),
-    ("browsers", r"\b(browser|playwright|puppeteer|selenium|chrome|chromium|firefox|scrape|scraping|crawler|webdriver)\b"),
-    ("cloud-devops", r"\b(aws|azure|gcp|kubernetes|k8s|docker|terraform|cloudflare|vercel|netlify|deploy|infra|infrastructure|devops|ansible|helm)\b"),
-    ("communication", r"\b(slack|discord|telegram|whatsapp|email|gmail|imap|smtp|teams|matrix|sms|twilio|messaging|chat)\b"),
-    ("finance", r"\b(stripe|payment|invoice|accounting|stock|trading|crypto|blockchain|bank|finance|financial|ledger|quickbooks|x402)\b"),
-    ("productivity", r"\b(notion|jira|linear|asana|trello|calendar|todo|task|obsidian|confluence|airtable|clickup|note[s]?)\b"),
-    ("search", r"\b(search|retrieval|rag|index|brave|serp|perplexity|tavily|exa|semantic\s*search)\b"),
-    ("files", r"\b(filesystem|file\s|files|s3|storage|drive|dropbox|pdf|document|csv|excel|spreadsheet)\b"),
-    ("ai-ml", r"\b(llm|openai|anthropic|claude|gpt|gemini|ollama|huggingface|embedding|model|inference|agent|prompt|ml\b|machine\s*learning)\b"),
-    ("devtools", r"\b(git|github|gitlab|code|ide|vscode|lint|test|debug|compiler|sdk|cli|api|repo|terminal|shell|bash)\b"),
-]
-CATEGORY_RULES = [(name, re.compile(p)) for name, p in CATEGORY_RULES]
+# Categories come from categories.json at the repo root — human-owned taxonomy,
+# NOT hardcoded here. First-match order is the order in that file. Automation
+# only ASSIGNS; it never invents categories or terms.
+def _load_category_rules():
+    raw = json.loads(CATEGORIES_PATH.read_text(encoding="utf-8"))
+    rules = []
+    for cat in raw["categories"]:
+        slug = cat["slug"]
+        terms = cat.get("match") or []
+        if not terms:
+            rules.append((slug, None))
+            continue
+        # Word-boundary-ish: don't match inside longer alphanumeric tokens.
+        # Custom lookaround instead of \b because \b treats "_" as a word
+        # character: "ros" must match inside "my_ros_pkg" (repo names use
+        # underscores as separators) and \b would not. Must stay in sync with
+        # the boundary rule used when the taxonomy was validated.
+        escaped = [re.escape(t.lower()) for t in terms]
+        pattern = r"(?<![a-z0-9])(?:" + "|".join(escaped) + r")(?![a-z0-9])"
+        rules.append((slug, re.compile(pattern)))
+    return rules
+
+CATEGORY_RULES = _load_category_rules()
 MCP_HINT = re.compile(r"mcp|model[\s-]context[\s-]protocol")
 
 
@@ -135,9 +145,11 @@ def categorize(repo):
         " ".join(repo.get("topics") or []),
     ]).lower()
     for name, pattern in CATEGORY_RULES:
+        if pattern is None:
+            continue
         if pattern.search(haystack):
             return name
-    return "other"
+    return "uncategorized"
 
 
 def guess_install(repo):
@@ -272,6 +284,14 @@ def merge(new_entries, previous):
                         continue  # grace expired — drop
                 except ValueError:
                     old["delisted_at"] = now.isoformat(timespec="seconds")
+        # Recategorize delisted entries against the current taxonomy so
+        # retired slugs (e.g. "ai-ml", "files") don't linger in the dataset
+        # and produce broken /categories/<slug> URLs.
+        old["category"] = categorize({
+            "full_name": old.get("full_name"),
+            "description": old.get("description"),
+            "topics": old.get("topics") or [],
+        })
         merged[old_id] = old
 
     return sorted(merged.values(), key=lambda e: (-int(e.get("stars") or 0),
@@ -291,6 +311,20 @@ def main():
             else:
                 previous = raw.get("servers") or raw.get("data") or []
             previous = [e for e in previous if isinstance(e, dict) and e.get("id")]
+            # Migration guard: v0.1 used "__" as the owner/repo separator,
+            # v0.2 uses "--". When the format changed, every v0.1 id looked
+            # like a vanished repo and got carried forward as a false
+            # "delisted" ghost — 454 of them duplicating live entries. Server
+            # pages were never published under v0.1 ids, so there are no
+            # external URLs to protect: drop them outright. (GitHub usernames
+            # cannot contain underscores, so every real v0.2 id contains "--";
+            # a v0.1 ghost id never does.)
+            ghosts = [e for e in previous
+                      if "__" in e["id"] and "--" not in e["id"]]
+            if ghosts:
+                print(f"dropping {len(ghosts)} v0.1-format ghost entries")
+                previous = [e for e in previous
+                            if not ("__" in e["id"] and "--" not in e["id"])]
             print(f"previous dataset: {len(previous)} servers")
         except Exception as e:  # noqa: BLE001
             print(f"could not read previous dataset ({e}); starting fresh")

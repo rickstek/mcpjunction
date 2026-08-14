@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import dataset from '../../public/data/mcp_servers.json';
+import categoriesFile from '../../categories.json';
+
+const activeCount = dataset.count;
+const categories = categoriesFile.categories.filter((c) => c.slug !== 'uncategorized');
+---
+<Base
+  title="MCP Junction — The MCP Server Directory"
+  description={`A structured, nightly-updated directory of ${activeCount}+ Model Context Protocol (MCP) servers: install commands, categories, licenses, and maintenance status. Built for developers and for AI agents.`}
+  canonical="/"
+>
+<h1>MCP Junction</h1>
+<p class="tag">The directory of Model Context Protocol servers.</p>
+
+<p>Structured, nightly-updated data on <strong>{activeCount}+ MCP servers</strong> — install commands, categories, auth requirements, licenses, and maintenance status. Built for developers and for AI agents.</p>
+
+<h2>Browse</h2>
+<ul>
+  <li><a href="/categories">All categories</a> ({categories.length}, from AI Agents to IoT &amp; Robotics)</li>
+  <li><a href="/data">Dataset page</a> — JSON + CSV downloads, citation info</li>
+</ul>
+
+<h2>Machine-readable entry points</h2>
+<ul>
+  <li><a href="/data/mcp_servers.json">/data/mcp_servers.json</a> — full directory dataset</li>
+  <li><a href="/data/mcp_servers.csv">/data/mcp_servers.csv</a> — CSV form</li>
+  <li><a href="/llms.txt">/llms.txt</a> — agent-facing index</li>
+  <li><a href="/license.xml">/license.xml</a> — RSL content licensing terms</li>
+</ul>
+
+<p>Licensing inquiries and corrections: see <a href="/licensing">licensing</a>.</p>
+</Base>

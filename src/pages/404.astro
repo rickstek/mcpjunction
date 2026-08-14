@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Not found — mcpjunction.ai"
+  noindex={true}
+  canonical="/404"
+>
+<h1>404 — that page doesn't exist</h1>
+<p class="tag">No page lives at this URL. Nothing was moved or removed to hide it.</p>
+
+<p>If you're an agent or crawler, the machine-readable entry points are:</p>
+<ul>
+  <li><a href="/llms.txt">/llms.txt</a> — site index for agents</li>
+  <li><a href="/data/mcp_servers.json">/data/mcp_servers.json</a> — the full directory dataset</li>
+  <li><a href="/license.xml">/license.xml</a> — RSL licensing terms</li>
+  <li><a href="/licensing">/licensing</a> — the same terms in plain language</li>
+  <li><a href="/sitemap.xml">/sitemap.xml</a> — every page we publish</li>
+</ul>
+
+<p>If you're a human: <a href="/">start at the homepage</a>. If you followed a
+link from us and landed here, that's our bug — tell us at
+<code>licensing@mcpjunction.ai</code> and we'll fix it.</p>
+</Base>

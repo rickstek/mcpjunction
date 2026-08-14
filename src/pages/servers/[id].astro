@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import ServerBadges from '../../components/ServerBadges.astro';
+import dataset from '../../../public/data/mcp_servers.json';
+import categoriesFile from '../../../categories.json';
+
+export async function getStaticPaths() {
+  return dataset.servers.map((s: any) => ({
+    params: { id: s.id },
+    props: { server: s },
+  }));
+}
+
+const { server } = Astro.props;
+
+const categoryMeta = categoriesFile.categories.find((c: any) => c.slug === server.category);
+const categoryName = categoryMeta ? categoryMeta.name : server.category;
+
+const canonicalPath = `/servers/${server.id}`;
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/, '');
+const datasetUrl = 'https://mcpjunction.ai/data/mcp_servers.json';
+
+const isDelisted = server.status === 'archived_or_removed';
+
+// JSON-LD SoftwareApplication (Rule: extensionless canonical, absolute URLs).
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: server.name,
+  description: server.description || `${server.full_name} — MCP server.`,
+  url: canonicalUrl,
+  codeRepository: server.repo_url,
+  applicationCategory: categoryName,
+  dateModified: server.pushed_at,
+};
+if (server.language) jsonLd.programmingLanguage = server.language;
+if (server.license) jsonLd.license = server.license;
+
+// Human-readable last-updated (envelope-level generation timestamp).
+const generatedAt = (dataset as any).generated_at;
+---
+<Base
+  title={`${server.full_name} — MCP Junction`}
+  description={server.description || `${server.full_name} MCP server listed in the MCP Junction directory.`}
+  canonical={canonicalPath}
+  jsonLd={jsonLd}
+>
+<p class="meta"><a href="/categories">Categories</a> / <a href={`/categories/${server.category}`}>{categoryName}</a></p>
+
+<h1>
+  {server.name}
+  <ServerBadges
+    securityReviewed={server.security_reviewed}
+    sponsorTier={server.sponsor_tier}
+    status={server.status}
+  />
+</h1>
+<p class="tag">by <a href={`https://github.com/${server.owner}`} rel="external nofollow">{server.owner}</a></p>
+
+{isDelisted && (
+  <p style="padding:1rem;background:#f8d7da;border:1px solid #f5c6cb;border-radius:4px;">
+    <strong>Delisted notice:</strong> this repository has been archived or
+    removed from GitHub since <code>{server.delisted_at}</code>. This page
+    remains available for a 30-day grace window so existing citations don't
+    break. After that it will 404. Contact <a href="mailto:licensing@mcpjunction.ai">licensing@mcpjunction.ai</a> for corrections.
+  </p>
+)}
+
+<h2>Description</h2>
+<p>{server.description || <em>No description provided.</em>}</p>
+<p class="meta">Description imported from public GitHub repository metadata (<a href={server.repo_url} rel="external nofollow">{server.full_name}</a>). MCP Junction does not author or curate descriptions.</p>
+
+<h2>At a glance</h2>
+<table>
+  <tr><th>Category</th><td><a href={`/categories/${server.category}`}>{categoryName}</a></td></tr>
+  <tr><th>Language</th><td>{server.language || <em>unspecified</em>}</td></tr>
+  <tr><th>License</th><td>{server.license || <em>unspecified</em>}</td></tr>
+  <tr><th>Stars</th><td>{server.stars?.toLocaleString?.() ?? server.stars}</td></tr>
+  <tr><th>Forks</th><td>{server.forks?.toLocaleString?.() ?? server.forks}</td></tr>
+  <tr><th>Open issues</th><td>{server.open_issues}</td></tr>
+  <tr><th>Last pushed</th><td>{server.pushed_at}</td></tr>
+  <tr><th>Repository</th><td><a href={server.repo_url} rel="external nofollow">{server.repo_url}</a></td></tr>
+  {server.homepage && <tr><th>Homepage</th><td><a href={server.homepage} rel="external nofollow">{server.homepage}</a></td></tr>}
+</table>
+
+{server.install_hint && (
+  <>
+    <h2>Install hint</h2>
+    <pre style="background:#f2f2f7;padding:.75rem;border-radius:4px;overflow-x:auto;"><code>{server.install_hint}</code></pre>
+    <p class="meta">Best-effort hint inferred from the repository language. Never
+    includes auto-confirm flags (<code>-y</code>, <code>--yes</code>) — the
+    package registry name may be squatted by someone other than the repo
+    owner. Verify against the repository's own README before running.</p>
+  </>
+)}
+
+<h2>Cite this entry</h2>
+<table>
+  <tr><th>Canonical page</th><td><a href={canonicalUrl}>{canonicalUrl}</a></td></tr>
+  <tr><th>Dataset (JSON)</th><td><a href={datasetUrl}>{datasetUrl}</a></td></tr>
+  <tr><th>Dataset generated</th><td>{generatedAt}</td></tr>
+  <tr><th>Attribution</th><td>via mcpjunction.ai</td></tr>
+</table>
+<p class="meta">Directory content is licensed per <a href="/licensing">/licensing</a>. Bulk retrieval and AI training require a paid license.</p>
+</Base>

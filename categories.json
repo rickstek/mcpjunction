@@ -1,0 +1,125 @@
+{
+  "_comment": "Human-owned taxonomy. Order is the assignment order: first match wins in scripts/pipeline.py. Slugs are permanent once published (they become URLs at /categories/<slug>). Retiring a category requires a redirect or delisting notice, never a silent 404. Descriptions render on the category page. Match terms are matched case-insensitively against a haystack of full_name + description + topics.",
+  "categories": [
+    {
+      "slug": "browser-automation",
+      "name": "Browser Automation",
+      "description": "MCP servers that drive browsers, scrape the web, or crawl pages — Playwright, Puppeteer, Selenium, and headless Chromium tooling.",
+      "match": ["browser", "browser-automation", "playwright", "puppeteer", "selenium", "chrome", "chromium", "webdriver", "scrape", "scraping", "crawler", "web-scraping", "headless-browser"]
+    },
+    {
+      "slug": "databases",
+      "name": "Databases",
+      "description": "MCP servers for relational, document, vector, and time-series databases — Postgres, MySQL, SQLite, MongoDB, Redis, Snowflake, BigQuery, and vector stores.",
+      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries"]
+    },
+    {
+      "slug": "communication",
+      "name": "Communication",
+      "description": "MCP servers for chat, email, messaging, and video conferencing — Slack, Discord, Telegram, Gmail, Teams, and Matrix.",
+      "match": ["slack", "discord", "telegram", "whatsapp", "email", "gmail", "imap", "smtp", "microsoft-teams", "teams", "matrix", "sms", "twilio", "messaging", "chat", "signal"]
+    },
+    {
+      "slug": "finance",
+      "name": "Finance & Commerce",
+      "description": "MCP servers for payments, accounting, trading, crypto, and fintech APIs — Stripe, QuickBooks, market data, and blockchain integrations.",
+      "match": ["stripe", "payment", "invoice", "accounting", "trading", "crypto", "blockchain", "bank", "banking", "finance", "financial", "fintech", "quantitative-finance", "financial-analysis", "x402", "ledger", "quickbooks", "ethereum", "solana", "defi"]
+    },
+    {
+      "slug": "storage",
+      "name": "Storage & Files",
+      "description": "MCP servers for filesystems, object storage, cloud drives, and document access — local files, S3, Google Drive, Dropbox, Box, and PDF/Excel handling.",
+      "match": ["filesystem", "file-system", "s3", "storage", "google-drive", "dropbox", "box-com", "onedrive", "pdf", "document", "csv", "excel", "spreadsheet", "xlsx", "file-storage"]
+    },
+    {
+      "slug": "design-tools",
+      "name": "Design Tools",
+      "description": "MCP servers for design and diagramming apps — Figma, Canva, Excalidraw, drawio, 3D modeling, CAD, and UI component libraries.",
+      "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library"]
+    },
+    {
+      "slug": "home-automation",
+      "name": "Home Automation",
+      "description": "MCP servers for smart-home platforms and protocols — Home Assistant, HomeKit, Matter, Zigbee, and other physical-device controllers.",
+      "match": ["home-assistant", "home-automation", "homeassistant", "hacs", "smart-home", "homekit", "matter-protocol", "zigbee", "z-wave", "philips-hue", "google-home", "alexa-skills", "openhab"]
+    },
+    {
+      "slug": "iot-hardware",
+      "name": "IoT, Hardware & Robotics",
+      "description": "MCP servers for embedded devices, microcontrollers, hardware interfaces, and robotics — ESP32, Arduino, Raspberry Pi, MQTT, sensor networks, ROS, and drones. Robotics may split into its own category as coverage grows.",
+      "match": ["esp32", "esp-idf", "esp8266", "arduino", "raspberry-pi", "raspberrypi", "iot", "embedded", "microcontroller", "mqtt", "firmware", "sensors", "hardware", "rp2040", "stm32", "ros", "ros2", "moveit", "gazebo", "drone", "uav", "ardupilot", "betaflight", "robot", "robotics", "embodied-ai"]
+    },
+    {
+      "slug": "gaming",
+      "name": "Gaming & Game Dev",
+      "description": "MCP servers for game engines, game development, and player-facing gaming tools — Unity, Unreal, Godot, Minecraft, Steam, and Roblox.",
+      "match": ["game", "gaming", "game-development", "game-dev", "godot", "godot-plugin", "unity", "unity3d", "unreal", "unreal-engine", "minecraft", "steam", "roblox", "cocos", "cocos-creator", "pokemon", "gamedev"]
+    },
+    {
+      "slug": "security",
+      "name": "Security",
+      "description": "MCP servers for auth, vulnerability scanning, pentesting, secrets management, encryption, and reverse engineering.",
+      "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec"]
+    },
+    {
+      "slug": "monitoring",
+      "name": "Monitoring & Observability",
+      "description": "MCP servers for metrics, logs, traces, APM, and error tracking — Grafana, Prometheus, Datadog, Sentry, and New Relic.",
+      "match": ["monitoring", "observability", "metrics", "logging", "logs", "prometheus", "grafana", "sentry", "datadog", "new-relic", "newrelic", "apm", "tracing", "opentelemetry", "elk-stack", "loki"]
+    },
+    {
+      "slug": "cloud-devops",
+      "name": "Cloud & DevOps",
+      "description": "MCP servers for cloud platforms, infrastructure-as-code, containers, and deployment — AWS, Azure, GCP, Kubernetes, Docker, Terraform, and CDN edges.",
+      "match": ["aws", "azure", "gcp", "google-cloud", "kubernetes", "k8s", "docker", "terraform", "cloudflare", "vercel", "netlify", "ansible", "helm", "devops", "infrastructure", "infrastructure-as-code", "cloud-native", "deploy", "deployment", "ci-cd", "cicd"]
+    },
+    {
+      "slug": "search",
+      "name": "Search & Retrieval",
+      "description": "MCP servers for web search, semantic search, and retrieval-augmented generation — Brave, Perplexity, Tavily, Exa, and vector-search backends.",
+      "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine"]
+    },
+    {
+      "slug": "productivity",
+      "name": "Productivity & Knowledge",
+      "description": "MCP servers for notes, tasks, project management, calendars, wikis, and knowledge bases — Notion, Jira, Linear, Asana, Obsidian, Confluence, and Airtable.",
+      "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management"]
+    },
+    {
+      "slug": "ai-media",
+      "name": "AI Media Generation",
+      "description": "MCP servers for AI-generated image, audio, video, and speech — Stable Diffusion, DALL-E, Midjourney, Whisper, TTS/STT, and video processing.",
+      "match": ["image-generation", "stable-diffusion", "dalle", "dall-e", "midjourney", "flux", "whisper", "tts", "text-to-speech", "stt", "speech-to-text", "voice", "speech", "audio-generation", "video-generation", "generative-ai", "elevenlabs"]
+    },
+    {
+      "slug": "ai-coding",
+      "name": "AI Coding Assistants",
+      "description": "MCP servers built for AI coding tools — Claude Code, Cursor, Codex, Windsurf, Copilot, and IDE-integrated assistants.",
+      "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide"]
+    },
+    {
+      "slug": "ai-agents",
+      "name": "AI Agents",
+      "description": "MCP servers for agent frameworks, agent memory, orchestration, and general agentic infrastructure — LangChain, LangGraph, multi-agent systems, and agent skills.",
+      "match": ["agent", "agents", "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "agent-framework", "agent-memory", "agent-skills", "swarm", "autonomous", "langchain", "langgraph", "autogen", "crewai"]
+    },
+    {
+      "slug": "ai-models",
+      "name": "AI Models & Inference",
+      "description": "MCP servers for LLM providers, model inference, and embeddings — OpenAI, Gemini, Ollama, Llama, Mistral, Hugging Face, and embedding APIs.",
+      "match": ["openai", "gpt", "gpt-4", "gemini", "ollama", "llama", "mistral", "huggingface", "hugging-face", "deepseek", "azure-openai", "anthropic-api", "embedding", "embeddings", "inference", "llm-tools", "llm-provider"]
+    },
+    {
+      "slug": "devtools",
+      "name": "Developer Tools",
+      "description": "MCP servers for source hosting, CLIs, testing, linting, and MCP framework libraries themselves — GitHub, GitLab, code quality, terminals, and MCP client/server frameworks.",
+      "match": ["git", "github", "gitlab", "bitbucket", "cli", "sdk", "openapi", "code-quality", "lint", "linter", "test", "testing", "debug", "debugger", "mcp-client", "mcp-tools", "mcp-framework", "mcp-servers", "mcp-server-store", "mcp-hub", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-go", "mcp-python", "mcp-typescript", "mcp-installer", "fastmcp", "terminal", "shell", "compiler", "awesome-mcp-servers", "awesome-mcp-clients", "n8n", "laravel", "jupyter", "notebook", "data-science", "language-server", "language-server-protocol", "lsp"]
+    },
+    {
+      "slug": "uncategorized",
+      "name": "Uncategorized",
+      "description": "MCP servers that did not match any category above. Reviewed weekly — matches migrate into new or existing categories as the taxonomy evolves.",
+      "match": []
+    }
+  ]
+}
