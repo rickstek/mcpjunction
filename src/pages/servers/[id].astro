@@ -58,7 +58,7 @@ const generatedAt = (dataset as any).generated_at;
 <p class="tag">by <a href={`https://github.com/${server.owner}`} rel="external nofollow">{server.owner}</a></p>
 
 {isDelisted && (
-  <p style="padding:1rem;background:#f8d7da;border:1px solid #f5c6cb;border-radius:4px;">
+  <p class="notice-delisted">
     <strong>Delisted notice:</strong> this repository has been archived or
     removed from GitHub since <code>{server.delisted_at}</code>. This page
     remains available for a 30-day grace window so existing citations don't
@@ -86,7 +86,7 @@ const generatedAt = (dataset as any).generated_at;
 {server.install_hint && (
   <>
     <h2>Install hint</h2>
-    <pre style="background:#f2f2f7;padding:.75rem;border-radius:4px;overflow-x:auto;"><code>{server.install_hint}</code></pre>
+    <pre class="block"><code>{server.install_hint}</code></pre>
     <p class="meta">Best-effort hint inferred from the repository language. Never
     includes auto-confirm flags (<code>-y</code>, <code>--yes</code>) — the
     package registry name may be squatted by someone other than the repo
