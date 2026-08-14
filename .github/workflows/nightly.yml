@@ -179,14 +179,21 @@ jobs:
             check_zero_redirect "$BASE$p" || fail=1
           done
 
-          # Sample 25 URLs from the live sitemap and check them too.
-          # NOTE: mapfile, not `| while read` — a while-loop fed by a pipe
-          # runs in a subshell, so `fail=1` set inside it would silently
-          # never propagate and the sample would be decorative.
+          # Fetch the sitemap ONCE to a file. Everything below greps the file,
+          # never a live pipe. Two hard-won rules for this block:
+          #  - no `| while read` (subshell: fail=1 would silently not
+          #    propagate and the checks would be decorative)
+          #  - no `big-output | head -1` under pipefail (head closes the pipe
+          #    after one line, the upstream grep/curl takes SIGPIPE and exits
+          #    141, and set -e kills the whole step — this exact bug failed
+          #    runs #4 and #5 after a successful deploy). grep -m1 on a FILE
+          #    stops itself with no pipe to break.
+          sitemap_file=$(mktemp)
+          curl -sS "$BASE/sitemap.xml" -o "$sitemap_file"
+
+          # Sample 25 URLs from the sitemap and check them.
           echo "--- sitemap sample ---"
-          mapfile -t sample_urls < <(curl -sS "$BASE/sitemap.xml" \
-            | grep -oE 'https://mcpjunction\.ai[^<]+' \
-            | shuf -n 25)
+          mapfile -t sample_urls < <(grep -oE 'https://mcpjunction\.ai[^<]+' "$sitemap_file" | shuf -n 25)
           test "${#sample_urls[@]}" -gt 0 || { echo "::error::sitemap sample came back empty"; fail=1; }
           for u in "${sample_urls[@]}"; do
             check_zero_redirect "$u" || fail=1
@@ -196,13 +203,11 @@ jobs:
           # 200. The JSON-LD is emitted minified, so the url field is
           # greppable without a JSON parser.
           echo "--- JSON-LD url check ---"
-          server_page=$(curl -sS "$BASE/sitemap.xml" \
-            | grep -oE 'https://mcpjunction\.ai/servers/[^<]+' \
-            | head -1)
+          server_page=$(grep -m1 -oE 'https://mcpjunction\.ai/servers/[^<]+' "$sitemap_file" || true)
           if [ -n "$server_page" ]; then
-            declared=$(curl -sS "$server_page" \
-              | grep -o '"url":"https://mcpjunction.ai[^"]*"' \
-              | head -1 | cut -d'"' -f4)
+            page_file=$(mktemp)
+            curl -sS "$server_page" -o "$page_file"
+            declared=$(grep -m1 -o '"url":"https://mcpjunction.ai[^"]*"' "$page_file" | cut -d'"' -f4 || true)
             if [ -n "$declared" ]; then
               check_zero_redirect "$declared" || fail=1
             else
