@@ -247,6 +247,48 @@ jobs:
           grep -q '"search_servers"' /tmp/mcp_tools.json || { echo "::error::/mcp tools/list missing search_servers"; exit 1; }
           echo "/mcp OK: initialize + tools/list"
 
+      - name: Verify AI agent access
+        # The citation strategy depends on user-initiated agent fetchers being
+        # able to read the site. An edge-level bot rule can start 403ing them
+        # without anything in this repo changing, and every other check here
+        # still passes because they all use curl's default user agent — which
+        # is exactly how this went unnoticed once already.
+        #
+        # Training crawlers are asserted blocked in the same step so the two
+        # halves of the policy cannot drift apart: robots.txt declares both,
+        # and this proves the edge enforces what is declared.
+        run: |
+          set -euo pipefail
+          fail=0
+          check() { # name, ua, expected
+            local code
+            code=$(curl -sS -o /dev/null -w "%{http_code}" -A "$2" "https://mcpjunction.ai/")
+            if [ "$code" != "$3" ]; then
+              echo "::error::$1 -> HTTP $code (expected $3)"; fail=1
+            else
+              echo "$code  $1"
+            fi
+          }
+
+          echo "--- must be allowed (agent + search traffic) ---"
+          check "ChatGPT-User"         "Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)" 200
+          check "Claude-User"          "Mozilla/5.0 (compatible; Claude-User/1.0; +https://anthropic.com/claude-user)" 200
+          check "Perplexity-User"      "Mozilla/5.0 (compatible; Perplexity-User/1.0)" 200
+          check "OAI-SearchBot"        "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)" 200
+          check "Meta-ExternalFetcher" "meta-externalfetcher/1.1" 200
+          check "Googlebot"            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" 200
+          check "Bingbot"              "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)" 200
+
+          echo "--- must be blocked (training crawlers) ---"
+          # Exact vendor tokens: matching is case-sensitive, so a prettified
+          # name like "Meta-ExternalAgent" sails straight through.
+          check "GPTBot"             "Mozilla/5.0 (compatible; GPTBot/1.1; +https://openai.com/gptbot)" 403
+          check "ClaudeBot"          "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" 403
+          check "CCBot"              "CCBot/2.0 (https://commoncrawl.org/faq/)" 403
+          check "meta-externalagent" "meta-externalagent/1.1 (+https://developers.facebook.com/docs/sharing/webmasters/crawler)" 403
+
+          test "$fail" = "0" || exit 1
+
       - name: Verify markdown content negotiation
         # Guards two failure modes that both look fine in a browser:
         #   - the Worker stops intercepting (run_worker_first misconfigured)
