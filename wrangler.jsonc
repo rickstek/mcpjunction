@@ -24,6 +24,24 @@
 
   "assets": {
     "binding": "ASSETS",
+
+    // By default a request that matches a static asset is served straight
+    // from the asset store and the Worker is NEVER invoked — which silently
+    // disables markdown content negotiation on exactly the pages that have
+    // markdown variants. These two prefixes run the Worker first so it can
+    // inspect the Accept header.
+    //
+    // Trade-off, deliberately scoped: requests under these prefixes now count
+    // as Worker invocations (100k/day on the free plan) instead of free asset
+    // reads. Everything else — robots.txt, license.xml, llms.txt, /data/*,
+    // the homepage — stays on the free path. If the quota ever bites, delete
+    // this key: negotiation degrades to the explicit `.md` URLs, which are
+    // advertised in llms.txt and in each page's rel="alternate" link, so
+    // agents keep working.
+    // "/mcp" MUST be listed. Without it the asset store handles the route
+    // first and answers POST with 405 before the Worker is ever reached,
+    // which breaks every MCP client while GET-based checks still look fine.
+    "run_worker_first": ["/mcp", "/mcp/*", "/servers/*", "/categories/*"],
     // Astro build output. Contains passthrough files from public/ (data/,
     // robots.txt, license.xml, llms.txt) plus generated .html pages for
     // every route.

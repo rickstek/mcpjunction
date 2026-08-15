@@ -5,6 +5,8 @@ export interface Props {
   canonical?: string;
   noindex?: boolean;
   jsonLd?: unknown;
+  /** Path to this page's markdown variant, if one is emitted. */
+  markdownHref?: string;
 }
 
 const {
@@ -13,6 +15,7 @@ const {
   canonical,
   noindex = false,
   jsonLd,
+  markdownHref,
 } = Astro.props;
 
 // Extensionless, no trailing slash — except the site root, which is
@@ -34,6 +37,9 @@ const canonicalHref = toCanonical(
 {description && <meta name="description" content={description}>}
 <link rel="canonical" href={canonicalHref}>
 <link rel="license" type="application/rsl+xml" href="/license.xml">
+{/* Standards-based discovery of the markdown variant. Works even if the
+    Worker's Accept-header negotiation is ever turned off. */}
+{markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref}>}
 {noindex && <meta name="robots" content="noindex">}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MCP Junction">

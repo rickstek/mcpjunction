@@ -52,86 +52,119 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 Crawl-delay: 2
 
+# Content-Signal is repeated in every group below, not just the default one.
+# robots.txt group semantics mean a crawler obeys ONLY its most specific
+# matching group: a bot with its own group never reads the `*` group, and so
+# would never see the signal there. Since these signals are an express
+# reservation of rights under Article 4 of EU 2019/790, they have to travel
+# with the group that each crawler actually reads.
+
 # --- Search crawlers: always welcome (they send humans) ---
 User-agent: Googlebot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: Bingbot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: DuckDuckBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # --- AI agents acting for a user: ALLOWED (citation strategy) ---
 User-agent: ChatGPT-User
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: Claude-User
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: Perplexity-User
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: OAI-SearchBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # --- Training crawlers: licensed, not free. Terms in license.xml.
 # Enforcement layer = Cloudflare AI Crawl Control (Training: block). ---
 User-agent: GPTBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: ClaudeBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: anthropic-ai
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Google-Extended
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: CCBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Applebot-Extended
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Bytespider
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: meta-externalagent
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Meta-ExternalFetcher
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: PerplexityBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Amazonbot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: AI2Bot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Diffbot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: cohere-ai
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Omgilibot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: ImagesiftBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: YouBot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: Timpibot
+Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: PanguBot
+Content-Signal: ai-train=no
 Disallow: /
 
 Sitemap: https://mcpjunction.ai/sitemap.xml

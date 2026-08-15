@@ -277,12 +277,89 @@ async function handleMcp(request, env) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Markdown content negotiation
+// ---------------------------------------------------------------------------
+
+/**
+ * True only when the client EXPLICITLY asks for markdown. Browsers send
+ * "text/html,...,*\/*" — matching the wildcard would serve markdown to
+ * humans, so the check is for the literal type only.
+ */
+function wantsMarkdown(request) {
+  const accept = request.headers.get("Accept") || "";
+  return /(^|[\s,])text\/markdown\b/i.test(accept);
+}
+
+/**
+ * Canonical page path -> its emitted markdown asset path.
+ *
+ * Note the deliberate absence of a general "has an extension, skip it" rule.
+ * Server ids are derived from repo names, and real repos are called things
+ * like `video-db/call.md`, `cyberchitta/llm-context.py`, and
+ * `triggerdotdev/trigger.dev` — 14 of them in the current dataset. Their
+ * canonical pages legitimately end in what looks like a file extension, and
+ * their markdown variants are simply that path plus `.md`. Only the genuine
+ * data endpoints are excluded.
+ */
+function markdownPathFor(pathname) {
+  if (pathname === "/") return null; // homepage has no .md variant
+  const clean = pathname.replace(/\/$/, "");
+  if (/\.(json|csv|xml|txt|ico|png|jpg|svg|webmanifest)$/i.test(clean)) return null;
+  return `${clean}.md`;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
     if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
       return handleMcp(request, env);
     }
+
+    // Agent asked for markdown at a canonical URL: serve the .md variant if
+    // one was emitted, otherwise fall through to HTML. No X-Robots-Tag here —
+    // the URL being served IS the canonical one, so marking it noindex would
+    // deindex the page itself.
+    const mdPath = wantsMarkdown(request) ? markdownPathFor(url.pathname) : null;
+    if (mdPath) {
+      const res = await env.ASSETS.fetch(new URL(mdPath, url));
+      if (res.ok) {
+        const headers = new Headers(res.headers);
+        headers.set("Content-Type", "text/markdown; charset=utf-8");
+        // Caches must not hand this body to a client that wanted HTML.
+        headers.set("Vary", "Accept");
+        headers.set("Link", `<${url.origin}${url.pathname}>; rel="canonical"`);
+        return new Response(res.body, { status: 200, headers });
+      }
+    }
+
+    // Direct hit on a .md URL. Two very different things land here:
+    //
+    //   /servers/foo.md          -> the markdown VARIANT of /servers/foo
+    //   /servers/video-db--call.md -> the canonical HTML PAGE of a repo whose
+    //                                 name really is "call.md"
+    //
+    // Serving the second as markdown-and-noindex would deindex a real page
+    // and point its canonical at a URL that 404s. The assets binding already
+    // knows the difference: it returns text/html for a page and
+    // text/markdown (or octet-stream) for our emitted variant.
+    if (url.pathname.endsWith(".md")) {
+      const res = await env.ASSETS.fetch(request);
+      const contentType = res.headers.get("Content-Type") || "";
+      if (res.ok && !contentType.includes("text/html")) {
+        const headers = new Headers(res.headers);
+        headers.set("Content-Type", "text/markdown; charset=utf-8");
+        headers.set("X-Robots-Tag", "noindex");
+        headers.set(
+          "Link",
+          `<${url.origin}${url.pathname.replace(/\.md$/, "")}>; rel="canonical"`
+        );
+        return new Response(res.body, { status: res.status, headers });
+      }
+      return res; // a real page that merely ends in .md — leave it alone
+    }
+
     // Everything else: static assets, with html_handling and the 404 page
     // applied by the assets binding exactly as before this Worker existed.
     return env.ASSETS.fetch(request);

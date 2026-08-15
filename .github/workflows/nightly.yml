@@ -247,6 +247,32 @@ jobs:
           grep -q '"search_servers"' /tmp/mcp_tools.json || { echo "::error::/mcp tools/list missing search_servers"; exit 1; }
           echo "/mcp OK: initialize + tools/list"
 
+      - name: Verify markdown content negotiation
+        # Guards two failure modes that both look fine in a browser:
+        #   - the Worker stops intercepting (run_worker_first misconfigured)
+        #     and agents silently get HTML
+        #   - negotiation over-fires and serves markdown to humans
+        run: |
+          set -euo pipefail
+          page="https://mcpjunction.ai/servers/microsoft--playwright-mcp"
+          fail=0
+          md=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/markdown" "$page")
+          case "$md" in
+            text/markdown*) echo "markdown negotiated OK" ;;
+            *) echo "::error::Accept: text/markdown returned '$md'"; fail=1 ;;
+          esac
+          html=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/html,*/*" "$page")
+          case "$html" in
+            text/html*) echo "html for browsers OK" ;;
+            *) echo "::error::browser Accept returned '$html'"; fail=1 ;;
+          esac
+          direct=$(curl -sS -o /dev/null -w "%{content_type}" "$page.md")
+          case "$direct" in
+            text/markdown*) echo "direct .md OK" ;;
+            *) echo "::error::direct .md returned '$direct'"; fail=1 ;;
+          esac
+          test "$fail" = "0" || exit 1
+
       - name: Verify llms.txt declared URLs
         # llms.txt is the agent-facing index; every URL it declares must be
         # 200 zero-redirect, same contract as the sitemap.

@@ -28,6 +28,20 @@
   HTTP (stateless; POST JSON-RPC). Tools: search_servers, get_server,
   list_categories, get_dataset_info. No authentication required.
 
+## Markdown
+
+Server and category pages are available as clean markdown, with no navigation
+or styling to strip. Two equivalent ways to get it:
+
+- Send `Accept: text/markdown` to the canonical URL, e.g.
+  https://mcpjunction.ai/servers/microsoft--playwright-mcp
+- Or append `.md`, e.g.
+  https://mcpjunction.ai/servers/microsoft--playwright-mcp.md
+  and https://mcpjunction.ai/categories/databases.md
+
+Each HTML page also advertises its variant via
+`<link rel="alternate" type="text/markdown">`.
+
 ## For AI agents
 
 - Directory data is free to read and cite during our launch phase. Attribution
