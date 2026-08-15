@@ -235,10 +235,14 @@ def load_editorial_summaries():
                 summaries[current] = body
 
     for line in text.splitlines():
-        m = heading.match(line)
-        if m:
+        if line.lstrip().startswith("#"):
+            # ANY markdown heading ends the current entry. Only an id-shaped
+            # one starts a new entry; everything else (category groupings,
+            # notes-to-self) is a section break. Without this, a '# Databases'
+            # grouping line silently became the body of the entry above it.
             flush()
-            current = m.group(1).strip().lower()
+            m = heading.match(line)
+            current = m.group(1).strip().lower() if m else None
             buf = []
         elif current is not None:
             buf.append(line.strip())
