@@ -47,6 +47,7 @@ DATA_DIR = ROOT / "public" / "data"
 JSON_PATH = DATA_DIR / "mcp_servers.json"
 CSV_PATH = DATA_DIR / "mcp_servers.csv"
 CATEGORIES_PATH = ROOT / "categories.json"
+SUMMARIES_PATH = ROOT / "editorial" / "summaries.md"
 
 CONTACT = "admin@mcpjunction.ai"
 USER_AGENT = f"mcpjunction.ai-pipeline/0.2 (+https://mcpjunction.ai; {CONTACT})"
@@ -200,6 +201,51 @@ def normalize(repo):
     return entry
 
 
+def load_editorial_summaries():
+    """Parse editorial/summaries.md into {server_id: summary}.
+
+    That file — not the previous dataset — is the source of truth, so a
+    summary deleted there disappears from the site on the next run, and every
+    change is reviewable as a git diff. This is the ONLY path by which
+    editorial_summary gets a value; automation never authors one (Standing
+    Rule: the template displays editorial fields, it never derives them).
+
+    Format is '## <server-id>' followed by prose until the next heading.
+
+    Only headings that look like a server id (owner--repo, containing the
+    double hyphen) are treated as entries. That discriminator is what keeps
+    the file's own documentation headings — '## Format', '## House style' —
+    from parsing as servers, which they otherwise silently do.
+    """
+    heading = re.compile(r"^##\s+([a-z0-9][a-z0-9._-]*--[a-z0-9._-]+)\s*$",
+                         re.IGNORECASE)
+    if not SUMMARIES_PATH.exists():
+        return {}
+    text = SUMMARIES_PATH.read_text(encoding="utf-8")
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+
+    summaries = {}
+    current = None
+    buf = []
+
+    def flush():
+        if current and buf:
+            body = " ".join(" ".join(buf).split())
+            if body:
+                summaries[current] = body
+
+    for line in text.splitlines():
+        m = heading.match(line)
+        if m:
+            flush()
+            current = m.group(1).strip().lower()
+            buf = []
+        elif current is not None:
+            buf.append(line.strip())
+    flush()
+    return summaries
+
+
 def looks_like_mcp_server(repo):
     """Filter out the noise that 'mcp' as a bare topic drags in."""
     if repo.get("stargazers_count", 0) < MIN_STARS:
@@ -334,6 +380,19 @@ def main():
     print(f"\nunique repos matched: {len(repos)}")
 
     entries = merge([normalize(r) for r in repos.values()], previous)
+
+    # Apply human-written summaries. Set on EVERY entry (empty string when
+    # absent) so the field always exists in the published schema.
+    summaries = load_editorial_summaries()
+    known_ids = {e["id"] for e in entries}
+    for e in entries:
+        e["editorial_summary"] = summaries.get(e["id"], "")
+    orphans = sorted(set(summaries) - known_ids)
+    if orphans:
+        print(f"WARNING: {len(orphans)} summary id(s) match no server "
+              f"(typo? delisted?): {', '.join(orphans[:8])}")
+    print(f"editorial summaries applied: {len(summaries) - len(orphans)}")
+
     active = [e for e in entries if e.get("status") == "active"]
 
     categories = {}

@@ -22,12 +22,21 @@ const datasetUrl = 'https://mcpjunction.ai/data/mcp_servers.json';
 
 const isDelisted = server.status === 'archived_or_removed';
 
+// Human-written summary from editorial/summaries.md (empty for most servers).
+// When present it becomes the meta/JSON-LD description: it is our own unique
+// prose, whereas the GitHub description is third-party text repeated verbatim
+// across every directory that lists this repo.
+const summary: string = server.editorial_summary || '';
+const metaDescription = summary
+  || server.description
+  || `${server.full_name} — MCP server listed in the MCP Junction directory.`;
+
 // JSON-LD SoftwareApplication (Rule: extensionless canonical, absolute URLs).
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: server.name,
-  description: server.description || `${server.full_name} — MCP server.`,
+  description: metaDescription,
   url: canonicalUrl,
   codeRepository: server.repo_url,
   applicationCategory: categoryName,
@@ -59,7 +68,7 @@ const related = (() => {
 ---
 <Base
   title={`${server.full_name} — MCP Junction`}
-  description={server.description || `${server.full_name} MCP server listed in the MCP Junction directory.`}
+  description={metaDescription}
   canonical={canonicalPath}
   jsonLd={jsonLd}
 >
@@ -84,7 +93,17 @@ const related = (() => {
   </p>
 )}
 
-<h2>Description</h2>
+{summary && (
+  <>
+    <h2>Our summary</h2>
+    <p>{summary}</p>
+    <p class="meta">Written by MCP Junction editorial staff, independent of any
+    sponsorship — see our <a href="/licensing#editorial-independence">editorial
+    independence policy</a>. A summary is not a security review.</p>
+  </>
+)}
+
+<h2>Description from the repository</h2>
 <p>{server.description || <em>No description provided.</em>}</p>
 <p class="meta">Description imported from public GitHub repository metadata (<a href={server.repo_url} rel="external nofollow">{server.full_name}</a>). MCP Junction does not author or curate descriptions.</p>
 
