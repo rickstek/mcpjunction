@@ -225,6 +225,79 @@ jobs:
           fi
           echo "All declared URLs served 200 zero-redirect."
 
+      - name: Verify MCP endpoint
+        # /mcp is a declared entry point (llms.txt, homepage, dataset page).
+        # A JSON-RPC initialize must come back 200 with serverInfo, and
+        # tools/list must include search_servers.
+        run: |
+          set -euo pipefail
+          init_status=$(curl -sS -o /tmp/mcp_init.json -w "%{http_code}" \
+            -X POST "https://mcpjunction.ai/mcp" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"nightly-verify","version":"1.0"}}}')
+          test "$init_status" = "200" || { echo "::error::/mcp initialize -> HTTP $init_status"; exit 1; }
+          grep -q '"serverInfo"' /tmp/mcp_init.json || { echo "::error::/mcp initialize response missing serverInfo"; exit 1; }
+          tools_status=$(curl -sS -o /tmp/mcp_tools.json -w "%{http_code}" \
+            -X POST "https://mcpjunction.ai/mcp" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}')
+          test "$tools_status" = "200" || { echo "::error::/mcp tools/list -> HTTP $tools_status"; exit 1; }
+          grep -q '"search_servers"' /tmp/mcp_tools.json || { echo "::error::/mcp tools/list missing search_servers"; exit 1; }
+          echo "/mcp OK: initialize + tools/list"
+
+      - name: Verify llms.txt declared URLs
+        # llms.txt is the agent-facing index; every URL it declares must be
+        # 200 zero-redirect, same contract as the sitemap.
+        run: |
+          set -euo pipefail
+          curl -sS "https://mcpjunction.ai/llms.txt" -o /tmp/llms.txt
+          fail=0
+          mapfile -t urls < <(grep -oE 'https://mcpjunction\.ai[a-zA-Z0-9/_.{}-]*' /tmp/llms.txt \
+            | grep -v '{' | sort -u)
+          test "${#urls[@]}" -gt 0 || { echo "::error::no URLs found in llms.txt"; fail=1; }
+          for u in "${urls[@]}"; do
+            if [ "$u" = "https://mcpjunction.ai/mcp" ]; then
+              continue  # POST endpoint; checked by the MCP step above
+            fi
+            code=$(curl -sS -o /dev/null -w "%{http_code}" "$u")
+            if [ "$code" != "200" ]; then
+              echo "::error::llms.txt declares $u -> HTTP $code"; fail=1
+            else
+              echo "200  $u"
+            fi
+          done
+          test "$fail" = "0" || exit 1
+
+      - name: Submit URLs to IndexNow
+        # Pushes the night's URLs to Bing/Yandex-class engines immediately
+        # instead of waiting for a crawl. Legitimate daily use: the dataset
+        # (and thus nearly every page) genuinely changes nightly. Non-fatal —
+        # indexing hints must never fail a deploy.
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          key=$(basename public/28b2e7bcf41d41452d6b464fab1cc9bf.txt .txt)
+          python3 - "$key" <<'PY'
+          import json, re, sys, urllib.request
+          key = sys.argv[1]
+          urls = re.findall(r"<loc>([^<]+)</loc>", open("dist/sitemap.xml").read())[:10000]
+          payload = {
+              "host": "mcpjunction.ai",
+              "key": key,
+              "keyLocation": f"https://mcpjunction.ai/{key}.txt",
+              "urlList": urls,
+          }
+          req = urllib.request.Request(
+              "https://api.indexnow.org/indexnow",
+              data=json.dumps(payload).encode(),
+              headers={"Content-Type": "application/json; charset=utf-8"},
+          )
+          with urllib.request.urlopen(req, timeout=30) as resp:
+              print(f"IndexNow: HTTP {resp.status} for {len(urls)} URLs")
+          PY
+
       - name: Verify robots.txt directives survived the edge
         # Cloudflare's managed robots.txt is documented as prepending to your
         # file but was observed replacing it, which silently drops the two

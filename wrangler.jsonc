@@ -17,7 +17,13 @@
 
   "compatibility_date": "2026-08-13",
 
+  // MCP endpoint at /mcp; every other path falls through to the assets
+  // binding inside the Worker, so html_handling and the 404 page behave
+  // exactly as they did when this was an assets-only Worker.
+  "main": "worker/index.js",
+
   "assets": {
+    "binding": "ASSETS",
     // Astro build output. Contains passthrough files from public/ (data/,
     // robots.txt, license.xml, llms.txt) plus generated .html pages for
     // every route.

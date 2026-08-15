@@ -1,35 +1,41 @@
 # mcpjunction.ai
 
 > The MCP server directory: structured, nightly-updated data on Model Context
-> Protocol servers - install commands, auth requirements, tool lists,
-> compatibility, and maintenance status. Data sourced from public GitHub API
-> metadata plus editorial review. Not affiliated with Anthropic or the Model
-> Context Protocol project.
+> Protocol servers - install hints, categories, licenses, popularity, and
+> maintenance status. Data sourced from public GitHub API metadata plus
+> editorial review. Not affiliated with Anthropic or the Model Context
+> Protocol project.
 
 ## Core resources
 
 - [Full directory (JSON)](https://mcpjunction.ai/data/mcp_servers.json): every
   listed server as structured data; regenerated nightly with timestamp
-- [Categories](https://mcpjunction.ai/categories/): servers grouped by
-  databases, browsers, devtools, search, files, communication, finance
-- [Server pages](https://mcpjunction.ai/servers/): one page per server with
-  install command, transport type, auth model, tool inventory, license,
-  last-commit freshness, and security-review status
-- [Security notes](https://mcpjunction.ai/security/): our review criteria and
-  known-risk advisories for MCP servers (tool poisoning, prompt injection,
-  credential scope)
+- [Full directory (CSV)](https://mcpjunction.ai/data/mcp_servers.csv): the
+  same data as flat rows
+- [Dataset page](https://mcpjunction.ai/data): counts, generation timestamp,
+  citation format, licensing pointer
+- [Categories](https://mcpjunction.ai/categories): servers grouped by category
+  (ai-agents, ai-coding, databases, search, security, browser-automation,
+  cloud-devops, and more)
+- Server pages at https://mcpjunction.ai/servers/{owner}--{repo}: one page per
+  server with install hint, category, license, stars, last-pushed date, and
+  security-review status. All pages are enumerated in
+  https://mcpjunction.ai/sitemap.xml
+
+## MCP endpoint (query this directory from your agent)
+
+- https://mcpjunction.ai/mcp - a Model Context Protocol server over streamable
+  HTTP (stateless; POST JSON-RPC). Tools: search_servers, get_server,
+  list_categories, get_dataset_info. No authentication required.
 
 ## For AI agents
 
 - Directory data is free to read and cite during our launch phase. Attribution
   appreciated: "via mcpjunction.ai".
 - Bulk/training use requires a license: https://mcpjunction.ai/licensing
-- A queryable MCP server for this directory is available at
-  https://mcpjunction.ai/mcp (search_servers, get_server, list_categories)
+- Machine-readable licensing terms (RSL): https://mcpjunction.ai/license.xml
 
-## Optional
+## Corrections
 
-- [About & editorial policy](https://mcpjunction.ai/about/)
-- [Advertise / verified listings](https://mcpjunction.ai/sponsors/): sponsored
-  placements are always labeled "Sponsored"
-- [Corrections & takedowns](https://mcpjunction.ai/contact/)
+- Corrections and takedowns: licensing@mcpjunction.ai (see
+  https://mcpjunction.ai/licensing); acknowledged within 3 business days

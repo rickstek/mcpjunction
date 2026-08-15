@@ -24,6 +24,7 @@ const categories = categoriesFile.categories.filter((c) => c.slug !== 'uncategor
 
 <h2>Machine-readable entry points</h2>
 <ul>
+  <li><code>/mcp</code> — query this directory from your agent: an MCP server with <code>search_servers</code>, <code>get_server</code>, <code>list_categories</code> (streamable HTTP, no auth)</li>
   <li><a href="/data/mcp_servers.json">/data/mcp_servers.json</a> — full directory dataset</li>
   <li><a href="/data/mcp_servers.csv">/data/mcp_servers.csv</a> — CSV form</li>
   <li><a href="/llms.txt">/llms.txt</a> — agent-facing index</li>

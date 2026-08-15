@@ -38,6 +38,24 @@ if (server.license) jsonLd.license = server.license;
 
 // Human-readable last-updated (envelope-level generation timestamp).
 const generatedAt = (dataset as any).generated_at;
+
+// Related servers: same category, nearest by star count. Star-proximity
+// (not top-N) so each page links a DIFFERENT neighborhood — a mesh, not a
+// hub-and-spoke to the same five giants. Pure build-time arithmetic on the
+// dataset; no inference (Standing Rule: automation derives nothing editorial).
+const related = (() => {
+  if (server.status !== 'active') return [];
+  const peers = dataset.servers
+    .filter((s: any) => s.status === 'active' && s.category === server.category && s.id !== server.id)
+    .sort((a: any, b: any) => (b.stars || 0) - (a.stars || 0));
+  if (peers.length <= 5) return peers;
+  // Index where this server would sit in the star ranking, then take the
+  // window of 5 around it (clamped to the ends).
+  let idx = peers.findIndex((s: any) => (s.stars || 0) <= (server.stars || 0));
+  if (idx === -1) idx = peers.length;
+  const start = Math.max(0, Math.min(idx - 2, peers.length - 5));
+  return peers.slice(start, start + 5);
+})();
 ---
 <Base
   title={`${server.full_name} — MCP Junction`}
@@ -91,6 +109,21 @@ const generatedAt = (dataset as any).generated_at;
     includes auto-confirm flags (<code>-y</code>, <code>--yes</code>) — the
     package registry name may be squatted by someone other than the repo
     owner. Verify against the repository's own README before running.</p>
+  </>
+)}
+
+{related.length > 0 && (
+  <>
+    <h2>Related servers in {categoryName}</h2>
+    <ul class="servers">
+      {related.map((s: any) => (
+        <li>
+          <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
+          <span class="meta"> — {s.owner} · ★ {s.stars?.toLocaleString?.() ?? s.stars}</span>
+          {s.description && <div class="meta">{s.description}</div>}
+        </li>
+      ))}
+    </ul>
   </>
 )}
 
