@@ -89,6 +89,13 @@ User-agent: OAI-SearchBot
 Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
+# Meta's USER-INITIATED fetcher — the counterpart to ChatGPT-User, not to be
+# confused with meta-externalagent below, which is Meta's training crawler and
+# stays blocked. Cloudflare classes this one as an AI Assistant.
+User-agent: Meta-ExternalFetcher
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
 # --- Training crawlers: licensed, not free. Terms in license.xml.
 # Enforcement layer = Cloudflare AI Crawl Control (Training: block). ---
 User-agent: GPTBot
@@ -120,10 +127,6 @@ Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: meta-externalagent
-Content-Signal: ai-train=no
-Disallow: /
-
-User-agent: Meta-ExternalFetcher
 Content-Signal: ai-train=no
 Disallow: /
 
