@@ -96,6 +96,14 @@ User-agent: Meta-ExternalFetcher
 Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
+# Answer-engine indexers. These build a searchable index used to generate
+# cited answers — the same job Googlebot does for blue links, which is why
+# they sit with the allowed group rather than the training crawlers. Being
+# in these indexes is the point of the whole citation strategy.
+User-agent: PerplexityBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
 # --- Training crawlers: licensed, not free. Terms in license.xml.
 # Enforcement layer = Cloudflare AI Crawl Control (Training: block). ---
 User-agent: GPTBot
@@ -127,10 +135,6 @@ Content-Signal: ai-train=no
 Disallow: /
 
 User-agent: meta-externalagent
-Content-Signal: ai-train=no
-Disallow: /
-
-User-agent: PerplexityBot
 Content-Signal: ai-train=no
 Disallow: /
 
