@@ -99,9 +99,13 @@ const related = (() => {
   <>
     <h2>Our summary</h2>
     <p>{summary}</p>
-    <p class="meta">Written by MCP Junction editorial staff, independent of any
-    sponsorship — see our <a href="/licensing#editorial-independence">editorial
-    independence policy</a>. A summary is not a security review.</p>
+    {/* No byline. The two disclosures below stay because they do real work:
+        independence from sponsorship is the FTC posture, and "not a security
+        review" keeps this field from being mistaken for the reviewed badge,
+        which is set only by hand. */}
+    <p class="meta">Independent of any sponsorship — see our
+    <a href="/licensing#editorial-independence">editorial independence policy</a>.
+    A summary is not a security review.</p>
   </>
 )}
 

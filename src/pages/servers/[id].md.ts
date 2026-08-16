@@ -65,7 +65,7 @@ export const GET: APIRoute = ({ props }) => {
     L.push('');
     L.push(server.editorial_summary);
     L.push('');
-    L.push('*Written by MCP Junction editorial staff, independent of any sponsorship. A summary is not a security review.*');
+    L.push('*Independent of any sponsorship. A summary is not a security review.*');
     L.push('');
   }
 
