@@ -432,7 +432,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2024-11-30T04:49:10Z",
-      "editorial_summary": ""
+      "editorial_summary": "The most actively maintained community list of MCP servers, organised across 50-plus categories with high submission volume and frequent batched merges. Useful as a breadth-first starting point when you don't yet know what you're looking for, indexing everything from database connectors to niche APIs."
     },
     {
       "id": "modelcontextprotocol--servers",
@@ -1047,7 +1047,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2025-09-11T10:39:55Z",
-      "editorial_summary": ""
+      "editorial_summary": "Drives a real Chrome instance from a coding agent — navigate, inspect the DOM, and read performance and load traces instead of guessing from static HTML. Targets elements through accessibility-tree snapshots rather than CSS selectors, which is why it holds up on dynamic pages where selector-based automation gets flaky. Comes from the Chrome DevTools team itself, and setup is a single npx command."
     },
     {
       "id": "diegosouzapw--omniroute",
@@ -1300,7 +1300,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2026-03-18T18:38:02Z",
-      "editorial_summary": ""
+      "editorial_summary": "Over 500 hands-on AI engineering lessons that run entirely locally, so progress persists offline and resumes where you left off. Loads straight into Claude Code, Cursor and other terminal agents via npx skills add, which is unusual for a learning resource — most still assume a browser. Better suited to structured self-teaching than to quick reference."
     },
     {
       "id": "zhayujie--cowagent",
@@ -1499,7 +1499,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2014-11-17T23:56:08Z",
-      "editorial_summary": ""
+      "editorial_summary": "Kong Gateway's core source — an API gateway built on NGINX and OpenResty, aimed at cloud-native and Kubernetes deployments across hybrid and multi-cloud setups. Configuration is programmatic through an Admin API, and the plugin architecture covers authentication, rate limiting and traffic transformation. The AI Gateway layer is the part relevant to this directory: it fronts LLM traffic with cost tracking, model routing and security controls."
     },
     {
       "id": "danny-avila--librechat",
@@ -1592,7 +1592,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2026-03-10T01:51:06Z",
-      "editorial_summary": ""
+      "editorial_summary": "Renders HTML and media into MP4 from an agent, so a workflow that produces data can end with a finished video rather than a file someone still has to edit. Handles product and explainer videos, music-to-video, PR-to-video, even talking-head output. The case where it earns its place is turning structured data into something a non-technical audience will actually sit through."
     },
     {
       "id": "mindsdb--mindshub",
@@ -2159,7 +2159,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2025-03-04T16:42:04Z",
-      "editorial_summary": ""
+      "editorial_summary": "GitHub's own MCP server, which means it tracks API changes rather than lagging behind them the way community wrappers tend to. Covers code search, commit analysis, pull request management and Actions troubleshooting over one connection, and runs via npx, Docker, or direct Copilot integration. Worth scoping the personal access token deliberately — its permissions decide exactly how much of your account an agent can reach."
     },
     {
       "id": "hkuds--vibe-trading",
@@ -2200,7 +2200,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2026-04-01T09:52:20Z",
-      "editorial_summary": ""
+      "editorial_summary": "An open-source multi-agent framework for trading research, where separate AI personas take on jobs like macro analysis and crypto research and hand off between each other. Ships with exposure caps and other safety controls, which is more than most agent-trading projects bother with. Documentation and update cadence are both solid. Nothing here is financial advice — verify independently before risking capital."
     },
     {
       "id": "tirth8205--code-review-graph",
@@ -2448,7 +2448,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2024-08-31T10:08:16Z",
-      "editorial_summary": ""
+      "editorial_summary": "Have an ESP32-S3 lying around? This turns it into a real-time, cloud-connected voice chatbot, talking to LLMs over WebSocket or MQTT+UDP. The Opus codec keeps latency low enough for genuine back-and-forth conversation, with offline wake-word, echo cancellation and speaker recognition handled on the device. The interesting part is GPIO control: the same agent that answers you can drive screens and actuators."
     },
     {
       "id": "alibaba--page-agent",
@@ -3954,7 +3954,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2019-12-02T01:40:10Z",
-      "editorial_summary": ""
+      "editorial_summary": "A headless rich-text editor framework on Slate.js and Radix UI, installed through the shadcn/ui CLI so components land in your own codebase instead of behind a dependency. Plugins run from basic formatting through to AI-assisted authoring. That code-ownership model is the reason to choose it over a packaged editor: you keep control of styling and data shape, and you take on the maintenance."
     },
     {
       "id": "googleapis--mcp-toolbox",
@@ -12651,7 +12651,7 @@
       "sponsor_tier": null,
       "editorial_notes": "",
       "first_seen": "2025-03-01T15:47:55Z",
-      "editorial_summary": ""
+      "editorial_summary": "A step-by-step MCP tutorial written for Chinese-speaking developers, covering custom tool building, stdio transport, and connecting to data sources. Activity has been sparse and the protocol moves quickly, so check the last-pushed date above before relying on any of it."
     },
     {
       "id": "nextlevelbuilder--goclaw",

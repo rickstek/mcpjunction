@@ -63,7 +63,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: npx chrome-devtools-mcp
   GitHub says: Chrome DevTools for coding agents
 -->
-
+Drives a real Chrome instance from a coding agent — navigate, inspect the DOM, and read performance and load traces instead of guessing from static HTML. Targets elements through accessibility-tree snapshots rather than CSS selectors, which is why it holds up on dynamic pages where selector-based automation gets flaky. Comes from the Chrome DevTools team itself, and setup is a single npx command.
 
 ## heygen-com--hyperframes
 
@@ -74,10 +74,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: npx hyperframes
   GitHub says: Write HTML. Render video. Built for agents.
 -->
-
-
-
-# Databases  (databases)
+Renders HTML and media into MP4 from an agent, so a workflow that produces data can end with a finished video rather than a file someone still has to edit. Handles product and explainer videos, music-to-video, PR-to-video, even talking-head output. The case where it earns its place is turning structured data into something a non-technical audience will actually sit through.
 
 ## snailclimb--javaguide
 
@@ -160,7 +157,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: uvx vibe-trading
   GitHub says: "Vibe-Trading: Your Personal Trading Agent"
 -->
-
+An open-source multi-agent framework for trading research, where separate AI personas take on jobs like macro analysis and crypto research and hand off between each other. Ships with exposure caps and other safety controls, which is more than most agent-trading projects bother with. Documentation and update cadence are both solid. Nothing here is financial advice — verify independently before risking capital.
 
 ## xbtlin--ai-berkshire
 
@@ -254,10 +251,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: npx plate
   GitHub says: Rich-text editor with AI and shadcn/ui
 -->
-
-
-
-# Home Automation  (home-automation)
+A headless rich-text editor framework on Slate.js and Radix UI, installed through the shadcn/ui CLI so components land in your own codebase instead of behind a dependency. Plugins run from basic formatting through to AI-assisted authoring. That code-ownership model is the reason to choose it over a packaged editor: you keep control of styling and data shape, and you take on the maintenance.
 
 ## homeassistant-ai--ha-mcp
 
@@ -315,7 +309,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: none
   GitHub says: An MCP-based chatbot | 一个基于MCP的聊天机器人
 -->
-
+Have an ESP32-S3 lying around? This turns it into a real-time, cloud-connected voice chatbot, talking to LLMs over WebSocket or MQTT+UDP. The Opus codec keeps latency low enough for genuine back-and-forth conversation, with offline wake-word, echo cancellation and speaker recognition handled on the device. The interesting part is GPIO control: the same agent that answers you can drive screens and actuators.
 
 ## xinnan-tech--xiaozhi-esp32-server
 
@@ -470,10 +464,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: none
   GitHub says: 🦍 The API and AI Gateway
 -->
-
-
-
-# Search & Retrieval  (search)
+Kong Gateway's core source — an API gateway built on NGINX and OpenResty, aimed at cloud-native and Kubernetes deployments across hybrid and multi-cloud setups. Configuration is programmatic through an Admin API, and the plugin architecture covers authentication, rate limiting and traffic transformation. The AI Gateway layer is the part relevant to this directory: it fronts LLM traffic with cost tracking, model routing and security controls.
 
 ## open-webui--open-webui
 
@@ -556,7 +547,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: uvx ai-engineering-from-scratch
   GitHub says: Learn it. Build it. Ship it for others.
 -->
-
+Over 500 hands-on AI engineering lessons that run entirely locally, so progress persists offline and resumes where you left off. Loads straight into Claude Code, Cursor and other terminal agents via npx skills add, which is unusual for a learning resource — most still assume a browser. Better suited to structured self-teaching than to quick reference.
 
 ## mastra-ai--mastra
 
@@ -686,10 +677,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: none
   GitHub says: Model Context Protocol(MCP) 编程极速入门
 -->
-
-
-
-# Developer Tools  (devtools)
+A step-by-step MCP tutorial written for Chinese-speaking developers, covering custom tool building, stdio transport, and connecting to data sources. Activity has been sparse and the protocol moves quickly, so check the last-pushed date above before relying on any of it.
 
 ## n8n-io--n8n
 
@@ -711,7 +699,7 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: none
   GitHub says: A collection of MCP servers.
 -->
-
+The most actively maintained community list of MCP servers, organised across 50-plus categories with high submission volume and frequent batched merges. Useful as a breadth-first starting point when you don't yet know what you're looking for, indexing everything from database connectors to niche APIs.
 
 ## github--github-mcp-server
 
@@ -722,6 +710,5 @@ put unique prose on every category page. The third is a stretch goal.
   install hint: go install github.com/github/github-mcp-server@latest
   GitHub says: GitHub's official MCP Server
 -->
-
-
+GitHub's own MCP server, which means it tracks API changes rather than lagging behind them the way community wrappers tend to. Covers code search, commit analysis, pull request management and Actions troubleshooting over one connection, and runs via npx, Docker, or direct Copilot integration. Worth scoping the personal access token deliberately — its permissions decide exactly how much of your account an agent can reach.
 
