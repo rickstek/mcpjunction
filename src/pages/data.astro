@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import dataset from '../../public/data/mcp_servers.json';
+import { fmt } from '../lib/format';
 
 const activeCount = dataset.count;
 const totalCount = dataset.count_including_delisted;
@@ -62,8 +63,8 @@ const jsonLd = {
 
 <h2>At a glance</h2>
 <table>
-  <tr><th>Active servers</th><td>{activeCount.toLocaleString()}</td></tr>
-  <tr><th>Total including delisted (30-day grace)</th><td>{totalCount.toLocaleString()}</td></tr>
+  <tr><th>Active servers</th><td>{fmt(activeCount)}</td></tr>
+  <tr><th>Total including delisted (30-day grace)</th><td>{fmt(totalCount)}</td></tr>
   <tr><th>Last generated</th><td>{generatedAt}</td></tr>
   <tr><th>Source</th><td>GitHub REST API (public repository metadata) + editorial review</td></tr>
   <tr><th>Refresh cadence</th><td>Nightly, ~06:17 UTC</td></tr>

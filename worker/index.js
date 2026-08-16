@@ -28,20 +28,56 @@ const LICENSE_URL = "https://mcpjunction.ai/licensing";
 // In-isolate dataset cache. Isolates persist across requests; the dataset
 // changes once per day, so a short TTL keeps memory fresh without hitting
 // the assets binding on every call.
+//
+// The cache holds the in-flight PROMISE, not the resolved value. Storing the
+// value means that when the TTL expires under load, every concurrent request
+// in the isolate independently fetches and parses the same 2.3 MB document —
+// enough simultaneous misses to push the isolate toward its memory ceiling and
+// take unrelated in-flight requests down with it. Sharing the promise collapses
+// that to one fetch.
 const DATASET_TTL_MS = 10 * 60 * 1000;
-let datasetCache = { data: null, fetchedAt: 0 };
+let datasetCache = { promise: null, data: null, fetchedAt: 0 };
 
-async function getDataset(env, requestUrl) {
+/**
+ * Attach a precomputed lowercase search haystack to each entry.
+ *
+ * Built once per dataset load rather than per request: search previously
+ * rebuilt and lowercased a string for all ~1,800 entries on every single call,
+ * which cost ~2.3 ms of CPU even for a one-word query.
+ */
+function indexDataset(data) {
+  for (const s of data.servers || []) {
+    s._hay = `${s.full_name || ""} ${s.description || ""} ${(s.topics || []).join(" ")}`.toLowerCase();
+  }
+  return data;
+}
+
+function getDataset(env, requestUrl) {
   const now = Date.now();
   if (datasetCache.data && now - datasetCache.fetchedAt < DATASET_TTL_MS) {
-    return datasetCache.data;
+    return Promise.resolve(datasetCache.data);
   }
+  if (datasetCache.promise) return datasetCache.promise;
+
   const assetUrl = new URL("/data/mcp_servers.json", requestUrl);
-  const res = await env.ASSETS.fetch(assetUrl);
-  if (!res.ok) throw new Error(`dataset fetch failed: ${res.status}`);
-  const data = await res.json();
-  datasetCache = { data, fetchedAt: now };
-  return data;
+  datasetCache.promise = env.ASSETS.fetch(assetUrl)
+    .then((res) => {
+      if (!res.ok) throw new Error(`dataset fetch failed: ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      indexDataset(data);
+      datasetCache = { promise: null, data, fetchedAt: Date.now() };
+      return data;
+    })
+    .catch((err) => {
+      datasetCache.promise = null;
+      // Serve the previous copy rather than erroring outright: a stale
+      // directory is far more useful to an agent than a 500.
+      if (datasetCache.data) return datasetCache.data;
+      throw err;
+    });
+  return datasetCache.promise;
 }
 
 // ---------------------------------------------------------------------------
@@ -114,10 +150,23 @@ function publicEntry(s) {
   };
 }
 
+// Search cost is O(#terms x #servers). Without these caps a single request can
+// buy an unbounded amount of Worker CPU: 20,000 terms in a 176 KB body measured
+// at ~1.7 s, and the endpoint is unauthenticated with CORS "*", so any web page
+// could drive it from its visitors' browsers. Bounding the input is the fix that
+// belongs in code; a rate-limiting rule at the edge covers request floods.
+const MAX_QUERY_CHARS = 256;
+const MAX_TERMS = 8;
+
 function toolSearchServers(dataset, args) {
-  const query = String(args.query || "").toLowerCase().trim();
-  if (!query) return { error: "query is required" };
-  const terms = query.split(/\s+/).filter(Boolean);
+  const raw = String(args.query || "").trim();
+  if (!raw) return { error: "query is required" };
+
+  const truncated = raw.length > MAX_QUERY_CHARS;
+  const query = raw.slice(0, MAX_QUERY_CHARS).toLowerCase();
+  const allTerms = query.split(/\s+/).filter(Boolean);
+  const terms = allTerms.slice(0, MAX_TERMS);
+
   const category = args.category ? String(args.category).toLowerCase() : null;
   const language = args.language ? String(args.language).toLowerCase() : null;
   const limit = Math.min(Math.max(parseInt(args.limit, 10) || 10, 1), 50);
@@ -127,7 +176,7 @@ function toolSearchServers(dataset, args) {
     if (s.status !== "active") continue;
     if (category && s.category !== category) continue;
     if (language && String(s.language || "").toLowerCase() !== language) continue;
-    const hay = `${s.full_name} ${s.description || ""} ${(s.topics || []).join(" ")}`.toLowerCase();
+    const hay = s._hay || "";
     let score = 0;
     for (const t of terms) if (hay.includes(t)) score += 1;
     if (score === 0) continue;
@@ -135,13 +184,21 @@ function toolSearchServers(dataset, args) {
   }
   scored.sort((a, b) => b[0] - a[0] || b[1] - a[1]);
 
-  return {
-    query: args.query,
+  const out = {
+    query: raw.slice(0, MAX_QUERY_CHARS),
     total_matches: scored.length,
     returned: Math.min(limit, scored.length),
     results: scored.slice(0, limit).map(([, , s]) => publicEntry(s)),
     attribution: ATTRIBUTION,
   };
+  // Say so rather than silently returning results for a different query than
+  // the one asked — an agent needs to know its input was clipped.
+  if (truncated || allTerms.length > terms.length) {
+    out.notice =
+      `Query was truncated to ${MAX_QUERY_CHARS} characters and ${MAX_TERMS} terms. ` +
+      `Searched: ${terms.join(" ")}`;
+  }
+  return out;
 }
 
 function toolGetServer(dataset, args) {
@@ -183,6 +240,10 @@ function toolGetDatasetInfo(dataset) {
 // JSON-RPC plumbing
 // ---------------------------------------------------------------------------
 
+// 64 KB. The largest legitimate request this API receives is a tools/call with
+// a short query; anything approaching this is either broken or hostile.
+const MAX_BODY_BYTES = 64 * 1024;
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -214,9 +275,29 @@ async function handleMcp(request, env) {
     return jsonResponse(rpcError(null, -32600, "Method not allowed; POST JSON-RPC messages to this endpoint"), 405);
   }
 
+  // Refuse oversized bodies before buffering them. Every legitimate call to
+  // this API is well under a kilobyte; Cloudflare would otherwise happily
+  // buffer up to 100 MB for us to parse.
+  const declaredLength = parseInt(request.headers.get("Content-Length") || "0", 10);
+  if (declaredLength > MAX_BODY_BYTES) {
+    return jsonResponse(
+      rpcError(null, -32600, `Request body too large (max ${MAX_BODY_BYTES} bytes)`),
+      413
+    );
+  }
+
   let msg;
   try {
-    msg = await request.json();
+    // Content-Length can be absent (chunked). Read the body ourselves so an
+    // unheadered stream cannot slip past the check above.
+    const body = await request.text();
+    if (body.length > MAX_BODY_BYTES) {
+      return jsonResponse(
+        rpcError(null, -32600, `Request body too large (max ${MAX_BODY_BYTES} bytes)`),
+        413
+      );
+    }
+    msg = JSON.parse(body);
   } catch {
     return jsonResponse(rpcError(null, -32700, "Parse error"), 400);
   }
@@ -273,7 +354,11 @@ async function handleMcp(request, env) {
         return jsonResponse(rpcError(id, -32601, `Method not found: ${method}`));
     }
   } catch (e) {
-    return jsonResponse(rpcError(id, -32603, `Internal error: ${e.message}`), 500);
+    // Log the detail, return a generic message: the raw text leaks internal
+    // shape ("dataset fetch failed: 503", stack-derived property names) to any
+    // unauthenticated caller.
+    console.error("mcp handler error:", e && e.stack ? e.stack : e);
+    return jsonResponse(rpcError(id, -32603, "Internal error"), 500);
   }
 }
 
@@ -324,7 +409,14 @@ export default {
     const mdPath = wantsMarkdown(request) ? markdownPathFor(url.pathname) : null;
     if (mdPath) {
       const res = await env.ASSETS.fetch(new URL(mdPath, url));
-      if (res.ok) {
+      // The content-type check is load-bearing, not belt-and-braces. Asset
+      // resolution is html_handling: auto-trailing-slash, so a request for
+      // /servers/<id>.md can resolve to <id>.md.html — the HTML page of a repo
+      // whose NAME ends in .md. Without this guard, /servers/video-db--call
+      // returned that page's HTML relabelled text/markdown to agents, on a URL
+      // that 404s for browsers. Only serve what is genuinely a markdown asset.
+      const contentType = res.headers.get("Content-Type") || "";
+      if (res.ok && !contentType.includes("text/html")) {
         const headers = new Headers(res.headers);
         headers.set("Content-Type", "text/markdown; charset=utf-8");
         // Caches must not hand this body to a client that wanted HTML.
@@ -362,6 +454,22 @@ export default {
 
     // Everything else: static assets, with html_handling and the 404 page
     // applied by the assets binding exactly as before this Worker existed.
-    return env.ASSETS.fetch(request);
+    //
+    // The HTML variant carries Vary: Accept too. Per RFC 9111 a stored
+    // response with no Vary is reused for ANY request to that URI, so marking
+    // only the markdown side left the common case — HTML cached first — able
+    // to satisfy a later markdown request from cache. Both representations of
+    // a negotiated URL have to declare what they varied on.
+    const assetRes = await env.ASSETS.fetch(request);
+    if (markdownPathFor(url.pathname)) {
+      const headers = new Headers(assetRes.headers);
+      headers.set("Vary", "Accept");
+      return new Response(assetRes.body, {
+        status: assetRes.status,
+        statusText: assetRes.statusText,
+        headers,
+      });
+    }
+    return assetRes;
   },
 };

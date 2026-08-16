@@ -172,16 +172,51 @@ def guess_install(repo):
     return None
 
 
+def safe_homepage(value):
+    """Return the homepage only if it is a plain http(s) URL, else None.
+
+    GitHub does not normalize this field: it is free text, and the live dataset
+    contains values with no scheme at all ("www.funasr.com"), which render as
+    RELATIVE links and 404. The same absence of validation is what would let a
+    "javascript:..." value reach an href attribute on every page that lists the
+    repo. Astro escapes the value so it cannot break out of the attribute, but
+    escaping does not make a javascript: URL safe to click.
+
+    Validating here rather than in the template means the JSON, the CSV, the
+    HTML and the markdown all inherit the guarantee.
+    """
+    if not value:
+        return None
+    candidate = str(value).strip()
+    if not candidate:
+        return None
+    # Reject control characters and whitespace outright: they are the classic
+    # way to smuggle a scheme past a naive prefix check ("java\tscript:").
+    if any(ch.isspace() or ord(ch) < 0x20 for ch in candidate):
+        return None
+    if not re.match(r"^https?://[^\s/]+", candidate, re.IGNORECASE):
+        return None
+    return candidate
+
+
 def normalize(repo):
     owner = (repo.get("owner") or {}).get("login") or ""
     entry = {
         "id": (repo.get("full_name") or "").lower().replace("/", "--"),
+        # GitHub's immutable numeric repo id. The "id" above is derived from
+        # owner/repo, which is MUTABLE: repos get renamed, and a deleted
+        # account's username is released for anyone to re-register. Editorial
+        # state is carried forward by id, so without a stable identity a new
+        # owner of a recycled owner/repo would silently inherit the previous
+        # holder's security_reviewed flag, sponsor_tier and hand-written
+        # summary. See merge().
+        "github_repo_id": repo.get("id"),
         "name": repo.get("name"),
         "full_name": repo.get("full_name"),
         "owner": owner,
         "description": (repo.get("description") or "").strip(),
         "repo_url": repo.get("html_url"),
-        "homepage": repo.get("homepage") or None,
+        "homepage": safe_homepage(repo.get("homepage")),
         "category": categorize(repo),
         "topics": sorted(repo.get("topics") or []),
         "language": repo.get("language"),
@@ -300,8 +335,24 @@ def merge(new_entries, previous):
     prev_by_id = {e["id"]: e for e in previous}
     merged = {}
 
+    hijacked = []
     for e in new_entries:
         old = prev_by_id.get(e["id"])
+
+        # Same owner/repo, different GitHub repo id => this is not the same
+        # project. Either the original was deleted and someone re-registered
+        # the name, or the slot changed hands. Carrying editorial state across
+        # that boundary would hand a stranger a security-reviewed badge, a
+        # sponsor slot, or our own written summary. Treat it as a new entry.
+        # (Only compare when both ids are known: entries written before this
+        # field existed have none, and must not all be treated as hijacked.)
+        if old is not None:
+            old_gh = old.get("github_repo_id")
+            new_gh = e.get("github_repo_id")
+            if old_gh and new_gh and old_gh != new_gh:
+                hijacked.append((e["id"], old_gh, new_gh))
+                old = None
+
         if old:
             for f in EDITORIAL_FIELDS:
                 if f in old:
@@ -310,6 +361,12 @@ def merge(new_entries, previous):
         else:
             e["first_seen"] = e.get("created_at")
         merged[e["id"]] = e
+
+    if hijacked:
+        print(f"\nIDENTITY CHANGE on {len(hijacked)} entr(y/ies) — editorial "
+              f"state NOT carried forward:", file=sys.stderr)
+        for eid, old_gh, new_gh in hijacked[:10]:
+            print(f"  {eid}: github id {old_gh} -> {new_gh}", file=sys.stderr)
 
     # Repos that vanished from the API: keep them (status=archived_or_removed)
     # for a 30-day grace window so published URLs don't die overnight, then
@@ -354,7 +411,11 @@ def main():
     previous = []
     if JSON_PATH.exists():
         try:
-            raw = json.loads(JSON_PATH.read_text())
+            # encoding is explicit, not incidental. 459 entries carry non-ASCII
+            # descriptions and the file is written with ensure_ascii=False, so
+            # on any box whose default is not UTF-8 (Windows/cp1252, for one)
+            # this read raises UnicodeDecodeError.
+            raw = json.loads(JSON_PATH.read_text(encoding="utf-8"))
             # Tolerate the v0.1 shape (bare list) and the v0.2 shape (envelope).
             if isinstance(raw, list):
                 previous = raw
@@ -366,9 +427,13 @@ def main():
             # like a vanished repo and got carried forward as a false
             # "delisted" ghost — 454 of them duplicating live entries. Server
             # pages were never published under v0.1 ids, so there are no
-            # external URLs to protect: drop them outright. (GitHub usernames
-            # cannot contain underscores, so every real v0.2 id contains "--";
-            # a v0.1 ghost id never does.)
+            # external URLs to protect: drop them outright.
+            #
+            # Why this test is safe: every v0.2 id is full_name.replace("/","--")
+            # and a full_name always contains exactly one "/", so a v0.2 id
+            # ALWAYS contains "--". The condition therefore cannot match a real
+            # entry. (Note it is not about underscores being illegal — repo
+            # names may contain them, and 34 current ids do.)
             ghosts = [e for e in previous
                       if "__" in e["id"] and "--" not in e["id"]]
             if ghosts:
@@ -377,7 +442,16 @@ def main():
                             if not ("__" in e["id"] and "--" not in e["id"])]
             print(f"previous dataset: {len(previous)} servers")
         except Exception as e:  # noqa: BLE001
-            print(f"could not read previous dataset ({e}); starting fresh")
+            # FATAL, deliberately. "Starting fresh" silently discards every
+            # carried-forward security_reviewed, verified_badge, sponsor_tier,
+            # security_notes, editorial_notes and first_seen — and the CI
+            # collapse guard would not notice, because a fresh full crawl still
+            # returns 1,800+ servers. Losing the editorial layer must stop the
+            # run, not be a line of log output.
+            sys.exit(f"FATAL: could not read previous dataset ({e}). "
+                     f"Refusing to run: continuing would silently erase all "
+                     f"editorial fields. Fix or restore "
+                     f"{JSON_PATH.relative_to(ROOT)} and re-run.")
 
     print(f"auth: {'token' if TOKEN else 'UNAUTHENTICATED (slow, capped)'}")
     repos = fetch_all()
@@ -391,6 +465,11 @@ def main():
     known_ids = {e["id"] for e in entries}
     for e in entries:
         e["editorial_summary"] = summaries.get(e["id"], "")
+        # Re-assert the homepage invariant over EVERY entry, not just the ones
+        # normalize() just built. Carried-forward and delisted entries predate
+        # this validation, and the published dataset should hold the guarantee
+        # uniformly rather than depending on which code path produced a row.
+        e["homepage"] = safe_homepage(e.get("homepage"))
     orphans = sorted(set(summaries) - known_ids)
     if orphans:
         print(f"WARNING: {len(orphans)} summary id(s) match no server "
@@ -398,6 +477,45 @@ def main():
     print(f"editorial summaries applied: {len(summaries) - len(orphans)}")
 
     active = [e for e in entries if e.get("status") == "active"]
+
+    # ---------------------------------------------------------------------
+    # Collapse guard (relative). The CI check downstream only refuses to
+    # publish below an ABSOLUTE floor of 200 servers, which a partial GitHub
+    # outage sails straight past: a run that returns 900 of 1,800 repos would
+    # deploy happily and publish ~900 false "Delisted" notices — visible,
+    # public, and wrong for a day, on exactly the stable URLs that citers rely
+    # on. Compare against the previous run instead of a constant.
+    # ---------------------------------------------------------------------
+    prev_active_ids = {e["id"] for e in previous if e.get("status") == "active"}
+    newly_delisted = [
+        e for e in entries
+        if e.get("status") == "archived_or_removed" and e["id"] in prev_active_ids
+    ]
+    allow_collapse = os.environ.get("ALLOW_COLLAPSE") == "1"
+
+    if prev_active_ids:
+        ratio = len(active) / len(prev_active_ids)
+        problems = []
+        if ratio < 0.90:
+            problems.append(
+                f"active servers fell {(1 - ratio) * 100:.1f}% "
+                f"({len(prev_active_ids)} -> {len(active)})")
+        if len(newly_delisted) > 50:
+            problems.append(
+                f"{len(newly_delisted)} servers would be newly delisted in a "
+                f"single run")
+        if problems:
+            msg = ("REFUSING TO PUBLISH — this looks like a partial API "
+                   "failure, not a real change:\n  - " + "\n  - ".join(problems))
+            if allow_collapse:
+                print(f"{msg}\n(ALLOW_COLLAPSE=1 set; continuing anyway)",
+                      file=sys.stderr)
+            else:
+                sys.exit(f"{msg}\n\nThe previous dataset is untouched and the "
+                         f"live site keeps serving it. If this drop is "
+                         f"genuine, re-run with ALLOW_COLLAPSE=1.")
+    if newly_delisted:
+        print(f"newly delisted this run: {len(newly_delisted)}")
 
     categories = {}
     for e in active:
@@ -419,7 +537,8 @@ def main():
         "servers": entries,
     }
 
-    JSON_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+    JSON_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                         encoding="utf-8")
 
     cols = ["id", "full_name", "owner", "description", "category", "language",
             "license", "stars", "forks", "pushed_at", "repo_url",

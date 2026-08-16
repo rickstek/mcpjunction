@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ServerBadges from '../../components/ServerBadges.astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
+import { fmt } from '../../lib/format';
 
 export async function getStaticPaths() {
   return dataset.servers.map((s: any) => ({
@@ -113,8 +114,8 @@ const related = (() => {
   <tr><th>Category</th><td><a href={`/categories/${server.category}`}>{categoryName}</a></td></tr>
   <tr><th>Language</th><td>{server.language || <em>unspecified</em>}</td></tr>
   <tr><th>License</th><td>{server.license || <em>unspecified</em>}</td></tr>
-  <tr><th>Stars</th><td>{server.stars?.toLocaleString?.() ?? server.stars}</td></tr>
-  <tr><th>Forks</th><td>{server.forks?.toLocaleString?.() ?? server.forks}</td></tr>
+  <tr><th>Stars</th><td>{fmt(server.stars)}</td></tr>
+  <tr><th>Forks</th><td>{fmt(server.forks)}</td></tr>
   <tr><th>Open issues</th><td>{server.open_issues}</td></tr>
   <tr><th>Last pushed</th><td>{server.pushed_at}</td></tr>
   <tr><th>Repository</th><td><a href={server.repo_url} rel="external nofollow">{server.repo_url}</a></td></tr>
@@ -139,7 +140,7 @@ const related = (() => {
       {related.map((s: any) => (
         <li>
           <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
-          <span class="meta"> — {s.owner} · ★ {s.stars?.toLocaleString?.() ?? s.stars}</span>
+          <span class="meta"> — {s.owner} · ★ {fmt(s.stars)}</span>
           {s.description && <div class="meta">{s.description}</div>}
         </li>
       ))}

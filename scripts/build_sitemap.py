@@ -65,7 +65,7 @@ def main() -> None:
     ds = DIST / "data" / "mcp_servers.json"
     if ds.exists():
         try:
-            gen = json.loads(ds.read_text()).get("generated_at", "")
+            gen = json.loads(ds.read_text(encoding="utf-8")).get("generated_at", "")
             dataset_date = gen[:10] or None
         except Exception:  # noqa: BLE001
             pass

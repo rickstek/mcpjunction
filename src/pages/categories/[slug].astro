@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ServerBadges from '../../components/ServerBadges.astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
+import { fmt } from '../../lib/format';
 
 export async function getStaticPaths() {
   return categoriesFile.categories.map((c: any) => ({
@@ -59,7 +60,7 @@ const jsonLd = {
     {members.map((s: any) => (
       <li>
         <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
-        <span class="meta"> — {s.owner} · {s.language || 'unknown language'} · ★ {s.stars?.toLocaleString?.() ?? s.stars}</span>
+        <span class="meta"> — {s.owner} · {s.language || 'unknown language'} · ★ {fmt(s.stars)}</span>
         <ServerBadges
           securityReviewed={s.security_reviewed}
           sponsorTier={s.sponsor_tier}
