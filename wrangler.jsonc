@@ -1,6 +1,8 @@
 {
   // ---------------------------------------------------------------------
-  // mcpjunction.ai — assets-only Worker (no server code, just static files).
+  // mcpjunction.ai — Worker (worker/index.js) in front of the static assets
+  // in dist/. The Worker serves /mcp and markdown negotiation; everything
+  // else falls through to the assets binding.
   //
   // ⚠️ CRITICAL: "name" must EXACTLY match the Worker you already created in
   // the dashboard (the one mcpjunction.ai + www are attached to). Check it at

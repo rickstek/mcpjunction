@@ -1,0 +1,163 @@
+# Operations
+
+Everything needed to run, deploy, and troubleshoot mcpjunction.ai. For what the project
+*is*, see the [README](../README.md).
+
+## Deployment model
+
+The site is a static Astro build served by a Cloudflare Worker.
+
+- `astro build` renders `dist/`, which is the Worker's asset root
+  (`assets.directory` in `wrangler.jsonc`).
+- `public/` is passthrough only — `robots.txt`, `license.xml`, `llms.txt`, `_headers`, the
+  IndexNow key, and `data/`. Astro copies it into `dist/` unchanged.
+- `worker/index.js` runs ahead of the assets binding for `/mcp`, `/servers/*`, and
+  `/categories/*` (`assets.run_worker_first`). It serves the MCP endpoint and handles
+  `Accept: text/markdown` negotiation; everything else falls through to `env.ASSETS.fetch`.
+- The Worker name in `wrangler.jsonc` must match the existing Worker exactly. Custom
+  domains are attached in the Cloudflare dashboard, not in config.
+
+## Secrets
+
+Two repository secrets, under Settings → Secrets and variables → Actions:
+
+| Secret | Where to get it |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | dash.cloudflare.com → My Profile → API Tokens → Create Token → *Edit Cloudflare Workers* template, scoped to this account and the mcpjunction.ai zone. Shown once. |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages, right sidebar |
+
+**No GitHub PAT is needed.** The workflow's built-in `GITHUB_TOKEN` authenticates the
+GitHub API calls the pipeline makes and gives it the authenticated rate limit.
+
+## The nightly workflow
+
+`.github/workflows/nightly.yml` — *Nightly refresh and deploy*. Triggers: cron
+`17 6 * * *` (06:17 UTC), any push to `main`, and manual dispatch. Concurrency group
+`nightly-deploy` with `cancel-in-progress: false`, 25-minute timeout, Node 24, all actions
+pinned to full SHAs.
+
+One input: **`skip_data_refresh`** (default `false`). It gates only the pipeline step —
+everything else, including the deploy, still runs.
+
+Order of operations:
+
+1. **Refresh dataset** — `scripts/pipeline.py` with `PAGES_PER_QUERY=6`, `REQUEST_SLEEP=2.5`
+2. **Sanity check** — required files non-empty; dataset `count >= 200` or the run stops
+3. **Build** — `npm ci`, `astro build`, then `scripts/build_sitemap.py`
+4. **Post-build verification** — 11 required files in `dist/`, more than 100 server pages,
+   more than 5 category pages, and a byte-identity `diff` of the five passthrough files
+   between `public/` and `dist/`
+5. **Commit** refreshed data as `mcpjunction-bot` (adds `public/data` only, rebases, pushes)
+6. **Deploy** via `cloudflare/wrangler-action`
+
+Then six live verification gates. A failure in any of them means the deploy went out but
+something is wrong at the edge — that is what each one is telling you:
+
+| Gate | Fails when |
+| --- | --- |
+| Licensing surface + declared URL sample | A core URL redirects instead of returning 200 on the first hop, or a random 25-URL sitemap sample breaks |
+| MCP endpoint | `initialize` doesn't return `serverInfo`, or `tools/list` is missing `search_servers` |
+| AI agent access | One of 7 allowed user agents is blocked, or one of 4 training crawlers gets through |
+| Markdown content negotiation | `Accept: text/markdown` doesn't return markdown, or a browser Accept doesn't return HTML |
+| llms.txt declared URLs | Any URL advertised in `llms.txt` isn't a zero-redirect 200 |
+| robots.txt at the edge | The live file is missing its `Sitemap:`, `License:`, or `Content-Signal:` lines |
+
+IndexNow submission runs between them with `continue-on-error: true` — it is allowed to
+fail without failing the run.
+
+### Manual dry run
+
+Actions tab → *Nightly refresh and deploy* → Run workflow, with **`skip_data_refresh` =
+true**. This deploys current files without touching the GitHub API, so a wrong Worker name
+surfaces in about a minute with nothing at stake.
+
+## Cloudflare managed robots.txt must stay OFF
+
+`public/robots.txt` is self-contained and authoritative. It carries the Content Signals
+policy text inline, the AI-crawler groups, **and** the `Sitemap:` and `License:` directives.
+
+Cloudflare's "managed robots.txt" is documented as *prepending* its block to your file, but
+the observed behaviour was that it **replaced** the file outright — silently dropping the
+`License:` pointer to `license.xml`, which breaks RSL discovery, along with the `Sitemap:`
+line. Turning it off costs nothing: the Content Signals policy is already in our file, and
+actual enforcement comes from AI Crawl Control, a separate feature that stays enabled.
+
+Verify after any Cloudflare bot-settings change:
+
+```bash
+curl -s https://mcpjunction.ai/robots.txt | tail -5
+```
+
+You should see the `Sitemap:` and `License:` lines. If the output ends at
+`# END Cloudflare Managed Content`, managed robots.txt has been re-enabled.
+
+The nightly workflow's last step checks this automatically, so a red run on
+*Verify robots.txt directives survived the edge* usually means exactly this.
+
+## Pipeline knobs
+
+`scripts/pipeline.py` reads these from the environment:
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `GITHUB_TOKEN` | — | Without it the pipeline still runs, on the unauthenticated rate limit |
+| `PAGES_PER_QUERY` | `4` | CI sets `6` |
+| `REQUEST_SLEEP` | `2.5` with a token, `7.0` without | Seconds between API calls |
+| `MIN_STARS` | `2` | Inclusion floor |
+| `ALLOW_COLLAPSE` | unset | Set to `1` to override the collapse guard. Only when a large drop is known-good. |
+
+The collapse guard aborts the run if the active count falls more than 10% against the
+previous dataset, or if more than 50 servers would be newly delisted in a single run. An
+unreadable previous dataset is fatal rather than a fresh start — a fresh crawl would still
+clear the 200-server floor while silently erasing every editorial field.
+
+## Editing curated fields
+
+Two separate mechanisms. The pipeline preserves both across nightly runs and never writes
+either.
+
+**Summaries** live in `editorial/summaries.md`, keyed by `## owner--repo` headings. That
+file is the source of truth: deleting an entry removes it from the site on the next run.
+House style is documented at the top of the file — 40 to 80 words, original wording, no
+superlatives, and never any implication that a security review took place. An id with no
+matching dataset entry prints a warning during the run.
+
+**Flags** live in `public/data/mcp_servers.json` itself: `security_reviewed`,
+`security_notes`, `verified_badge`, `sponsor_tier`, `editorial_notes`. Edit by hand and
+commit; `merge()` carries them forward. They are dropped deliberately if the repository's
+numeric GitHub id changes under the same `owner--repo` id, which covers renames and
+released usernames.
+
+## Taxonomy
+
+`categories.json` at the repo root — 20 categories, each with a slug, name, description,
+and `match` keyword list. Assignment is **first match in file order**, so ordering is
+policy: domain integrations deliberately precede the `ai-*` family, which is why a Postgres
+MCP server for Cursor lands in `databases` rather than `ai-coding`.
+
+Slugs are URLs, so they are permanent once published. Adding a slug is free; retiring one
+needs a redirect. Delisted entries are re-categorised on every run so a retired slug cannot
+leave a broken `/categories/<slug>` link behind.
+
+## Troubleshooting
+
+**A run failed at "Sanity check dataset before build."** The GitHub API returned too little
+data. The previous dataset is untouched — re-run rather than intervening.
+
+**A run failed at "Post-build verification."** Either Astro produced fewer pages than
+expected, or a `public/` file no longer matches its `dist/` copy. Check the `diff` output in
+the log.
+
+**`/mcp` verification failed but the site is up.** The Worker deployed but
+`run_worker_first` may not be matching. Confirm the `assets.run_worker_first` list in
+`wrangler.jsonc` still contains `/mcp` and `/mcp/*`.
+
+**Numbers render as `36.136` instead of `36,136`.** Locale leakage. `src/lib/format.ts`
+pins `Intl.NumberFormat('en-US')` for this reason — don't call `toLocaleString()` directly.
+
+## Note on `scripts/pull_live.sh`
+
+A one-time bootstrap from before the Astro migration, kept for reference. It mirrors the
+live site into `public/` and fetches files such as `index.html` and `licensing.html` that
+are now generated into `dist/` by Astro. **Do not run it** — it would write stale artifacts
+into the passthrough directory.

@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 #
+# ⚠️ SUPERSEDED — DO NOT RUN. Kept for reference only.
+#
+# This was the one-time bootstrap used before the Astro migration, when public/
+# WAS the website. It is now wrong: index.html and licensing.html are generated
+# into dist/ by `astro build`, and public/ is passthrough assets only. Running
+# this would write stale artifacts into the passthrough directory and the
+# nightly workflow's byte-identity check would fail.
+#
+# The Cloudflare managed robots.txt warning below still applies and is
+# documented in docs/OPERATIONS.md.
+#
+# ---------------------------------------------------------------------------
+#
 # Pull the currently-live mcpjunction.ai files into public/ so this repo is a
 # byte-exact mirror of production before the first automated deploy.
 #

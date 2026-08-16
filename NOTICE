@@ -1,0 +1,59 @@
+mcpjunction.ai
+Copyright (c) 2026 Matt Ricks
+
+This repository contains two things under two different sets of terms.
+
+
+1. SOFTWARE — MIT licensed
+------------------------------------------------------------------------
+
+The MIT License in the LICENSE file covers the source code and configuration:
+
+    src/              Astro site
+    worker/           Cloudflare Worker
+    scripts/          Data pipeline and build tooling
+    categories.json   Taxonomy definition
+    docs/, *.md       Documentation
+    astro.config.mjs, package.json, wrangler.jsonc, .github/
+
+Reuse it freely under the terms of that license.
+
+
+2. DATASET — separately licensed, NOT MIT
+------------------------------------------------------------------------
+
+    public/data/**    The mcpjunction.ai directory dataset (JSON and CSV)
+
+The dataset is expressly EXCLUDED from the MIT grant above. Its presence in a
+public repository is not a license to redistribute or train on it.
+
+It is published under the Really Simple Licensing (RSL) terms declared in
+public/license.xml and summarised at https://mcpjunction.ai/licensing:
+
+  - Search indexing              free, unconditional
+  - AI agent / inference-time    free site-wide during the launch phase,
+    retrieval (ai-input)         attribution required ("via mcpjunction.ai")
+  - AI model training            requires a license
+    (ai-train)
+  - Bulk /data/ retrieval        stricter: both ai-input and ai-train
+                                 require a license
+
+The machine-readable terms in public/license.xml are authoritative. These
+terms are reviewed periodically and may change; the version served at
+https://mcpjunction.ai/license.xml is current.
+
+Licensing enquiries, corrections, and takedown requests:
+licensing@mcpjunction.ai — acknowledged within three business days.
+
+
+3. UPSTREAM DATA
+------------------------------------------------------------------------
+
+Dataset records are derived from public repository metadata retrieved via the
+official GitHub REST API. Each listed project remains the property of its own
+authors and is distributed under its own license, recorded in the "license"
+field of each record. Listing in this directory implies no endorsement by, or
+affiliation with, those projects.
+
+mcpjunction.ai is not affiliated with Anthropic or the Model Context Protocol
+project.
