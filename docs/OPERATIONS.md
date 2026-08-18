@@ -139,6 +139,45 @@ Slugs are URLs, so they are permanent once published. Adding a slug is free; ret
 needs a redirect. Delisted entries are re-categorised on every run so a retired slug cannot
 leave a broken `/categories/<slug>` link behind.
 
+## Weekly maintenance
+
+Five minutes. Nothing here is automated, because each item ends in a judgement call.
+
+**1. Glance at the `uncategorized` count.**
+
+```bash
+curl -s https://mcpjunction.ai/data/mcp_servers.json \
+  | python -c "import json,sys; d=json.load(sys.stdin); print(d['categories'].get('uncategorized',0), 'of', d['count'])"
+```
+
+It sat at 200 of 1,808 (11%) at launch. Rising share means the taxonomy is drifting
+behind the ecosystem — read the top entries by stars and decide whether they justify a
+new category or just need `match` terms added to an existing one. Note that
+`uncategorized` is the bucket the *canonical* MCP repo landed in, so a high count is not
+only cosmetic: it means real authority is parked on a page that says nothing.
+
+**2. Check the robotics split trigger.** Robotics terms (`ros`, `ros2`, `moveit`,
+`gazebo`, `drone`, `uav`, `robot`, `robotics`, `embodied-ai`) are deliberately folded
+into `iot-hardware` because only ~3 servers matched cleanly at launch — a category page
+with three entries reads abandoned. When clean robotics matches cross roughly **15**,
+split `robotics` into its own slug. Adding a slug is free; retiring one needs a redirect,
+which is why the trigger errs late.
+
+**3. Skim the newest entries.** Sort the dataset by `first_seen` and read the top few.
+This is the only routine check on inclusion quality — the pipeline's filter is keyword
+based and will occasionally admit something that merely mentions MCP.
+
+**4. Confirm the nightlies are green.** Actions tab. A red run after a *successful*
+deploy means an edge verification gate failed, not that the site is down — the table
+above says which. Two consecutive greens is the health bar.
+
+**5. Glance at AI Crawl Control → Security.** New crawlers appear in that table
+regularly and default to allowed. Check that anything new in the *AI Crawler* category
+is blocked and anything in *AI Assistant* is not, and watch the robots.txt-violations
+column — a crawler ignoring the published policy is a licensing-enforcement lead, not
+just a nuisance. Note that Cloudflare miscategorises `Claude-User` as an AI Crawler; it
+is a user-initiated fetcher and must stay allowed.
+
 ## Troubleshooting
 
 **A run failed at "Sanity check dataset before build."** The GitHub API returned too little
