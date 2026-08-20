@@ -2,14 +2,49 @@
 import Base from '../layouts/Base.astro';
 import dataset from '../../public/data/mcp_servers.json';
 import categoriesFile from '../../categories.json';
+import { fmt } from '../lib/format';
 
 const activeCount = dataset.count;
 const categories = categoriesFile.categories.filter((c) => c.slug !== 'uncategorized');
+
+const active = dataset.servers.filter((s: any) => s.status === 'active');
+
+// Two entry lists so the homepage links to servers at all — it previously
+// linked to none, which left every server page reachable only through a
+// category. Pure arithmetic over the dataset; no editorial judgement.
+const mostStarred = [...active]
+  .sort((a: any, b: any) => (b.stars || 0) - (a.stars || 0))
+  .slice(0, 10);
+
+// Deliberately labelled by repository creation date, not "recently added":
+// the pipeline seeds first_seen from created_at, so for the initial import
+// the two are identical and "added to the directory" would be a claim the
+// data does not support.
+const newest = [...active]
+  .sort((a: any, b: any) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
+  .slice(0, 10);
+
+// No `sameAs`: there are no verified profiles to point at, and inventing one
+// is worse than omitting the property. No `logo` for the same reason.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'MCP Junction',
+  url: 'https://mcpjunction.ai/',
+  description: 'An independent directory of Model Context Protocol (MCP) servers, regenerated nightly from public GitHub metadata.',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'licensing@mcpjunction.ai',
+    contactType: 'customer support',
+    availableLanguage: 'English',
+  },
+};
 ---
 <Base
   title="MCP Junction — The MCP Server Directory"
   description={`A structured, nightly-updated directory of ${activeCount}+ Model Context Protocol (MCP) servers: install commands, categories, licenses, and maintenance status. Built for developers and for AI agents.`}
   canonical="/"
+  jsonLd={jsonLd}
 >
 <h1>MCP Junction</h1>
 <p class="tag">The directory of Model Context Protocol servers.</p>
@@ -21,6 +56,30 @@ const categories = categoriesFile.categories.filter((c) => c.slug !== 'uncategor
   <li><a href="/categories">All categories</a> ({categories.length}, from AI Agents to IoT &amp; Robotics)</li>
   <li><a href="/data">Dataset page</a> — JSON + CSV downloads, citation info</li>
 </ul>
+
+<h2>Most-starred MCP servers</h2>
+<ul class="servers">
+  {mostStarred.map((s: any) => (
+    <li>
+      <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
+      <span class="meta"> — {s.owner} · ★ {fmt(s.stars)}</span>
+      {s.description && <div class="meta">{s.description}</div>}
+    </li>
+  ))}
+</ul>
+<p class="meta">Ranked by GitHub star count in the current nightly dataset. Stars measure attention, not quality, and are not a security signal.</p>
+
+<h2>Newest repositories</h2>
+<ul class="servers">
+  {newest.map((s: any) => (
+    <li>
+      <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
+      <span class="meta"> — {s.owner} · created {String(s.created_at).slice(0, 10)} · ★ {fmt(s.stars)}</span>
+      {s.description && <div class="meta">{s.description}</div>}
+    </li>
+  ))}
+</ul>
+<p class="meta">Ordered by repository creation date on GitHub.</p>
 
 <h2>Machine-readable entry points</h2>
 <ul>

@@ -45,9 +45,10 @@ Order of operations:
 2. **Sanity check** — required files non-empty; dataset `count >= 200` or the run stops
 3. **Build** — `npm ci`, `astro build`, then `scripts/build_sitemap.py`
 4. **Post-build verification** — 11 required files in `dist/`, more than 100 server pages,
-   more than 5 category pages, and a byte-identity `diff` of the five passthrough files
-   between `public/` and `dist/`
-5. **Commit** refreshed data as `mcpjunction-bot` (adds `public/data` only, rebases, pushes)
+   more than 5 category pages, a byte-identity `diff` of the five passthrough files
+   between `public/` and `dist/`, and every category slug present in `llms.txt`
+5. **Commit** refreshed data as `mcpjunction-bot` (adds `public/data` and
+   `state/lastmod.json`, rebases, pushes)
 6. **Deploy** via `cloudflare/wrangler-action`
 
 Then six live verification gates. A failure in any of them means the deploy went out but
@@ -64,6 +65,35 @@ something is wrong at the edge — that is what each one is telling you:
 
 IndexNow submission runs between them with `continue-on-error: true` — it is allowed to
 fail without failing the run.
+
+## Sitemap `lastmod` and `state/lastmod.json`
+
+`scripts/build_sitemap.py` gives every URL a content signature and stores it in
+`state/lastmod.json`. A URL keeps its recorded `lastmod` until its signature moves. **That
+file is committed by the nightly and is not a build artifact** — delete it and every
+`lastmod` resets to the next build's date, which is the uniform-date state this replaced.
+
+- Server-page signatures deliberately exclude `stars`, `forks`, `open_issues` and
+  `pushed_at`. Measured across two consecutive nightlies, 940 of 1,830 servers changed a
+  star count and 504 changed `pushed_at`, against 25 that changed anything a reader would
+  call an edit. `lastmod` means last *significant* modification.
+- Pages that are not data-derived (`/`, `/categories`, `/data`, `/licensing`) are signed
+  over their rendered bytes.
+- The URLs whose signature moved go to `state/changed_urls.txt` (gitignored) and that list —
+  not the whole sitemap — is what gets submitted to IndexNow. A realistic night is around
+  35 URLs. On a bootstrap run with no prior state, submission is skipped entirely rather
+  than firing 1,800 URLs at once.
+
+Any page emitting `<meta name="robots" content="noindex">` is left out of `sitemap.xml`
+automatically — the template decides and the sitemap follows, so the two cannot disagree.
+Today that is the 31 delisted servers and `/categories/uncategorized`.
+
+## Adding a category means editing `llms.txt`
+
+`public/llms.txt` enumerates every category URL by hand, because it is a passthrough file
+rather than a generated one. A post-build gate fails the run if a slug in `categories.json`
+is missing from it. So a new category is a three-file change: `categories.json`,
+`public/llms.txt`, and whatever prose references the count.
 
 ### Manual dry run
 
@@ -154,7 +184,10 @@ It sat at 200 of 1,808 (11%) at launch. Rising share means the taxonomy is drift
 behind the ecosystem — read the top entries by stars and decide whether they justify a
 new category or just need `match` terms added to an existing one. Note that
 `uncategorized` is the bucket the *canonical* MCP repo landed in, so a high count is not
-only cosmetic: it means real authority is parked on a page that says nothing.
+only cosmetic: it means real authority is parked on a page that says nothing. The page
+now carries `noindex` (set via `"noindex": true` in `categories.json`) and is held out of
+the sitemap. That is a stopgap, not a fix — it stops the thin page competing for the
+directory's own terms; it does not get those servers categorised.
 
 **2. Check the robotics split trigger.** Robotics terms (`ros`, `ros2`, `moveit`,
 `gazebo`, `drone`, `uav`, `robot`, `robotics`, `embodied-ai`) are deliberately folded
@@ -165,7 +198,11 @@ which is why the trigger errs late.
 
 **3. Skim the newest entries.** Sort the dataset by `first_seen` and read the top few.
 This is the only routine check on inclusion quality — the pipeline's filter is keyword
-based and will occasionally admit something that merely mentions MCP.
+based and will occasionally admit something that merely mentions MCP. Note that
+`first_seen` falls back to `created_at` for any entry the pipeline has not seen before,
+and every entry in the dataset currently has the two equal — so this sorts by repository
+creation date, not by when we listed it. The homepage's "Newest repositories" block is
+labelled accordingly.
 
 **4. Confirm the nightlies are green.** Actions tab. A red run after a *successful*
 deploy means an edge verification gate failed, not that the site is down — the table

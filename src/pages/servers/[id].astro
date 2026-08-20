@@ -12,6 +12,21 @@ export async function getStaticPaths() {
   }));
 }
 
+// Repo names are not unique across owners: 39 names cover 118 active servers
+// ("mcp" alone is used by 20). Where a name collides the title carries the
+// owner as a disambiguator — near-duplicate titles across a hundred pages are
+// a liability, and the SERP needs to tell them apart too. Computed once at
+// module scope, not per page.
+const duplicateNames = (() => {
+  const seen = new Map<string, number>();
+  for (const s of dataset.servers as any[]) {
+    if (s.status !== 'active') continue;
+    const k = s.name.toLowerCase();
+    seen.set(k, (seen.get(k) || 0) + 1);
+  }
+  return new Set([...seen].filter(([, n]) => n > 1).map(([k]) => k));
+})();
+
 const { server } = Astro.props;
 
 const categoryMeta = categoriesFile.categories.find((c: any) => c.slug === server.category);
@@ -23,6 +38,26 @@ const datasetUrl = 'https://mcpjunction.ai/data/mcp_servers.json';
 
 const isDelisted = server.status === 'archived_or_removed';
 
+// Repository topics as published by the owner. Third-party strings, so they
+// are rendered as plain text and never as links — see the note in the plan
+// about /topics/<tag> being a separate, unapproved decision.
+const topics: string[] = Array.isArray(server.topics) ? server.topics : [];
+
+// Nobody searches "playwright-mcp"; they search "playwright mcp server". The
+// phrase belongs in the title and the H1. Names that already carry it (every
+// "mcp-server-*" repo) must not get it twice.
+const searchLabel = /mcp[-_ ]?server/i.test(server.name)
+  ? server.name
+  : `${server.name} MCP Server`;
+
+const titleSubject = duplicateNames.has(server.name.toLowerCase())
+  ? `${searchLabel} by ${server.owner}`
+  : searchLabel;
+// Google truncates around 60 characters and the brand suffix is the least
+// useful part of the string, so drop it rather than let it be cut mid-word.
+const fullTitle = `${titleSubject} — ${categoryName} | MCP Junction`;
+const pageTitle = fullTitle.length > 65 ? `${titleSubject} — ${categoryName}` : fullTitle;
+
 // Human-written summary from editorial/summaries.md (empty for most servers).
 // When present it becomes the meta/JSON-LD description: it is our own unique
 // prose, whereas the GitHub description is third-party text repeated verbatim
@@ -33,6 +68,10 @@ const metaDescription = summary
   || `${server.full_name} — MCP server listed in the MCP Junction directory.`;
 
 // JSON-LD SoftwareApplication (Rule: extensionless canonical, absolute URLs).
+//
+// Deliberately NO aggregateRating. Synthesising a rating out of star counts
+// would be fabricated review data and risks a manual action; the star
+// snippet is not worth that.
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
@@ -40,11 +79,54 @@ const jsonLd: Record<string, unknown> = {
   description: metaDescription,
   url: canonicalUrl,
   codeRepository: server.repo_url,
-  applicationCategory: categoryName,
+  // Google matches applicationCategory against a controlled vocabulary, so
+  // the schema.org term goes here and our own taxonomy name — which was
+  // sitting in this field as free text — moves to the subcategory.
+  applicationCategory: 'DeveloperApplication',
+  applicationSubCategory: categoryName,
+  operatingSystem: 'Any',
+  isAccessibleForFree: true,
+  // Without `offers` the markup is ineligible for Google's software rich
+  // result. price 0 is truthful for a public source repository: it is a
+  // statement about obtaining the code, not about any hosted service the
+  // server may talk to.
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  author: {
+    '@type': 'Organization',
+    name: server.owner,
+    url: `https://github.com/${server.owner}`,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'MCP Junction',
+    url: 'https://mcpjunction.ai/',
+  },
   dateModified: server.pushed_at,
 };
+if (server.created_at) jsonLd.datePublished = server.created_at;
 if (server.language) jsonLd.programmingLanguage = server.language;
 if (server.license) jsonLd.license = server.license;
+if (topics.length) jsonLd.keywords = topics.join(', ');
+
+// Replaces the double-hyphen slug in the SERP with a readable trail. The
+// visible breadcrumb below renders the same three levels, in the same order —
+// Google expects the markup to describe what the page actually shows. The
+// final crumb carries no `item`: it is the current page.
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://mcpjunction.ai/' },
+    { '@type': 'ListItem', position: 2, name: 'Categories', item: 'https://mcpjunction.ai/categories' },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: categoryName,
+      item: `https://mcpjunction.ai/categories/${server.category}`,
+    },
+    { '@type': 'ListItem', position: 4, name: server.name },
+  ],
+};
 
 // Human-readable last-updated (envelope-level generation timestamp).
 const generatedAt = (dataset as any).generated_at;
@@ -68,16 +150,17 @@ const related = (() => {
 })();
 ---
 <Base
-  title={`${server.full_name} — MCP Junction`}
+  title={pageTitle}
   description={metaDescription}
   canonical={canonicalPath}
-  jsonLd={jsonLd}
+  noindex={isDelisted}
+  jsonLd={[jsonLd, breadcrumbLd]}
   markdownHref={`/servers/${server.id}.md`}
 >
-<p class="meta"><a href="/categories">Categories</a> / <a href={`/categories/${server.category}`}>{categoryName}</a></p>
+<p class="meta"><a href="/">Home</a> / <a href="/categories">Categories</a> / <a href={`/categories/${server.category}`}>{categoryName}</a></p>
 
 <h1>
-  {server.name}
+  {searchLabel}
   <ServerBadges
     securityReviewed={server.security_reviewed}
     sponsorTier={server.sponsor_tier}
@@ -126,6 +209,17 @@ const related = (() => {
   {server.homepage && <tr><th>Homepage</th><td><a href={server.homepage} rel="external nofollow">{server.homepage}</a></td></tr>}
 </table>
 
+{topics.length > 0 && (
+  <>
+    <h2>Topics</h2>
+    {/* A list, not adjacent spans. Adjacent inline elements carry no text
+        node between them, so every text extractor — and every agent reading
+        this page as prose — sees "mcpplaywright" as a single token. */}
+    <ul class="topics">{topics.map((t) => <li class="topic">{t}</li>)}</ul>
+    <p class="meta">Repository topics as published by the owner on GitHub. Imported verbatim; MCP Junction does not assign or curate them.</p>
+  </>
+)}
+
 {server.install_hint && (
   <>
     <h2>Install hint</h2>
@@ -158,6 +252,10 @@ const related = (() => {
   <tr><th>Dataset (JSON)</th><td><a href={datasetUrl}>{datasetUrl}</a></td></tr>
   <tr><th>Dataset generated</th><td>{generatedAt}</td></tr>
   <tr><th>Attribution</th><td>via mcpjunction.ai</td></tr>
+  {/* Server pages are where agents actually land — far more often than the
+      homepage or llms.txt, which are the only other places /mcp is named. */}
+  <tr><th>Query from an agent</th><td><code>POST https://mcpjunction.ai/mcp</code> — this directory as an MCP server (streamable HTTP, no auth); tools <code>search_servers</code>, <code>get_server</code>, <code>list_categories</code></td></tr>
+  <tr><th>This page as markdown</th><td><a href={`/servers/${server.id}.md`}>{canonicalUrl}.md</a> — or send <code>Accept: text/markdown</code> to the canonical URL</td></tr>
 </table>
 <p class="meta">Directory content is licensed per <a href="/licensing">/licensing</a>. Bulk retrieval and AI training require a paid license.</p>
 </Base>

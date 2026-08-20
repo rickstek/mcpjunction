@@ -11,13 +11,47 @@ const categories = categoriesFile.categories.map((c: any) => ({
   ...c,
   count: counts[c.slug] || 0,
 }));
+
+// The ItemList is a declaration of what we want indexed, so a category held
+// out of the index (uncategorized) is held out of the list too. It stays
+// linked in the visible list below — reachable for people and agents.
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'MCP Server Categories — MCP Junction',
+    description: 'Model Context Protocol servers grouped by category.',
+    url: 'https://mcpjunction.ai/categories',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: categories
+        .filter((c: any) => c.noindex !== true)
+        .map((c: any, i: number) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `https://mcpjunction.ai/categories/${c.slug}`,
+          name: c.name,
+        })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://mcpjunction.ai/' },
+      { '@type': 'ListItem', position: 2, name: 'Categories' },
+    ],
+  },
+];
 ---
 <Base
-  title="Categories — MCP Junction"
+  title="MCP Server Categories — MCP Junction"
   description="Browse MCP servers by category — AI Agents, AI Coding Assistants, Databases, Search, and more."
   canonical="/categories"
+  jsonLd={jsonLd}
 >
-<h1>Categories</h1>
+<p class="meta"><a href="/">Home</a> / Categories</p>
+<h1>MCP Server Categories</h1>
 <p>{categories.length} categories, {activeServers.length} MCP servers total.</p>
 
 <ul class="servers">

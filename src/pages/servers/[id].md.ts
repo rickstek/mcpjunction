@@ -82,6 +82,7 @@ export const GET: APIRoute = ({ props }) => {
   L.push('| --- | --- |');
   L.push(`| Owner | ${cell(server.owner)} |`);
   L.push(`| Category | ${cell(categoryName)} (${BASE}/categories/${server.category}) |`);
+  L.push(`| Topics | ${cell((server.topics || []).join(', '))} |`);
   L.push(`| Language | ${cell(server.language)} |`);
   L.push(`| License | ${cell(server.license)} |`);
   L.push(`| Stars | ${cell(server.stars)} |`);
@@ -119,6 +120,7 @@ export const GET: APIRoute = ({ props }) => {
   L.push(`- Dataset: ${BASE}/data/mcp_servers.json`);
   L.push(`- Dataset generated: ${generatedAt}`);
   L.push('- Attribution: via mcpjunction.ai');
+  L.push(`- Query this directory from an agent: POST ${BASE}/mcp — an MCP server over streamable HTTP, no auth. Tools: search_servers, get_server, list_categories, get_dataset_info.`);
   L.push(`- Licensing: ${BASE}/licensing — agent retrieval free during launch with attribution; bulk retrieval and AI training require a license.`);
   L.push('');
 

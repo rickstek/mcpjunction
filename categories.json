@@ -1,5 +1,5 @@
 {
-  "_comment": "Human-owned taxonomy. Order is the assignment order: first match wins in scripts/pipeline.py. Slugs are permanent once published (they become URLs at /categories/<slug>). Retiring a category requires a redirect or delisting notice, never a silent 404. Descriptions render on the category page. Match terms are matched case-insensitively against a haystack of full_name + description + topics.",
+  "_comment": "Human-owned taxonomy. Order is the assignment order: first match wins in scripts/pipeline.py. Slugs are permanent once published (they become URLs at /categories/<slug>). Retiring a category requires a redirect or delisting notice, never a silent 404. Descriptions render on the category page. Match terms are matched case-insensitively against a haystack of full_name + description + topics. Optional \"noindex\": true keeps a category page reachable and crawlable but out of the search index and out of sitemap.xml -- set on uncategorized, which is a holding pen rather than a browsable subject.",
   "categories": [
     {
       "slug": "browser-automation",
@@ -118,6 +118,7 @@
     {
       "slug": "uncategorized",
       "name": "Uncategorized",
+      "noindex": true,
       "description": "MCP servers that did not match any category above. Reviewed weekly — matches migrate into new or existing categories as the taxonomy evolves.",
       "match": []
     }

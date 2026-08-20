@@ -6,5 +6,8 @@ __pycache__/
 .wrangler/
 .dev.vars
 *.tmp
+# Build artifact of scripts/build_sitemap.py. Its sibling state/lastmod.json
+# IS tracked — that one has to survive the nightly rebuild.
+state/changed_urls.txt
 public/robots.txt.live-reference
 .DS_Store

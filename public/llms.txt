@@ -14,13 +14,39 @@
   same data as flat rows
 - [Dataset page](https://mcpjunction.ai/data): counts, generation timestamp,
   citation format, licensing pointer
-- [Categories](https://mcpjunction.ai/categories): servers grouped by category
-  (ai-agents, ai-coding, databases, search, security, browser-automation,
-  cloud-devops, and more)
+- [All categories](https://mcpjunction.ai/categories): the index page
 - Server pages at https://mcpjunction.ai/servers/{owner}--{repo}: one page per
-  server with install hint, category, license, stars, last-pushed date, and
-  security-review status. All pages are enumerated in
+  server with install hint, category, topics, license, stars, last-pushed
+  date, and security-review status. All pages are enumerated in
   https://mcpjunction.ai/sitemap.xml
+
+## Categories
+
+Every category, in full. Each of these also serves markdown - append `.md` or
+send `Accept: text/markdown`.
+
+- [AI Agents](https://mcpjunction.ai/categories/ai-agents)
+- [AI Coding Assistants](https://mcpjunction.ai/categories/ai-coding)
+- [AI Media Generation](https://mcpjunction.ai/categories/ai-media)
+- [AI Models & Inference](https://mcpjunction.ai/categories/ai-models)
+- [Browser Automation](https://mcpjunction.ai/categories/browser-automation)
+- [Cloud & DevOps](https://mcpjunction.ai/categories/cloud-devops)
+- [Communication](https://mcpjunction.ai/categories/communication)
+- [Databases](https://mcpjunction.ai/categories/databases)
+- [Design Tools](https://mcpjunction.ai/categories/design-tools)
+- [Developer Tools](https://mcpjunction.ai/categories/devtools)
+- [Finance & Commerce](https://mcpjunction.ai/categories/finance)
+- [Gaming & Game Dev](https://mcpjunction.ai/categories/gaming)
+- [Home Automation](https://mcpjunction.ai/categories/home-automation)
+- [IoT, Hardware & Robotics](https://mcpjunction.ai/categories/iot-hardware)
+- [Monitoring & Observability](https://mcpjunction.ai/categories/monitoring)
+- [Productivity & Knowledge](https://mcpjunction.ai/categories/productivity)
+- [Search & Retrieval](https://mcpjunction.ai/categories/search)
+- [Security](https://mcpjunction.ai/categories/security)
+- [Storage & Files](https://mcpjunction.ai/categories/storage)
+- [Uncategorized](https://mcpjunction.ai/categories/uncategorized): servers
+  that matched no category term yet. Reviewed weekly. Excluded from the search
+  index, but readable and queryable like any other page.
 
 ## MCP endpoint (query this directory from your agent)
 

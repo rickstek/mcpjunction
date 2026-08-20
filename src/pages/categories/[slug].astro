@@ -22,6 +22,11 @@ const canonicalPath = `/categories/${category.slug}`;
 const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/, '');
 const generatedAt = (dataset as any).generated_at;
 
+// A holding pen, not a browsable subject: keep it reachable for people and
+// agents, keep it out of the index and the sitemap. Flag lives in
+// categories.json so the taxonomy stays human-owned in one place.
+const noindex = category.noindex === true;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -40,16 +45,31 @@ const jsonLd = {
     })),
   },
 };
+
+// Mirrors the visible trail below. The final crumb carries no `item`: it is
+// the current page.
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://mcpjunction.ai/' },
+    { '@type': 'ListItem', position: 2, name: 'Categories', item: 'https://mcpjunction.ai/categories' },
+    { '@type': 'ListItem', position: 3, name: category.name },
+  ],
+};
 ---
 <Base
-  title={`${category.name} — MCP Junction`}
+  title={`${category.name} MCP Servers — MCP Junction`}
   description={category.description}
   canonical={canonicalPath}
-  jsonLd={jsonLd}
+  noindex={noindex}
+  jsonLd={[jsonLd, breadcrumbLd]}
   markdownHref={`/categories/${category.slug}.md`}
 >
-<p class="meta"><a href="/categories">All categories</a></p>
-<h1>{category.name}</h1>
+<p class="meta"><a href="/">Home</a> / <a href="/categories">Categories</a></p>
+{/* Same reasoning as the server-page H1: the query is "browser automation
+    mcp servers", not "browser automation". */}
+<h1>{category.name} MCP Servers</h1>
 <p>{category.description}</p>
 <p class="meta">{members.length} server{members.length === 1 ? '' : 's'} · updated {generatedAt}</p>
 

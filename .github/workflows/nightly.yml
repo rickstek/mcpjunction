@@ -112,6 +112,20 @@ jobs:
           for f in robots.txt license.xml llms.txt data/mcp_servers.json data/mcp_servers.csv; do
             diff -q "public/$f" "dist/$f" > /dev/null || { echo "PASSTHROUGH MISMATCH: $f"; exit 1; }
           done
+          # llms.txt enumerates every category URL by hand (it is a static
+          # passthrough file, not generated). The existing llms.txt gate
+          # catches a RENAMED slug — the old URL 404s — but an ADDED category
+          # would silently go unlisted, so check coverage against the taxonomy.
+          python3 - <<'PY'
+          import json, pathlib, sys
+          cats = json.loads(pathlib.Path("categories.json").read_text(encoding="utf-8"))
+          llms = pathlib.Path("dist/llms.txt").read_text(encoding="utf-8")
+          missing = [c["slug"] for c in cats["categories"]
+                     if f"https://mcpjunction.ai/categories/{c['slug']}" not in llms]
+          if missing:
+              sys.exit("llms.txt does not list these categories: " + ", ".join(missing))
+          print(f"llms.txt lists all {len(cats['categories'])} categories")
+          PY
           echo "post-build OK"
 
       - name: Commit refreshed data
@@ -119,13 +133,16 @@ jobs:
         # `push:` event. Commits made with the built-in GITHUB_TOKEN never
         # start new workflow runs — that's GitHub's own loop guard.
         #
-        # Only public/data is committed. dist/ and dist/sitemap.xml are
-        # build artifacts, regenerated on each run.
+        # Only public/data and state/lastmod.json are committed. dist/ and
+        # dist/sitemap.xml are build artifacts, regenerated on each run.
+        # state/lastmod.json is not an artifact: it carries the per-URL
+        # content signatures that sitemap lastmod dates are computed against,
+        # so losing it resets every date to the next build.
         run: |
           set -euo pipefail
           git config user.name "mcpjunction-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data
+          git add public/data state/lastmod.json
           if git diff --staged --quiet; then
             echo "No data changes."
           else
@@ -202,12 +219,18 @@ jobs:
           # Pull one server page and check its declared JSON-LD url is also
           # 200. The JSON-LD is emitted minified, so the url field is
           # greppable without a JSON parser.
+          #
+          # The pattern is anchored to /servers/ on purpose. The markup now
+          # carries a publisher Organization whose url is the site root, so a
+          # bare '"url":"https://mcpjunction.ai[^"]*"' matches twice on one
+          # line, -m1 (which stops at the first matching LINE, not match)
+          # returns both, and the check ends up curling a two-line string.
           echo "--- JSON-LD url check ---"
           server_page=$(grep -m1 -oE 'https://mcpjunction\.ai/servers/[^<]+' "$sitemap_file" || true)
           if [ -n "$server_page" ]; then
             page_file=$(mktemp)
             curl -sS "$server_page" -o "$page_file"
-            declared=$(grep -m1 -o '"url":"https://mcpjunction.ai[^"]*"' "$page_file" | cut -d'"' -f4 || true)
+            declared=$(grep -o '"url":"https://mcpjunction.ai/servers/[^"]*"' "$page_file" | sed -n '1p' | cut -d'"' -f4 || true)
             if [ -n "$declared" ]; then
               check_zero_redirect "$declared" || fail=1
             else
@@ -338,19 +361,26 @@ jobs:
           done
           test "$fail" = "0" || exit 1
 
-      - name: Submit URLs to IndexNow
-        # Pushes the night's URLs to Bing/Yandex-class engines immediately
-        # instead of waiting for a crawl. Legitimate daily use: the dataset
-        # (and thus nearly every page) genuinely changes nightly. Non-fatal —
-        # indexing hints must never fail a deploy.
+      - name: Submit changed URLs to IndexNow
+        # Submits only the URLs whose content signature moved tonight, as
+        # computed by scripts/build_sitemap.py. Resubmitting all ~1,844 URLs
+        # every night — which is what this step used to do — is the behaviour
+        # IndexNow's own guidance calls spam, and it buries the handful of
+        # pages that genuinely changed. Non-fatal: indexing hints must never
+        # fail a deploy.
         continue-on-error: true
         run: |
           set -euo pipefail
+          if [ ! -s state/changed_urls.txt ]; then
+            echo "No changed URLs tonight — nothing to submit."
+            exit 0
+          fi
           key=$(basename public/28b2e7bcf41d41452d6b464fab1cc9bf.txt .txt)
           python3 - "$key" <<'PY'
-          import json, re, sys, urllib.request
+          import json, sys, urllib.request
           key = sys.argv[1]
-          urls = re.findall(r"<loc>([^<]+)</loc>", open("dist/sitemap.xml").read())[:10000]
+          with open("state/changed_urls.txt", encoding="utf-8") as fh:
+              urls = [ln.strip() for ln in fh if ln.strip()]
           payload = {
               "host": "mcpjunction.ai",
               "key": key,
@@ -364,6 +394,8 @@ jobs:
           )
           with urllib.request.urlopen(req, timeout=30) as resp:
               print(f"IndexNow: HTTP {resp.status} for {len(urls)} URLs")
+          for u in urls[:25]:
+              print(f"  {u}")
           PY
 
       - name: Verify robots.txt directives survived the edge

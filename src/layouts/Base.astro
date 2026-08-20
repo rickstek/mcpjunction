@@ -111,7 +111,16 @@ a { color: var(--link); }
 nav.site { margin: 1rem 0 2rem; font-size: .95rem; }
 nav.site a { margin-right: 1.25rem; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-td, th { border: 1px solid var(--border); padding: 8px; text-align: left; font-size: .95rem; }
+td, th {
+  border: 1px solid var(--border);
+  padding: 8px;
+  text-align: left;
+  font-size: .95rem;
+  /* `anywhere`, not `break-word`: only `anywhere` feeds back into the table's
+     min-content width, so a bare canonical URL in a cell stops forcing the
+     whole document wider than a phone screen. */
+  overflow-wrap: anywhere;
+}
 th { background: var(--surface); }
 code { background: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: .9em; }
 pre.block {
@@ -125,6 +134,22 @@ pre.cite { white-space: pre-wrap; }
 ul.servers { list-style: none; padding: 0; }
 ul.servers li { padding: .75rem 0; border-bottom: 1px solid var(--rule-soft); }
 .meta { color: var(--muted-2); font-size: .9rem; }
+ul.topics {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 .25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.topic {
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: .8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 .badge {
   display: inline-block;
   padding: 2px 8px;
