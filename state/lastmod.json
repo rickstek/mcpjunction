@@ -2,16 +2,16 @@
   "_comment": "Per-URL content signatures behind sitemap lastmod. Written by scripts/build_sitemap.py and committed by the nightly so dates survive the rebuild. Deleting this file resets every lastmod to the next build date. Deliberately carries no build timestamp: the file has to be byte-identical when nothing changed, or the nightly commits it every single night for no reason.",
   "urls": {
     "/": {
-      "sig": "891b3aaddc43600071bb9d50670b5ba2",
-      "lastmod": "2026-08-20"
+      "sig": "bc2a9afdfc9dabfab9850c90864aa88b",
+      "lastmod": "2026-08-21"
     },
     "/categories": {
       "sig": "22c6d63dc9888200d4a155eba8eeaeac",
       "lastmod": "2026-08-20"
     },
     "/categories/ai-agents": {
-      "sig": "e9c1c11154dd135758b164b217f771e8",
-      "lastmod": "2026-08-20"
+      "sig": "58fc5b6f0ca128a00685c1dbc7fd8135",
+      "lastmod": "2026-08-21"
     },
     "/categories/ai-coding": {
       "sig": "440f76b57bbfa8fd974e6f8b90b475f9",
@@ -26,8 +26,8 @@
       "lastmod": "2026-08-20"
     },
     "/categories/browser-automation": {
-      "sig": "8cfc53c704b41e1154993d37a8c7fd81",
-      "lastmod": "2026-08-20"
+      "sig": "db5df1c0b3dc870f3552cf501c2cced0",
+      "lastmod": "2026-08-21"
     },
     "/categories/cloud-devops": {
       "sig": "23abe1af89d3a80093927e44ac829995",
@@ -42,8 +42,8 @@
       "lastmod": "2026-08-20"
     },
     "/categories/design-tools": {
-      "sig": "4540fcb264e62b0cf38f82bd74cc6a2d",
-      "lastmod": "2026-08-20"
+      "sig": "36ec1474d124038dff543dfa5e7586be",
+      "lastmod": "2026-08-21"
     },
     "/categories/devtools": {
       "sig": "749341f8bbd6291182cf001b0b8b58db",
@@ -78,24 +78,24 @@
       "lastmod": "2026-08-20"
     },
     "/categories/security": {
-      "sig": "6e890407580da836a60f8f0a72cd9d76",
-      "lastmod": "2026-08-20"
+      "sig": "4f2afadc8522f9f891af9dae701b65b1",
+      "lastmod": "2026-08-21"
     },
     "/categories/storage": {
       "sig": "3129e8295ac8c068cc89a941b49ab552",
       "lastmod": "2026-08-20"
     },
     "/data": {
-      "sig": "ddcc767e7af47dfd62d6f81acb37bf71",
-      "lastmod": "2026-08-20"
+      "sig": "21792ce7ee9485226aaf983418c29c0a",
+      "lastmod": "2026-08-21"
     },
     "/data/mcp_servers.csv": {
-      "sig": "54f68b428df4bfa405b474c41869d633",
-      "lastmod": "2026-08-20"
+      "sig": "ae4f33b5a1d2429bc7b532a258e9ae99",
+      "lastmod": "2026-08-21"
     },
     "/data/mcp_servers.json": {
-      "sig": "11745b7db6c559fa9ba562b02c6fdec5",
-      "lastmod": "2026-08-20"
+      "sig": "797c0ea7f602d6d6f60789cc43e7f35f",
+      "lastmod": "2026-08-21"
     },
     "/licensing": {
       "sig": "2c61fa4437a29eed2ee02d9255716a9b",
@@ -2958,8 +2958,8 @@
       "lastmod": "2026-08-20"
     },
     "/servers/holaboss-ai--holaos": {
-      "sig": "aa6ef33eab9a73ba8575e6b8dc07a7bc",
-      "lastmod": "2026-08-20"
+      "sig": "875feae4cba9a380bf1db0af3f5bfed0",
+      "lastmod": "2026-08-21"
     },
     "/servers/holon-run--uxc": {
       "sig": "1f2463fe5fc436b2713a2372bef24a90",
@@ -3798,8 +3798,8 @@
       "lastmod": "2026-08-20"
     },
     "/servers/leancoderkavy--premiere-pro-mcp": {
-      "sig": "fd4b6ae716ef3ed6afff013163cf7e2a",
-      "lastmod": "2026-08-20"
+      "sig": "2abec0e972c31ec0555ddfeb9442fbaf",
+      "lastmod": "2026-08-21"
     },
     "/servers/leanmcp--superview.sh": {
       "sig": "a799518f52225e060d45864675cabe92",
@@ -4814,8 +4814,8 @@
       "lastmod": "2026-08-20"
     },
     "/servers/nolabs-ai--nono": {
-      "sig": "f8a95614f7589534b8a2bf043c9d0fe9",
-      "lastmod": "2026-08-20"
+      "sig": "925f6dfe77892a3b840d8fb11453edfd",
+      "lastmod": "2026-08-21"
     },
     "/servers/nottelabs--reverse-api-engineer": {
       "sig": "0713895cee1c6e6e9851c7cd7aca12dc",
@@ -5238,8 +5238,8 @@
       "lastmod": "2026-08-20"
     },
     "/servers/pinvou--pinvou-agent": {
-      "sig": "7eba613da47e553028f83c6a2fbdba0e",
-      "lastmod": "2026-08-20"
+      "sig": "a4c187b9063cada2f3a949e40e4e6692",
+      "lastmod": "2026-08-21"
     },
     "/servers/piotr-agier--google-drive-mcp": {
       "sig": "21b1fe0fa1c4e6a8a135b153542f8d21",
