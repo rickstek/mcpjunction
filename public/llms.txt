@@ -34,15 +34,18 @@ send `Accept: text/markdown`.
 - [Communication](https://mcpjunction.ai/categories/communication)
 - [Databases](https://mcpjunction.ai/categories/databases)
 - [Design Tools](https://mcpjunction.ai/categories/design-tools)
+- [Desktop & OS Automation](https://mcpjunction.ai/categories/desktop-automation)
 - [Developer Tools](https://mcpjunction.ai/categories/devtools)
 - [Finance & Commerce](https://mcpjunction.ai/categories/finance)
 - [Gaming & Game Dev](https://mcpjunction.ai/categories/gaming)
 - [Home Automation](https://mcpjunction.ai/categories/home-automation)
+- [Infrastructure & SDKs](https://mcpjunction.ai/categories/mcp-infrastructure)
 - [IoT, Hardware & Robotics](https://mcpjunction.ai/categories/iot-hardware)
 - [Monitoring & Observability](https://mcpjunction.ai/categories/monitoring)
 - [Productivity & Knowledge](https://mcpjunction.ai/categories/productivity)
 - [Search & Retrieval](https://mcpjunction.ai/categories/search)
 - [Security](https://mcpjunction.ai/categories/security)
+- [Social & Content Platforms](https://mcpjunction.ai/categories/social-media)
 - [Storage & Files](https://mcpjunction.ai/categories/storage)
 - [Uncategorized](https://mcpjunction.ai/categories/uncategorized): servers
   that matched no category term yet. Reviewed weekly. Excluded from the search

@@ -86,6 +86,12 @@
       "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management"]
     },
     {
+      "slug": "mcp-infrastructure",
+      "name": "Infrastructure & SDKs",
+      "description": "MCP infrastructure: servers and tooling for building, running, routing, and cataloguing MCP itself — framework libraries and official SDKs, gateways, routers and proxies, installers and desktop managers, and registries listing other servers.",
+      "match": ["awesome-mcp", "mcp-framework", "mcp-sdk", "mcp-toolkit", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-bridge", "mcp-registry", "mcp-marketplace", "mcp-store", "mcp-hub", "mcp-inspector", "mcp-installer", "mcp-manager", "mcp-cli", "sdk for model context protocol", "sdk for the model context protocol", "implementation of the model context protocol", "implementation for the model context protocol", "implementations of the model context protocol", "model context protocol servers", "model context protocol (mcp) servers", "collection of mcp servers", "collection of model context protocol", "curated list of model context protocol", "curated list of mcp", "list of mcp servers", "list for mcp servers", "building mcp servers", "build mcp servers", "creating mcp servers", "create mcp servers", "managing mcp servers", "manage mcp servers", "installs other mcp servers", "aggregates and serves multiple mcp", "mcp-adapter", "mcp-nest", "mcp framework", "server implementations", "mcp server installation", "install mcp servers", "router for mcp", "reference mcp servers", "create model context protocol"]
+    },
+    {
       "slug": "ai-media",
       "name": "AI Media Generation",
       "description": "MCP servers for AI-generated image, audio, video, and speech — Stable Diffusion, DALL-E, Midjourney, Whisper, TTS/STT, and video processing.",
@@ -110,10 +116,22 @@
       "match": ["openai", "gpt", "gpt-4", "gemini", "ollama", "llama", "mistral", "huggingface", "hugging-face", "deepseek", "azure-openai", "anthropic-api", "embedding", "embeddings", "inference", "llm-tools", "llm-provider"]
     },
     {
+      "slug": "desktop-automation",
+      "name": "Desktop & OS Automation",
+      "description": "Desktop automation MCP servers that drive the operating system and connected devices rather than the browser — AppleScript and macOS control, Windows and Linux automation, Android and iOS device control, and computer-use tooling.",
+      "match": ["applescript", "applescripts", "osascript", "jxa", "apple-native", "apple-shortcuts", "siri-shortcuts", "windows-automation", "os-automation", "computer-use-mcp", "computer-control", "desktop-automation", "gui-automation", "android-mcp", "android-device", "ios-simulator", "ios-idb", "ssh-mcp", "mcp-ssh", "computer use in windows", "control of your mac", "control your mac", "full control of your computer", "windows os automation", "interacting with the ios simulator", "interact with ios simulators", "control over android devices", "interacting with android devices", "mouse, keyboard, screen", "screen, and window management"]
+    },
+    {
+      "slug": "social-media",
+      "name": "Social & Content Platforms",
+      "description": "Social media MCP servers for social networks, publishing platforms, and media feeds — Reddit, X, YouTube, Spotify, RSS readers, Ghost, and the major Chinese platforms including WeChat, Xiaohongshu and Douyin.",
+      "match": ["twitter", "twikit", "reddit", "linkedin", "instagram", "tiktok", "douyin", "kuaishou", "xiaohongshu", "rednote", "xhs", "weibo", "wechat", "weixin", "youtube", "yt-dlp", "spotify", "podcast", "rss", "rss-reader", "social-media", "social-network", "mastodon", "bluesky", "anilist", "ghost-cms", "ghost-blog"]
+    },
+    {
       "slug": "devtools",
       "name": "Developer Tools",
-      "description": "MCP servers for source hosting, CLIs, testing, linting, and MCP framework libraries themselves — GitHub, GitLab, code quality, terminals, and MCP client/server frameworks.",
-      "match": ["git", "github", "gitlab", "bitbucket", "cli", "sdk", "openapi", "code-quality", "lint", "linter", "test", "testing", "debug", "debugger", "mcp-client", "mcp-tools", "mcp-framework", "mcp-servers", "mcp-server-store", "mcp-hub", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-go", "mcp-python", "mcp-typescript", "mcp-installer", "fastmcp", "terminal", "shell", "compiler", "awesome-mcp-servers", "awesome-mcp-clients", "n8n", "laravel", "jupyter", "notebook", "data-science", "language-server", "language-server-protocol", "lsp"]
+      "description": "MCP servers for source hosting, CLIs, testing, linting, and developer workflow — GitHub, GitLab, code quality, terminals, notebooks, and language servers. MCP’s own frameworks, gateways and registries live in Infrastructure & SDKs.",
+      "match": ["git", "github", "gitlab", "bitbucket", "cli", "sdk", "openapi", "code-quality", "lint", "linter", "test", "testing", "debug", "debugger", "mcp-client", "mcp-tools", "mcp-servers", "mcp-python", "fastmcp", "terminal", "shell", "compiler", "n8n", "laravel", "jupyter", "notebook", "data-science", "language-server", "language-server-protocol", "lsp"]
     },
     {
       "slug": "uncategorized",
