@@ -7,10 +7,26 @@ const activeServers = dataset.servers.filter((s: any) => s.status === 'active');
 const counts: Record<string, number> = {};
 for (const s of activeServers) counts[s.category] = (counts[s.category] || 0) + 1;
 
-const categories = categoriesFile.categories.map((c: any) => ({
-  ...c,
-  count: counts[c.slug] || 0,
-}));
+// File order in categories.json is match precedence — first match wins in
+// scripts/pipeline.py — which is an implementation detail, not a reading
+// order. Adding a category ahead of the ai-* family to fix what it captures
+// also moved it to the middle of this list, for no reason a visitor can see.
+// Display order is therefore explicit: an optional "order" number first,
+// then alphabetically by name, matching how llms.txt already lists them.
+// uncategorized is a holding pen rather than a subject, so it sorts last
+// whatever its number.
+//
+// Compared by code unit, not localeCompare: the order has to be identical in
+// CI and on a developer's machine, the same reason src/lib/format.ts exists.
+const orderRank = (c: any) =>
+  c.slug === 'uncategorized' ? 2 : typeof c.order === 'number' ? 0 : 1;
+
+const categories = categoriesFile.categories
+  .map((c: any) => ({ ...c, count: counts[c.slug] || 0 }))
+  .sort((a: any, b: any) =>
+    orderRank(a) - orderRank(b) ||
+    (a.order ?? 0) - (b.order ?? 0) ||
+    (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 
 // The ItemList is a declaration of what we want indexed, so a category held
 // out of the index (uncategorized) is held out of the list too. It stays
