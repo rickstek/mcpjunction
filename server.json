@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.mcpjunction/directory",
+  "title": "MCP Junction",
+  "description": "Search a nightly-refreshed directory of MCP servers by keyword, category or topic.",
+  "version": "1.0.0",
+  "websiteUrl": "https://mcpjunction.ai",
+  "repository": {
+    "url": "https://github.com/rickstek/mcpjunction",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcpjunction.ai/mcp"
+    }
+  ]
+}
