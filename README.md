@@ -1,8 +1,9 @@
 # mcpjunction.ai
 
 **A directory of Model Context Protocol servers, rebuilt nightly from public GitHub
-metadata.** Roughly 1,800 servers across 20 categories, published as a website, a
-downloadable dataset, and an MCP endpoint your agent can query directly.
+metadata.** Roughly 1,800 servers in a hand-owned category taxonomy, also browsable by
+repository topic, published as a website, a downloadable dataset, and an MCP endpoint your
+agent can query directly.
 
 [mcpjunction.ai](https://mcpjunction.ai) · [Dataset](https://mcpjunction.ai/data) ·
 [Categories](https://mcpjunction.ai/categories) · [Licensing](https://mcpjunction.ai/licensing)
@@ -38,7 +39,7 @@ claude mcp add --transport http mcpjunction https://mcpjunction.ai/mcp
 | --- | --- |
 | `search_servers` | Free-text search, optionally filtered by `category` and `language` |
 | `get_server` | One server by id (`owner--repo`, e.g. `microsoft--playwright-mcp`) |
-| `list_categories` | The 20 categories with active counts |
+| `list_categories` | Every category with active counts |
 | `get_dataset_info` | Counts, `generated_at`, source, and licensing terms |
 
 `GET /mcp` returns 405 by design; POST your JSON-RPC messages. JSON-RPC batching is not
@@ -68,8 +69,35 @@ a 2-star floor and match a Model Context Protocol name/topic heuristic. If your 
 on GitHub and meets that bar, it will appear on the next nightly run.
 
 **Corrections, removals, and licensing:** <licensing@mcpjunction.ai>, acknowledged within
-three business days. Please don't open pull requests against `public/data/` — that file is
-regenerated nightly and your edit would be overwritten.
+three business days.
+
+## Contributing
+
+Open to read and reuse; deliberately narrow about what comes back.
+
+**Corrections are the most useful thing you can send.** A wrong install hint, a stale
+license, a repository that moved, a server sitting in the wrong category — open an issue or
+email the address above with the server id (`owner--repo`) and what's wrong. One maintainer
+cannot check 1,800 entries by hand, and the people who hit these find them first.
+
+**Pull requests are welcome for the software** — `src/`, `worker/`, `scripts/`, `docs/`.
+Bug fixes need no preamble. Open an issue first for anything that changes rendered output
+or the dataset shape, because the constraints in the next section are load-bearing and easy
+to undo by accident.
+
+**Three things don't take pull requests, for reasons rather than ceremony:**
+
+- **`public/data/`** — regenerated nightly, so the edit is gone within a day. If a server
+  is missing, the fix is upstream: tag the repository and the next run finds it.
+- **`editorial/summaries.md`** — summaries are written in-house. A directory that other
+  people cite lives or dies on whether its prose is trustworthy, and reviewing a summary
+  properly costs about what writing one costs.
+- **`categories.json` and `topics.json`** — every slug is a permanent public URL, and
+  category order is matching precedence rather than presentation. Propose one in an issue,
+  with the servers it would cover; adding a category is a decision, not a patch.
+
+The code is MIT and contributions to it are accepted on those terms. The dataset is
+separately licensed — see [Licensing](#licensing).
 
 ## How the data is kept honest
 
@@ -106,7 +134,9 @@ actually enforces:
 src/              Astro static site — pages, layouts, components
 worker/           Cloudflare Worker — the /mcp server and markdown negotiation
 scripts/          pipeline.py (GitHub API → dataset), build_sitemap.py
-categories.json   Taxonomy: 20 categories, first match in file order wins
+categories.json   Taxonomy: human-owned, first match in file order wins
+topics.json       Approved /topics/<tag> pages — vetted GitHub repository topics
+server.json       Registry metadata for registry.modelcontextprotocol.io
 editorial/        Human-written server summaries (summaries.md)
 public/           Passthrough assets — robots.txt, license.xml, llms.txt, _headers, data/
 dist/             Build output and the Worker's asset root (not committed)
