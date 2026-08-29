@@ -11,7 +11,7 @@
       "slug": "databases",
       "name": "Databases",
       "description": "MCP servers for relational, document, vector, and time-series databases — Postgres, MySQL, SQLite, MongoDB, Redis, Snowflake, BigQuery, and vector stores.",
-      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric"]
+      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric", "olap", "dbt", "powerbi", "power bi"]
     },
     {
       "slug": "communication",
@@ -35,7 +35,7 @@
       "slug": "design-tools",
       "name": "Design Tools",
       "description": "MCP servers for design and diagramming apps — Figma, Canva, Excalidraw, drawio, 3D modeling, CAD, and UI component libraries.",
-      "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library", "c4model", "magicui", "aseprite", "blockbench", "icons", "manim"]
+      "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library", "c4model", "magicui", "aseprite", "blockbench", "icons", "manim", "penpot", "mermaid", "touchdesigner"]
     },
     {
       "slug": "home-automation",
@@ -59,7 +59,7 @@
       "slug": "security",
       "name": "Security",
       "description": "MCP servers for auth, vulnerability scanning, pentesting, secrets management, encryption, and reverse engineering.",
-      "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec", "idapro", "idalib", "ida pro", "pwn", "binary ninja", "bitwarden", "solidity", "static-code-analyzer", "sonarqube", "sonarcloud"]
+      "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec", "idapro", "idalib", "ida pro", "pwn", "binary ninja", "bitwarden", "solidity", "static-code-analyzer", "sonarqube", "sonarcloud", "vulnerable", "metasploit"]
     },
     {
       "slug": "monitoring",
@@ -77,13 +77,13 @@
       "slug": "search",
       "name": "Search & Retrieval",
       "description": "MCP servers for web search, semantic search, and retrieval-augmented generation — Brave, Perplexity, Tavily, Exa, and vector-search backends.",
-      "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine", "mapbox", "openstreetmap", "location-based"]
+      "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine", "mapbox", "openstreetmap", "location-based", "geospatial"]
     },
     {
       "slug": "productivity",
       "name": "Productivity & Knowledge",
       "description": "MCP servers for notes, tasks, project management, calendars, wikis, and knowledge bases — Notion, Jira, Linear, Asana, Obsidian, Confluence, and Airtable.",
-      "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management", "task management", "todoist", "ticktick", "things.app", "journal", "journaling", "literature-review", "anki", "wikipedia", "getnote", "canvas-lms"]
+      "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management", "task management", "todoist", "ticktick", "things.app", "journal", "journaling", "literature-review", "anki", "wikipedia", "getnote", "canvas-lms", "zotero"]
     },
     {
       "slug": "mcp-infrastructure",
@@ -95,13 +95,13 @@
       "slug": "ai-media",
       "name": "AI Media Generation",
       "description": "MCP servers for AI-generated image, audio, video, and speech — Stable Diffusion, DALL-E, Midjourney, Whisper, TTS/STT, and video processing.",
-      "match": ["image-generation", "stable-diffusion", "dalle", "dall-e", "midjourney", "flux", "whisper", "tts", "text-to-speech", "stt", "speech-to-text", "voice", "speech", "audio-generation", "video-generation", "generative-ai", "elevenlabs", "image-processing", "image-editing", "ableton", "image-understanding"]
+      "match": ["image-generation", "stable-diffusion", "dalle", "dall-e", "midjourney", "flux", "whisper", "tts", "text-to-speech", "stt", "speech-to-text", "voice", "speech", "audio-generation", "video-generation", "generative-ai", "elevenlabs", "image-processing", "image-editing", "ableton", "image-understanding", "comfyui"]
     },
     {
       "slug": "ai-coding",
       "name": "AI Coding Assistants",
       "description": "MCP servers built for AI coding tools — Claude Code, Cursor, Codex, Windsurf, Copilot, and IDE-integrated assistants.",
-      "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide", "spec-driven-development", "aider", "nuxt", "vite", "rails", "phoenix", "wordpress", "elementor", "colab", "app-store-connect", "delphi", "1c-enterprise"]
+      "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide", "spec-driven-development", "aider", "nuxt", "vite", "rails", "phoenix", "wordpress", "elementor", "colab", "app-store-connect", "delphi", "1c-enterprise", "xcode"]
     },
     {
       "slug": "ai-agents",
