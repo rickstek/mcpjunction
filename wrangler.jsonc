@@ -43,7 +43,12 @@
     // "/mcp" MUST be listed. Without it the asset store handles the route
     // first and answers POST with 405 before the Worker is ever reached,
     // which breaks every MCP client while GET-based checks still look fine.
-    "run_worker_first": ["/mcp", "/mcp/*", "/servers/*", "/categories/*"],
+    // Every prefix whose pages have a markdown variant must be listed here,
+    // or negotiation silently fails for that surface while the explicit .md
+    // URL keeps working — which is exactly how /topics/* shipped: the pages
+    // were correct, the .md files were emitted, and `Accept: text/markdown`
+    // still returned HTML because the asset store answered first.
+    "run_worker_first": ["/mcp", "/mcp/*", "/servers/*", "/categories/*", "/topics/*"],
     // Astro build output. Contains passthrough files from public/ (data/,
     // robots.txt, license.xml, llms.txt) plus generated .html pages for
     // every route.

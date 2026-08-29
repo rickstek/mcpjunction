@@ -317,25 +317,36 @@ jobs:
         #   - the Worker stops intercepting (run_worker_first misconfigured)
         #     and agents silently get HTML
         #   - negotiation over-fires and serves markdown to humans
+        # One page per surface that has markdown variants. Testing only a
+        # server page is how /topics/* shipped with negotiation broken: its
+        # pages and .md files were both correct, but the prefix was missing
+        # from run_worker_first, so the asset store answered before the Worker
+        # saw the Accept header. A new surface must be added here and to
+        # run_worker_first in wrangler.jsonc together.
         run: |
           set -euo pipefail
-          page="https://mcpjunction.ai/servers/microsoft--playwright-mcp"
           fail=0
-          md=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/markdown" "$page")
-          case "$md" in
-            text/markdown*) echo "markdown negotiated OK" ;;
-            *) echo "::error::Accept: text/markdown returned '$md'"; fail=1 ;;
-          esac
-          html=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/html,*/*" "$page")
-          case "$html" in
-            text/html*) echo "html for browsers OK" ;;
-            *) echo "::error::browser Accept returned '$html'"; fail=1 ;;
-          esac
-          direct=$(curl -sS -o /dev/null -w "%{content_type}" "$page.md")
-          case "$direct" in
-            text/markdown*) echo "direct .md OK" ;;
-            *) echo "::error::direct .md returned '$direct'"; fail=1 ;;
-          esac
+          for page in \
+            "https://mcpjunction.ai/servers/microsoft--playwright-mcp" \
+            "https://mcpjunction.ai/categories/databases" \
+            "https://mcpjunction.ai/topics/rag"
+          do
+            md=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/markdown" "$page")
+            case "$md" in
+              text/markdown*) echo "markdown negotiated OK  $page" ;;
+              *) echo "::error::$page Accept: text/markdown returned '$md'"; fail=1 ;;
+            esac
+            html=$(curl -sS -o /dev/null -w "%{content_type}" -H "Accept: text/html,*/*" "$page")
+            case "$html" in
+              text/html*) echo "html for browsers OK    $page" ;;
+              *) echo "::error::$page browser Accept returned '$html'"; fail=1 ;;
+            esac
+            direct=$(curl -sS -o /dev/null -w "%{content_type}" "$page.md")
+            case "$direct" in
+              text/markdown*) echo "direct .md OK           $page.md" ;;
+              *) echo "::error::$page.md returned '$direct'"; fail=1 ;;
+            esac
+          done
           test "$fail" = "0" || exit 1
 
       - name: Verify llms.txt declared URLs
