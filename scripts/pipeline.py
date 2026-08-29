@@ -139,11 +139,23 @@ def api_get(url, attempt=1):
 # Normalization
 # --------------------------------------------------------------------------
 
+# Separator between haystack fields and between individual topics. No match
+# term may contain it, so no term can match across a boundary. Joining with a
+# plain space let two adjacent topics manufacture a phrase that neither one
+# holds: Windows-MCP's topics are [ai, desktop, mcp, tools, windows, ...],
+# which reads as "mcp tools" once joined, and GitHub returns topics
+# alphabetically -- so which phrases existed at all was an accident of the
+# alphabet. Changing this moved zero servers when it landed; it is preventive,
+# and it makes natural multi-word terms ("task management", "google drive")
+# safe to write instead of forcing the hyphenated spelling.
+HAYSTACK_SEP = " | "
+
+
 def categorize(repo):
-    haystack = " ".join([
+    haystack = HAYSTACK_SEP.join([
         repo.get("full_name") or "",
         repo.get("description") or "",
-        " ".join(repo.get("topics") or []),
+        HAYSTACK_SEP.join(repo.get("topics") or []),
     ]).lower()
     for name, pattern in CATEGORY_RULES:
         if pattern is None:
