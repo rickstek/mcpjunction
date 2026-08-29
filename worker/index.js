@@ -44,10 +44,17 @@ let datasetCache = { promise: null, data: null, fetchedAt: 0 };
  * Built once per dataset load rather than per request: search previously
  * rebuilt and lowercased a string for all ~1,800 entries on every single call,
  * which cost ~2.3 ms of CPU even for a one-word query.
+ *
+ * `_topics` exists for the same reason. The topic filter is an EXACT match, so
+ * it cannot read `_hay` — that string also contains the description, and
+ * `_hay.includes("claude")` is true for any server merely mentioning Claude.
+ * GitHub normalizes topics to lowercase, but they are third-party strings
+ * imported verbatim, so normalize rather than trust.
  */
 function indexDataset(data) {
   for (const s of data.servers || []) {
     s._hay = `${s.full_name || ""} ${s.description || ""} ${(s.topics || []).join(" ")}`.toLowerCase();
+    s._topics = (s.topics || []).map((t) => String(t).toLowerCase());
   }
   return data;
 }
@@ -88,18 +95,25 @@ const TOOLS = [
   {
     name: "search_servers",
     description:
-      "Search the MCP server directory by keyword. Matches name, description, " +
-      "and GitHub topics. Returns active servers sorted by relevance then stars. " +
+      "Search the MCP server directory by keyword and/or filters. Keyword matches " +
+      "name, description, and GitHub topics. Returns active servers sorted by " +
+      "relevance then stars. Supply at least one of query, category, or topic — " +
+      "with no query, filters alone enumerate a whole category or topic by stars. " +
       "Data refreshes nightly from the public GitHub API.",
     inputSchema: {
       type: "object",
       properties: {
-        query: { type: "string", description: "Keywords, e.g. 'postgres', 'browser automation'" },
+        query: { type: "string", description: "Keywords, e.g. 'postgres', 'browser automation'. Optional if category or topic is given." },
         category: { type: "string", description: "Optional category slug filter, e.g. 'databases' (see list_categories)" },
+        topic: {
+          type: "string",
+          description:
+            "Optional GitHub topic filter, exact match, e.g. 'kubernetes'. Any topic " +
+            "string works, not only the curated ones from list_topics.",
+        },
         language: { type: "string", description: "Optional implementation language filter, e.g. 'Python'" },
         limit: { type: "integer", minimum: 1, maximum: 50, description: "Max results (default 10)" },
       },
-      required: ["query"],
     },
   },
   {
@@ -119,6 +133,15 @@ const TOOLS = [
   {
     name: "list_categories",
     description: "List all directory categories with slugs, names, and active-server counts.",
+    inputSchema: { type: "object", properties: {} },
+  },
+  {
+    name: "list_topics",
+    description:
+      "List the curated GitHub topics that have a directory page, with active-server " +
+      "counts. Topics are assigned by repository owners and imported verbatim, so the " +
+      "full dataset carries thousands of them; this returns only the curated subset. " +
+      "search_servers accepts any topic string, curated or not.",
     inputSchema: { type: "object", properties: {} },
   },
   {
@@ -160,32 +183,47 @@ const MAX_TERMS = 8;
 
 function toolSearchServers(dataset, args) {
   const raw = String(args.query || "").trim();
-  if (!raw) return { error: "query is required" };
+
+  const category = args.category ? String(args.category).toLowerCase().trim() : null;
+  const topic = args.topic ? String(args.topic).toLowerCase().trim() : null;
+  const language = args.language ? String(args.language).toLowerCase().trim() : null;
+  const limit = Math.min(Math.max(parseInt(args.limit, 10) || 10, 1), 50);
+
+  // A filter alone is a legitimate search ("every server tagged kubernetes"),
+  // so `query` is no longer unconditionally required — but an empty call is
+  // still an error rather than a dump of the whole directory.
+  if (!raw && !category && !topic) {
+    return { error: "supply at least one of: query, category, topic" };
+  }
 
   const truncated = raw.length > MAX_QUERY_CHARS;
   const query = raw.slice(0, MAX_QUERY_CHARS).toLowerCase();
   const allTerms = query.split(/\s+/).filter(Boolean);
   const terms = allTerms.slice(0, MAX_TERMS);
 
-  const category = args.category ? String(args.category).toLowerCase() : null;
-  const language = args.language ? String(args.language).toLowerCase() : null;
-  const limit = Math.min(Math.max(parseInt(args.limit, 10) || 10, 1), 50);
-
   const scored = [];
   for (const s of dataset.servers) {
     if (s.status !== "active") continue;
     if (category && s.category !== category) continue;
     if (language && String(s.language || "").toLowerCase() !== language) continue;
-    const hay = s._hay || "";
+    // Exact membership, matching how /topics/<tag> pages are built: topics
+    // report what owners tagged, they don't interpret it.
+    if (topic && !(s._topics || []).includes(topic)) continue;
     let score = 0;
-    for (const t of terms) if (hay.includes(t)) score += 1;
-    if (score === 0) continue;
+    if (terms.length) {
+      const hay = s._hay || "";
+      for (const t of terms) if (hay.includes(t)) score += 1;
+      if (score === 0) continue;
+    }
     scored.push([score, s.stars || 0, s]);
   }
+  // With no keyword every hit scores 0 and this collapses to a stars sort,
+  // which is the right ranking for "show me everything in this topic".
   scored.sort((a, b) => b[0] - a[0] || b[1] - a[1]);
 
   const out = {
-    query: raw.slice(0, MAX_QUERY_CHARS),
+    query: raw ? raw.slice(0, MAX_QUERY_CHARS) : null,
+    filters: { category, topic, language },
     total_matches: scored.length,
     returned: Math.min(limit, scored.length),
     results: scored.slice(0, limit).map(([, , s]) => publicEntry(s)),
@@ -197,6 +235,13 @@ function toolSearchServers(dataset, args) {
     out.notice =
       `Query was truncated to ${MAX_QUERY_CHARS} characters and ${MAX_TERMS} terms. ` +
       `Searched: ${terms.join(" ")}`;
+  }
+  // An unknown topic and a topic with no active members are indistinguishable
+  // in the result shape (both empty), so name the likely cause.
+  if (topic && scored.length === 0) {
+    out.notice =
+      `No active servers carry the topic '${topic}'. Topics are exact matches on ` +
+      `owner-assigned GitHub tags; call list_topics for the curated ones.`;
   }
   return out;
 }
@@ -217,6 +262,32 @@ function toolListCategories(dataset) {
       count,
       url: `https://mcpjunction.ai/categories/${slug}`,
     })),
+    attribution: ATTRIBUTION,
+  };
+}
+
+function toolListTopics(dataset) {
+  // Absent only on a dataset generated before the pipeline learned to emit the
+  // aggregate. Degrade with an explanation rather than an empty list, which
+  // would read as "this directory has no topics".
+  if (!dataset.topics) {
+    return {
+      error: "topic index unavailable",
+      hint:
+        "This dataset predates the topics aggregate; it appears after the next " +
+        "nightly refresh. search_servers already accepts a topic filter.",
+    };
+  }
+  return {
+    topics: Object.entries(dataset.topics).map(([slug, count]) => ({
+      slug,
+      count,
+      url: `https://mcpjunction.ai/topics/${slug}`,
+    })),
+    note:
+      "Curated subset only — these are the topics with a directory page. Topics " +
+      "are owner-assigned GitHub tags imported verbatim, and search_servers " +
+      "accepts any topic string, listed here or not.",
     attribution: ATTRIBUTION,
   };
 }
@@ -324,7 +395,9 @@ async function handleMcp(request, env) {
             instructions:
               "Queryable index of the mcpjunction.ai MCP server directory. " +
               "Use search_servers to find servers, get_server for one entry, " +
-              "list_categories to browse. Data refreshes nightly. " +
+              "list_categories and list_topics to browse. Categories are a " +
+              "curated single-assignment taxonomy; topics are owner-assigned " +
+              "GitHub tags, many per server. Data refreshes nightly. " +
               `Attribution: ${ATTRIBUTION}.`,
           })
         );
@@ -340,6 +413,7 @@ async function handleMcp(request, env) {
         if (name === "search_servers") payload = toolSearchServers(dataset, args);
         else if (name === "get_server") payload = toolGetServer(dataset, args);
         else if (name === "list_categories") payload = toolListCategories(dataset);
+        else if (name === "list_topics") payload = toolListTopics(dataset);
         else if (name === "get_dataset_info") payload = toolGetDatasetInfo(dataset);
         else return jsonResponse(rpcError(id, -32602, `Unknown tool: ${name}`));
         return jsonResponse(

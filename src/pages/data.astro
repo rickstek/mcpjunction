@@ -73,9 +73,10 @@ const jsonLd = {
 <h2>Query it as an MCP server</h2>
 <p>This directory is itself an MCP server. Point your agent at
 <code>https://mcpjunction.ai/mcp</code> (streamable HTTP, stateless, no auth)
-and it can search the directory with <code>search_servers</code>, fetch one
-entry with <code>get_server</code>, and browse with
-<code>list_categories</code>. Claude Code example:</p>
+and it can search the directory with <code>search_servers</code> (by keyword,
+category, or GitHub topic), fetch one entry with <code>get_server</code>, and
+browse with <code>list_categories</code> and <code>list_topics</code>. Claude
+Code example:</p>
 <pre class="block"><code>claude mcp add --transport http mcpjunction https://mcpjunction.ai/mcp</code></pre>
 
 <h2>Licensing</h2>

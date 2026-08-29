@@ -47,6 +47,7 @@ DATA_DIR = ROOT / "public" / "data"
 JSON_PATH = DATA_DIR / "mcp_servers.json"
 CSV_PATH = DATA_DIR / "mcp_servers.csv"
 CATEGORIES_PATH = ROOT / "categories.json"
+TOPICS_PATH = ROOT / "topics.json"
 SUMMARIES_PATH = ROOT / "editorial" / "summaries.md"
 
 CONTACT = "admin@mcpjunction.ai"
@@ -533,6 +534,24 @@ def main():
     for e in active:
         categories[e["category"]] = categories.get(e["category"], 0) + 1
 
+    # Topic counts, restricted to the APPROVED list in topics.json — the same
+    # human-owned file the /topics/<tag> pages are minted from. Deliberately not
+    # every tag in the data: there are ~5,000 distinct third-party topic strings,
+    # and only the approved ones have pages. Emitting a count for an unapproved
+    # tag would invite consumers (notably the /mcp tools) to build a
+    # /topics/<tag> URL that 404s.
+    #
+    # Counted the same way the topic pages compute membership: exact match on a
+    # server's topics array, active servers only. If the two ever disagree, the
+    # page is right and this is wrong.
+    approved_topics = json.loads(TOPICS_PATH.read_text(encoding="utf-8"))["topics"]
+    topic_counts = {}
+    for e in active:
+        for t in e.get("topics") or []:
+            key = str(t).lower()
+            topic_counts[key] = topic_counts.get(key, 0) + 1
+    topics = {t: topic_counts.get(t, 0) for t in approved_topics}
+
     payload = {
         "dataset": "mcpjunction.ai MCP server directory",
         "url": "https://mcpjunction.ai/data/mcp_servers.json",
@@ -546,6 +565,7 @@ def main():
         "count": len(active),
         "count_including_delisted": len(entries),
         "categories": dict(sorted(categories.items(), key=lambda kv: -kv[1])),
+        "topics": dict(sorted(topics.items(), key=lambda kv: -kv[1])),
         "servers": entries,
     }
 
@@ -577,6 +597,10 @@ def main():
     print(f"wrote {CSV_PATH.relative_to(ROOT)}")
     print("categories: " + ", ".join(f"{k} {v}" for k, v in
                                      payload["categories"].items()))
+    thin = [k for k, v in payload["topics"].items() if v < 10]
+    print(f"topics: {len(payload['topics'])} approved"
+          + (f", {len(thin)} below 10 members (noindex on site): "
+             + ", ".join(thin) if thin else ""))
 
 
 if __name__ == "__main__":
