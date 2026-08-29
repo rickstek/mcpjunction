@@ -5,37 +5,37 @@
       "slug": "browser-automation",
       "name": "Browser Automation",
       "description": "MCP servers that drive browsers, scrape the web, or crawl pages — Playwright, Puppeteer, Selenium, and headless Chromium tooling.",
-      "match": ["browser", "browser-automation", "playwright", "puppeteer", "selenium", "chrome", "chromium", "webdriver", "scrape", "scraping", "crawler", "web-scraping", "headless-browser"]
+      "match": ["browser", "browser-automation", "playwright", "puppeteer", "selenium", "chrome", "chromium", "webdriver", "scrape", "scraping", "crawler", "web-scraping", "headless-browser", "hyperbrowser", "camoufox", "web-research"]
     },
     {
       "slug": "databases",
       "name": "Databases",
       "description": "MCP servers for relational, document, vector, and time-series databases — Postgres, MySQL, SQLite, MongoDB, Redis, Snowflake, BigQuery, and vector stores.",
-      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries"]
+      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric"]
     },
     {
       "slug": "communication",
       "name": "Communication",
       "description": "MCP servers for chat, email, messaging, and video conferencing — Slack, Discord, Telegram, Gmail, Teams, and Matrix.",
-      "match": ["slack", "discord", "telegram", "whatsapp", "email", "gmail", "imap", "smtp", "microsoft-teams", "teams", "matrix", "sms", "twilio", "messaging", "chat", "signal"]
+      "match": ["slack", "discord", "telegram", "whatsapp", "email", "gmail", "imap", "smtp", "microsoft-teams", "teams", "matrix", "sms", "twilio", "messaging", "chat", "signal", "emails", "resend", "gsuite", "microsoft 365"]
     },
     {
       "slug": "finance",
       "name": "Finance & Commerce",
       "description": "MCP servers for payments, accounting, trading, crypto, and fintech APIs — Stripe, QuickBooks, market data, and blockchain integrations.",
-      "match": ["stripe", "payment", "invoice", "accounting", "trading", "crypto", "blockchain", "bank", "banking", "finance", "financial", "fintech", "quantitative-finance", "financial-analysis", "x402", "ledger", "quickbooks", "ethereum", "solana", "defi"]
+      "match": ["stripe", "payment", "invoice", "accounting", "trading", "crypto", "blockchain", "bank", "banking", "finance", "financial", "fintech", "quantitative-finance", "financial-analysis", "x402", "ledger", "quickbooks", "ethereum", "solana", "defi", "stock", "stock-data", "stock market", "stock exchange", "futures", "interactive-brokers", "ibkr", "zerodha", "razorpay", "xero", "freee", "onchain", "coinbase"]
     },
     {
       "slug": "storage",
       "name": "Storage & Files",
       "description": "MCP servers for filesystems, object storage, cloud drives, and document access — local files, S3, Google Drive, Dropbox, Box, and PDF/Excel handling.",
-      "match": ["filesystem", "file-system", "s3", "storage", "google-drive", "dropbox", "box-com", "onedrive", "pdf", "document", "csv", "excel", "spreadsheet", "xlsx", "file-storage"]
+      "match": ["filesystem", "file-system", "s3", "storage", "google-drive", "dropbox", "box-com", "onedrive", "pdf", "document", "csv", "excel", "spreadsheet", "xlsx", "file-storage", "google drive", "gdrive", "markdownify"]
     },
     {
       "slug": "design-tools",
       "name": "Design Tools",
       "description": "MCP servers for design and diagramming apps — Figma, Canva, Excalidraw, drawio, 3D modeling, CAD, and UI component libraries.",
-      "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library"]
+      "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library", "c4model", "magicui", "aseprite", "blockbench", "icons", "manim"]
     },
     {
       "slug": "home-automation",
@@ -47,7 +47,7 @@
       "slug": "iot-hardware",
       "name": "IoT, Hardware & Robotics",
       "description": "MCP servers for embedded devices, microcontrollers, hardware interfaces, and robotics — ESP32, Arduino, Raspberry Pi, MQTT, sensor networks, ROS, and drones. Robotics may split into its own category as coverage grows.",
-      "match": ["esp32", "esp-idf", "esp8266", "arduino", "raspberry-pi", "raspberrypi", "iot", "embedded", "microcontroller", "mqtt", "firmware", "sensors", "hardware", "rp2040", "stm32", "ros", "ros2", "moveit", "gazebo", "drone", "uav", "ardupilot", "betaflight", "robot", "robotics", "embodied-ai"]
+      "match": ["esp32", "esp-idf", "esp8266", "arduino", "raspberry-pi", "raspberrypi", "iot", "embedded", "microcontroller", "mqtt", "firmware", "sensors", "hardware", "rp2040", "stm32", "ros", "ros2", "moveit", "gazebo", "drone", "uav", "ardupilot", "betaflight", "robot", "robotics", "embodied-ai", "plc", "industrial-automation", "siemens"]
     },
     {
       "slug": "gaming",
@@ -59,55 +59,55 @@
       "slug": "security",
       "name": "Security",
       "description": "MCP servers for auth, vulnerability scanning, pentesting, secrets management, encryption, and reverse engineering.",
-      "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec"]
+      "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec", "idapro", "idalib", "ida pro", "pwn", "binary ninja", "bitwarden", "solidity", "static-code-analyzer", "sonarqube", "sonarcloud"]
     },
     {
       "slug": "monitoring",
       "name": "Monitoring & Observability",
       "description": "MCP servers for metrics, logs, traces, APM, and error tracking — Grafana, Prometheus, Datadog, Sentry, and New Relic.",
-      "match": ["monitoring", "observability", "metrics", "logging", "logs", "prometheus", "grafana", "sentry", "datadog", "new-relic", "newrelic", "apm", "tracing", "opentelemetry", "elk-stack", "loki"]
+      "match": ["monitoring", "observability", "metrics", "logging", "logs", "prometheus", "grafana", "sentry", "datadog", "new-relic", "newrelic", "apm", "tracing", "opentelemetry", "elk-stack", "loki", "langfuse", "thread-dump", "performance-tuning"]
     },
     {
       "slug": "cloud-devops",
       "name": "Cloud & DevOps",
       "description": "MCP servers for cloud platforms, infrastructure-as-code, containers, and deployment — AWS, Azure, GCP, Kubernetes, Docker, Terraform, and CDN edges.",
-      "match": ["aws", "azure", "gcp", "google-cloud", "kubernetes", "k8s", "docker", "terraform", "cloudflare", "vercel", "netlify", "ansible", "helm", "devops", "infrastructure", "infrastructure-as-code", "cloud-native", "deploy", "deployment", "ci-cd", "cicd"]
+      "match": ["aws", "azure", "gcp", "google-cloud", "kubernetes", "k8s", "docker", "terraform", "cloudflare", "vercel", "netlify", "ansible", "helm", "devops", "infrastructure", "infrastructure-as-code", "cloud-native", "deploy", "deployment", "ci-cd", "cicd", "gcloud", "volcengine", "portainer", "containerization", "netbox", "e2b", "code-execution"]
     },
     {
       "slug": "search",
       "name": "Search & Retrieval",
       "description": "MCP servers for web search, semantic search, and retrieval-augmented generation — Brave, Perplexity, Tavily, Exa, and vector-search backends.",
-      "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine"]
+      "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine", "mapbox", "openstreetmap", "location-based"]
     },
     {
       "slug": "productivity",
       "name": "Productivity & Knowledge",
       "description": "MCP servers for notes, tasks, project management, calendars, wikis, and knowledge bases — Notion, Jira, Linear, Asana, Obsidian, Confluence, and Airtable.",
-      "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management"]
+      "match": ["notion", "jira", "linear", "asana", "trello", "monday", "calendar", "todo", "obsidian", "confluence", "airtable", "clickup", "note-taking", "notes", "knowledge-base", "knowledge-graph", "wiki", "documentation", "roam", "logseq", "reminders", "contacts", "task-management", "task management", "todoist", "ticktick", "things.app", "journal", "journaling", "literature-review", "anki", "wikipedia", "getnote", "canvas-lms"]
     },
     {
       "slug": "mcp-infrastructure",
       "name": "Infrastructure & SDKs",
       "description": "MCP infrastructure: servers and tooling for building, running, routing, and cataloguing MCP itself — framework libraries and official SDKs, gateways, routers and proxies, installers and desktop managers, and registries listing other servers.",
-      "match": ["awesome-mcp", "mcp-framework", "mcp-sdk", "mcp-toolkit", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-bridge", "mcp-registry", "mcp-marketplace", "mcp-store", "mcp-hub", "mcp-inspector", "mcp-installer", "mcp-manager", "mcp-cli", "sdk for model context protocol", "sdk for the model context protocol", "implementation of the model context protocol", "implementation for the model context protocol", "implementations of the model context protocol", "model context protocol servers", "model context protocol (mcp) servers", "collection of mcp servers", "collection of model context protocol", "curated list of model context protocol", "curated list of mcp", "list of mcp servers", "list for mcp servers", "building mcp servers", "build mcp servers", "creating mcp servers", "create mcp servers", "managing mcp servers", "manage mcp servers", "installs other mcp servers", "aggregates and serves multiple mcp", "mcp-adapter", "mcp-nest", "mcp framework", "server implementations", "mcp server installation", "install mcp servers", "router for mcp", "reference mcp servers", "create model context protocol"]
+      "match": ["awesome-mcp", "mcp-framework", "mcp-sdk", "mcp-toolkit", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-bridge", "mcp-registry", "mcp-marketplace", "mcp-store", "mcp-hub", "mcp-inspector", "mcp-installer", "mcp-manager", "mcp-cli", "sdk for model context protocol", "sdk for the model context protocol", "implementation of the model context protocol", "implementation for the model context protocol", "implementations of the model context protocol", "model context protocol servers", "model context protocol (mcp) servers", "collection of mcp servers", "collection of model context protocol", "curated list of model context protocol", "curated list of mcp", "list of mcp servers", "list for mcp servers", "building mcp servers", "build mcp servers", "creating mcp servers", "create mcp servers", "managing mcp servers", "manage mcp servers", "installs other mcp servers", "aggregates and serves multiple mcp", "mcp-adapter", "mcp-nest", "mcp framework", "server implementations", "mcp server installation", "install mcp servers", "router for mcp", "reference mcp servers", "create model context protocol", "mcptools", "create a python mcp server"]
     },
     {
       "slug": "ai-media",
       "name": "AI Media Generation",
       "description": "MCP servers for AI-generated image, audio, video, and speech — Stable Diffusion, DALL-E, Midjourney, Whisper, TTS/STT, and video processing.",
-      "match": ["image-generation", "stable-diffusion", "dalle", "dall-e", "midjourney", "flux", "whisper", "tts", "text-to-speech", "stt", "speech-to-text", "voice", "speech", "audio-generation", "video-generation", "generative-ai", "elevenlabs"]
+      "match": ["image-generation", "stable-diffusion", "dalle", "dall-e", "midjourney", "flux", "whisper", "tts", "text-to-speech", "stt", "speech-to-text", "voice", "speech", "audio-generation", "video-generation", "generative-ai", "elevenlabs", "image-processing", "image-editing", "ableton", "image-understanding"]
     },
     {
       "slug": "ai-coding",
       "name": "AI Coding Assistants",
       "description": "MCP servers built for AI coding tools — Claude Code, Cursor, Codex, Windsurf, Copilot, and IDE-integrated assistants.",
-      "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide"]
+      "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide", "spec-driven-development", "aider", "nuxt", "vite", "rails", "phoenix", "wordpress", "elementor", "colab", "app-store-connect", "delphi", "1c-enterprise"]
     },
     {
       "slug": "ai-agents",
       "name": "AI Agents",
       "description": "MCP servers for agent frameworks, agent memory, orchestration, and general agentic infrastructure — LangChain, LangGraph, multi-agent systems, and agent skills.",
-      "match": ["agent", "agents", "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "agent-framework", "agent-memory", "agent-skills", "swarm", "autonomous", "langchain", "langgraph", "autogen", "crewai"]
+      "match": ["agent", "agents", "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "agent-framework", "agent-memory", "agent-skills", "swarm", "autonomous", "langchain", "langgraph", "autogen", "crewai", "dify"]
     },
     {
       "slug": "ai-models",
