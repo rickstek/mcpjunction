@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "4ff39ba3162d4da73478b78034907670",
+      "sig": "a10774c82d5be190c851328824c86914",
       "lastmod": "2026-08-29"
     },
     "/categories": {
@@ -15,7 +15,7 @@
       "lastmod": "2026-08-29"
     },
     "/categories/ai-coding": {
-      "sig": "20ccab7073a24106c971e1a483349095",
+      "sig": "277c28e4abb6b20df9d162e27e1a1384",
       "lastmod": "2026-08-29"
     },
     "/categories/ai-media": {
@@ -99,15 +99,15 @@
       "lastmod": "2026-08-29"
     },
     "/data": {
-      "sig": "3af5bc4d248189eadf0aef211fa759cc",
+      "sig": "b30440215aa5af4148c8e2a96460f6f5",
       "lastmod": "2026-08-29"
     },
     "/data/mcp_servers.csv": {
-      "sig": "f0c24720b507f31294026e35c612a3d9",
+      "sig": "2d85d2ea7ebe8e4cd5291fc204874fd7",
       "lastmod": "2026-08-29"
     },
     "/data/mcp_servers.json": {
-      "sig": "71ac712c50fba597947134d2fb5c9b0f",
+      "sig": "342d4a3d4ea78d82db18673c7d2ead19",
       "lastmod": "2026-08-29"
     },
     "/licensing": {
@@ -2187,7 +2187,7 @@
       "lastmod": "2026-08-20"
     },
     "/servers/engasnm111--lnwjud": {
-      "sig": "bfbba0e4de139c1049293c31f1d126e4",
+      "sig": "6a6c76fbdd65a200cc5bdeabc3229e2b",
       "lastmod": "2026-08-29"
     },
     "/servers/env-kit--envkit-releases": {
