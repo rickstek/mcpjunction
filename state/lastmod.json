@@ -3,11 +3,11 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "a3a504fb2a111ce2318b59ca17128965",
+      "sig": "91c8f9f2f5aa8ecb0a5f64f2b640294d",
       "lastmod": "2026-08-29"
     },
     "/categories": {
-      "sig": "7b57d83ead7f728f5adfee22e909ee77",
+      "sig": "c55e61a4a61cd49329dcb5fc6fd0681d",
       "lastmod": "2026-08-29"
     },
     "/categories/ai-agents": {
@@ -15,7 +15,7 @@
       "lastmod": "2026-08-29"
     },
     "/categories/ai-coding": {
-      "sig": "277c28e4abb6b20df9d162e27e1a1384",
+      "sig": "a027305349cfd211165a7327924dd34f",
       "lastmod": "2026-08-29"
     },
     "/categories/ai-media": {
@@ -27,7 +27,7 @@
       "lastmod": "2026-08-29"
     },
     "/categories/browser-automation": {
-      "sig": "491550f106dc8223ef3f90103ae71acf",
+      "sig": "17272d8979acd763e6075af786de9544",
       "lastmod": "2026-08-29"
     },
     "/categories/cloud-devops": {
@@ -99,15 +99,15 @@
       "lastmod": "2026-08-29"
     },
     "/data": {
-      "sig": "8693311af0e7f21c6f5c8cd4fe9aaff7",
+      "sig": "28cb91298318706429ae4ec83ddb5831",
       "lastmod": "2026-08-29"
     },
     "/data/mcp_servers.csv": {
-      "sig": "5af3e3e6e0345fa8ac0722dd9c1ddd5c",
+      "sig": "54c05dbacdee11f646c29ca3767a58a4",
       "lastmod": "2026-08-29"
     },
     "/data/mcp_servers.json": {
-      "sig": "65771952c2059f191be8544d1d1b3e5c",
+      "sig": "99e4e38645ab0936903942778334061d",
       "lastmod": "2026-08-29"
     },
     "/licensing": {
@@ -560,6 +560,10 @@
     },
     "/servers/alvinunreal--openpets": {
       "sig": "3595521547a0b0c0e44cac20a549a71f",
+      "lastmod": "2026-08-29"
+    },
+    "/servers/amafjarkasi--electron-mcp-server": {
+      "sig": "466757fabedf8b44ba425c6f27dafc3b",
       "lastmod": "2026-08-29"
     },
     "/servers/amekala--ads-mcp": {
@@ -6866,10 +6870,6 @@
       "sig": "0777f1a26a15af57f2a0d2f212d0e243",
       "lastmod": "2026-08-29"
     },
-    "/servers/vvkmnn--claude-emporium": {
-      "sig": "324e4e8bbe10f172f83e6cf3a466fbe0",
-      "lastmod": "2026-08-29"
-    },
     "/servers/vvkmnn--claude-historian-mcp": {
       "sig": "b0cc80793130b7aeba2bcc5bc9186e61",
       "lastmod": "2026-08-29"
@@ -7319,7 +7319,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics": {
-      "sig": "f6081b667aa708a960189883fb537904",
+      "sig": "91e8bdb7200fa09476ccd2a783f9179e",
       "lastmod": "2026-08-29"
     },
     "/topics/agent-memory": {
@@ -7327,7 +7327,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics/anthropic": {
-      "sig": "50287a83f00db972cf96acf66a610182",
+      "sig": "56a90564c55b443b2ec1757334885519",
       "lastmod": "2026-08-29"
     },
     "/topics/chatbot": {
@@ -7339,11 +7339,11 @@
       "lastmod": "2026-08-29"
     },
     "/topics/claude": {
-      "sig": "0aaeb049aa4a5c066a5ae3dcea4a1717",
+      "sig": "072a1749f523e54046f3de9036979907",
       "lastmod": "2026-08-29"
     },
     "/topics/claude-code": {
-      "sig": "59ad2d9dd8689d1cee6a6172c20e2d4e",
+      "sig": "b82c57fa014857c3baa91a530c833b38",
       "lastmod": "2026-08-29"
     },
     "/topics/claude-desktop": {
@@ -7367,7 +7367,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics/cursor": {
-      "sig": "70cc01abe4a54794c1d04d2c85698586",
+      "sig": "63c364c55e7a9d9307942340b08dcafa",
       "lastmod": "2026-08-29"
     },
     "/topics/deepseek": {
@@ -7383,7 +7383,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics/electron": {
-      "sig": "89d45623016cc623875d8b79713e2203",
+      "sig": "b1b6163590c800ec6933c6f6261e01d7",
       "lastmod": "2026-08-29"
     },
     "/topics/gemini": {
@@ -7427,7 +7427,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics/nodejs": {
-      "sig": "156ff76a6bfb16906f33a357294cc3de",
+      "sig": "15a354701484a4653d40c8add17830bc",
       "lastmod": "2026-08-29"
     },
     "/topics/ollama": {
@@ -7491,7 +7491,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics/typescript": {
-      "sig": "e99c19869d3f2aeb89128596bad17987",
+      "sig": "acac4b5a4194a483a903ad707539005b",
       "lastmod": "2026-08-29"
     },
     "/topics/vibe-coding": {
