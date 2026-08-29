@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import dataset from '../../../public/data/mcp_servers.json';
+import topicsFile from '../../../topics.json';
+
+const active = dataset.servers.filter((s: any) => s.status === 'active');
+
+const counts: Record<string, number> = {};
+for (const s of active) {
+  for (const t of s.topics || []) {
+    const k = String(t).toLowerCase();
+    counts[k] = (counts[k] || 0) + 1;
+  }
+}
+
+// Alphabetical, whatever order topics.json keeps its entries in.
+const topics = [...topicsFile.topics]
+  .sort()
+  .map((tag: string) => ({ tag, count: counts[tag] || 0 }));
+
+// Mirrors the categories index: the ItemList declares what we want indexed,
+// and a topic page currently below the thin-page threshold is left out of it
+// (its own page is noindex, so the two stay consistent).
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'MCP Server Topics — MCP Junction',
+    description: 'Model Context Protocol servers grouped by GitHub repository topic.',
+    url: 'https://mcpjunction.ai/topics',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: topics
+        .filter((t) => t.count >= 10)
+        .map((t, i: number) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `https://mcpjunction.ai/topics/${t.tag}`,
+          name: t.tag,
+        })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://mcpjunction.ai/' },
+      { '@type': 'ListItem', position: 2, name: 'Topics' },
+    ],
+  },
+];
+---
+<Base
+  title="MCP Server Topics — MCP Junction"
+  description="Browse MCP servers by GitHub repository topic — claude-code, cursor, rag, self-hosted, and more. Topics are owner-assigned strings; this lists the vetted set."
+  canonical="/topics"
+  jsonLd={jsonLd}
+>
+<p class="meta"><a href="/">Home</a> / Topics</p>
+<h1>MCP Server Topics</h1>
+<p>Servers grouped by GitHub repository topic. Topics are strings repository owners publish themselves — imported verbatim, not curated — so this index lists only a vetted set of widely used tags. The human-curated grouping lives at <a href="/categories">categories</a>.</p>
+<p>{topics.length} topics.</p>
+
+<ul class="servers">
+  {topics.map((t) => (
+    <li>
+      <a href={`/topics/${t.tag}`}><strong>{t.tag}</strong></a>
+      <span class="meta"> — {t.count} server{t.count === 1 ? '' : 's'}</span>
+    </li>
+  ))}
+</ul>
+</Base>

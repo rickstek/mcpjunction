@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
+import topicsFile from '../../../topics.json';
 
 /**
  * Markdown representation of each server page.
@@ -82,7 +83,16 @@ export const GET: APIRoute = ({ props }) => {
   L.push('| --- | --- |');
   L.push(`| Owner | ${cell(server.owner)} |`);
   L.push(`| Category | ${cell(categoryName)} (${BASE}/categories/${server.category}) |`);
-  L.push(`| Topics | ${cell((server.topics || []).join(', '))} |`);
+  // Approved topics (topics.json) get their page URL in the same bare-URL
+  // style as the category row; unvetted tags stay plain strings.
+  const approvedTopics = new Set<string>(topicsFile.topics);
+  const topicCell = (server.topics || [])
+    .map((t: string) => {
+      const k = String(t).toLowerCase();
+      return approvedTopics.has(k) ? `${cell(t)} (${BASE}/topics/${k})` : cell(t);
+    })
+    .join(', ');
+  L.push(`| Topics | ${topicCell || '—'} |`);
   L.push(`| Language | ${cell(server.language)} |`);
   L.push(`| License | ${cell(server.license)} |`);
   L.push(`| Stars | ${cell(server.stars)} |`);

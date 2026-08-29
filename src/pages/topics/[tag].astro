@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import dataset from '../../../public/data/mcp_servers.json';
+import topicsFile from '../../../topics.json';
+import { fmt } from '../../lib/format';
+
+export async function getStaticPaths() {
+  return topicsFile.topics.map((tag: string) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+
+// Exact membership, not term matching: a topic page lists the servers whose
+// owners applied this tag, verbatim. Categories interpret; topics report.
+const members = dataset.servers
+  .filter((s: any) => s.status === 'active'
+    && Array.isArray(s.topics)
+    && s.topics.some((t: string) => String(t).toLowerCase() === tag))
+  .sort((a: any, b: any) => (b.stars || 0) - (a.stars || 0));
+
+const canonicalPath = `/topics/${tag}`;
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/, '');
+const generatedAt = (dataset as any).generated_at;
+
+// Decay policy: pages are permanent URLs, but a tag that has withered below
+// 10 active servers leaves the index and the sitemap (the build reads this
+// meta) rather than serving a thin page to searchers. Never a 404.
+const noindex = members.length < 10;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${tag} MCP Servers — MCP Junction`,
+  description: `MCP servers whose GitHub repository topics include “${tag}”.`,
+  url: canonicalUrl,
+  dateModified: generatedAt,
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: members.length,
+    itemListElement: members.map((s: any, i: number) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(`/servers/${s.id}`, Astro.site).toString().replace(/\/$/, ''),
+      name: s.name,
+    })),
+  },
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://mcpjunction.ai/' },
+    { '@type': 'ListItem', position: 2, name: 'Topics', item: 'https://mcpjunction.ai/topics' },
+    { '@type': 'ListItem', position: 3, name: tag },
+  ],
+};
+---
+<Base
+  title={`${tag} MCP Servers — MCP Junction`}
+  description={`MCP servers whose GitHub repository topics include “${tag}” — with install hints, categories, licenses, and maintenance status. Topics are assigned by repository owners, not curated.`}
+  canonical={canonicalPath}
+  noindex={noindex}
+  jsonLd={[jsonLd, breadcrumbLd]}
+  markdownHref={`/topics/${tag}.md`}
+>
+<p class="meta"><a href="/">Home</a> / <a href="/topics">Topics</a></p>
+<h1>{tag} MCP Servers</h1>
+<p>Servers whose GitHub repository topics include <code>{tag}</code>.</p>
+<p class="meta">{members.length} server{members.length === 1 ? '' : 's'} · updated {generatedAt}</p>
+
+{members.length === 0 ? (
+  <p><em>No active servers currently carry this topic. The nightly refresh picks up changes as they appear on GitHub.</em></p>
+) : (
+  <ul class="servers">
+    {members.map((s: any) => (
+      <li>
+        <a href={`/servers/${s.id}`}><strong>{s.name}</strong></a>
+        <span class="meta"> — {s.owner} · {s.language || 'language n/a'} · ★ {fmt(s.stars)}</span>
+        {s.description && <div class="meta">{s.description}</div>}
+      </li>
+    ))}
+  </ul>
+)}
+
+<p class="meta">Topics are repository-owner strings imported verbatim from GitHub; MCP Junction does not assign or curate them. Browse the human-curated grouping at <a href="/categories">categories</a>.</p>
+</Base>

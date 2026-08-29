@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ServerBadges from '../../components/ServerBadges.astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
+import topicsFile from '../../../topics.json';
 import { fmt } from '../../lib/format';
 
 export async function getStaticPaths() {
@@ -38,10 +39,12 @@ const datasetUrl = 'https://mcpjunction.ai/data/mcp_servers.json';
 
 const isDelisted = server.status === 'archived_or_removed';
 
-// Repository topics as published by the owner. Third-party strings, so they
-// are rendered as plain text and never as links — see the note in the plan
-// about /topics/<tag> being a separate, unapproved decision.
+// Repository topics as published by the owner. Third-party strings: a tag
+// links to /topics/<tag> only when it is in the approved list (topics.json,
+// human-owned); everything else stays plain text, so no unvetted string ever
+// becomes a URL on this site.
 const topics: string[] = Array.isArray(server.topics) ? server.topics : [];
+const approvedTopics = new Set<string>(topicsFile.topics);
 
 // Nobody searches "playwright-mcp"; they search "playwright mcp server". The
 // phrase belongs in the title and the H1. Names that already carry it (every
@@ -215,8 +218,12 @@ const related = (() => {
     {/* A list, not adjacent spans. Adjacent inline elements carry no text
         node between them, so every text extractor — and every agent reading
         this page as prose — sees "mcpplaywright" as a single token. */}
-    <ul class="topics">{topics.map((t) => <li class="topic">{t}</li>)}</ul>
-    <p class="meta">Repository topics as published by the owner on GitHub. Imported verbatim; MCP Junction does not assign or curate them.</p>
+    <ul class="topics">{topics.map((t) => (
+      <li class="topic">{approvedTopics.has(String(t).toLowerCase())
+        ? <a href={`/topics/${String(t).toLowerCase()}`}>{t}</a>
+        : t}</li>
+    ))}</ul>
+    <p class="meta">Repository topics as published by the owner on GitHub. Imported verbatim; MCP Junction does not assign or curate them. Linked topics lead to other servers sharing the tag.</p>
   </>
 )}
 

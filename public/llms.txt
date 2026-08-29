@@ -51,6 +51,14 @@ send `Accept: text/markdown`.
   that matched no category term yet. Reviewed weekly. Excluded from the search
   index, but readable and queryable like any other page.
 
+## Topics
+
+- [All topics](https://mcpjunction.ai/topics): servers grouped by GitHub
+  repository topic (claude-code, cursor, rag, self-hosted, python, and more).
+  A vetted set of widely used tags — owner-assigned strings, not curated
+  categories. Every topic page serves markdown the same way category pages
+  do, and all are enumerated in the sitemap.
+
 ## MCP endpoint (query this directory from your agent)
 
 - https://mcpjunction.ai/mcp - a Model Context Protocol server over streamable
