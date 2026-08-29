@@ -89,6 +89,18 @@ TEMPLATE_SUFFIXES = {
     ".astro", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".css", ".json",
 }
 
+# Templates every data-derived page depends on, whatever surface it is.
+SHARED_TEMPLATE_DIRS = ("src/layouts/", "src/components/", "src/lib/")
+
+# Page templates per surface. A server page does not change because a category
+# template did, so they no longer share one signature.
+SERVER_TEMPLATE_DIRS = ("src/pages/servers/",)
+CATEGORY_TEMPLATE_DIRS = ("src/pages/categories/",)
+
+# Bumped whenever signature CONSTRUCTION changes, so a scheme change is not
+# mistaken for 1,800 pages changing at once. See the migration in main().
+SIG_SCHEME = 2
+
 
 def sig(obj) -> str:
     """Stable signature for any JSON-serialisable structure."""
@@ -140,21 +152,28 @@ def load_dataset() -> dict:
     return json.loads(ds.read_text(encoding="utf-8"))
 
 
-def template_signature() -> str:
-    """Signature over the templates that render the data-derived pages.
+def template_signature(page_dirs=()) -> str:
+    """Signature over the templates that render one surface of data-derived pages.
 
     Data signatures alone would report "unchanged" after a template rewrite,
     which is false — the SEO phase changed every server page's title, H1,
-    JSON-LD and topic list without touching one dataset field. Coarse on
-    purpose (one signature for all of src/): template edits are rare and
-    deliberate, unlike the nightly data churn, so the cost of over-triggering
-    is one extra reindex request per commit that touches src/.
+    JSON-LD and topic list without touching one dataset field.
+
+    Scoped per surface: the shared directories count for everything, but a
+    page template counts only for the pages it actually renders. This used to
+    hash all of src/ into one value folded into every page, so a four-line
+    edit to a category heading -- which changed exactly one rendered page --
+    reset lastmod on all 1,899 URLs and submitted them to IndexNow, which is
+    the uniform-lastmod state this file exists to prevent. Pass ("src/",) to
+    reproduce that original single-value behaviour, which the scheme
+    migration in main() uses to tell a real change from a rescoping.
 
     Restricted to source extensions, and skips dotfiles, so the signature is
     the same on a developer's machine as in CI. Hashing "everything under
-    src/" would let one stray .DS_Store or editor swap file flip all 1,824
-    data-derived URLs at once, for no change anyone made.
+    src/" would let one stray .DS_Store or editor swap file flip every
+    data-derived URL at once, for no change anyone made.
     """
+    allowed = SHARED_TEMPLATE_DIRS + tuple(page_dirs)
     parts = []
     for p in sorted((ROOT / "src").rglob("*")):
         if not p.is_file() or p.suffix.lower() not in TEMPLATE_SUFFIXES:
@@ -162,19 +181,29 @@ def template_signature() -> str:
         rel = p.relative_to(ROOT).as_posix()
         if any(seg.startswith(".") for seg in rel.split("/")):
             continue
+        if not rel.startswith(allowed):
+            continue
         parts.append(rel)
         parts.append(byte_sig(p.read_bytes()))
     return sig(parts)
 
 
-def build_signatures(dataset: dict) -> dict:
-    """Content signature per URL for the data-derived pages."""
+def build_signatures(dataset: dict, legacy: bool = False) -> dict:
+    """Content signature per URL for the data-derived pages.
+
+    legacy=True reproduces scheme 1, where a single all-of-src/ value was
+    folded into every page. Only the scheme migration uses it.
+    """
     servers = dataset.get("servers", [])
-    tpl = template_signature()
+    if legacy:
+        tpl_server = tpl_cat = template_signature(("src/",))
+    else:
+        tpl_server = template_signature(SERVER_TEMPLATE_DIRS)
+        tpl_cat = template_signature(CATEGORY_TEMPLATE_DIRS)
     out = {}
 
     for s in servers:
-        out[f"/servers/{s['id']}"] = sig([tpl] + [s.get(f) for f in SERVER_SIG_FIELDS])
+        out[f"/servers/{s['id']}"] = sig([tpl_server] + [s.get(f) for f in SERVER_SIG_FIELDS])
 
     try:
         cats = json.loads((ROOT / "categories.json").read_text(encoding="utf-8"))
@@ -189,7 +218,7 @@ def build_signatures(dataset: dict) -> dict:
     for c in cats["categories"]:
         members = sorted(by_cat.get(c["slug"], []), key=lambda s: s["id"])
         out[f"/categories/{c['slug']}"] = sig({
-            "template": tpl,
+            "template": tpl_cat,
             "name": c.get("name"),
             "description": c.get("description"),
             "noindex": c.get("noindex", False),
@@ -235,15 +264,28 @@ def main() -> None:
 
     # --- lastmod state -----------------------------------------------------
     previous = {}
+    prev_scheme = None
     bootstrap = True
     if STATE_PATH.exists():
         try:
-            previous = json.loads(STATE_PATH.read_text(encoding="utf-8")).get("urls", {})
+            raw_state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            previous = raw_state.get("urls", {})
+            prev_scheme = raw_state.get("_scheme", 1)
             bootstrap = not previous
         except ValueError as exc:
             # A corrupt state file must not silently reset every date to today
             # and then fire 1,800 IndexNow submissions.
             sys.exit(f"REFUSING TO BUILD SITEMAP: {STATE_PATH} is unreadable ({exc})")
+
+    # Changing how a signature is BUILT changes it for every page, which would
+    # look identical to every page changing. On the run that first sees a new
+    # scheme, recompute the old signatures too: a page whose old signature
+    # still matches did not change, so it keeps its date and quietly adopts
+    # the new one. A page that fails both is a genuine change and is reported
+    # normally, so real edits are never masked by the migration.
+    migrating = bool(previous) and prev_scheme != SIG_SCHEME
+    legacy_signatures = build_signatures(dataset, legacy=True) if migrating else {}
+    migrated = 0
 
     changed = []
     new_state = {}
@@ -251,11 +293,19 @@ def main() -> None:
         old = previous.get(loc)
         if old and old.get("sig") == s and old.get("lastmod"):
             lastmod = old["lastmod"]
+        elif (migrating and old and old.get("lastmod")
+              and old.get("sig") == legacy_signatures.get(loc)):
+            lastmod = old["lastmod"]
+            migrated += 1
         else:
             lastmod = today
             changed.append(loc)
         new_state[loc] = {"sig": s, "lastmod": lastmod}
         entries.append((loc, lastmod))
+
+    if migrating:
+        print(f"signature scheme {prev_scheme} -> {SIG_SCHEME}: "
+              f"{migrated} URL(s) rescoped with their dates preserved")
 
     STATE_DIR.mkdir(exist_ok=True)
     # newline="\n" explicitly: this file is committed, .gitattributes pins the
@@ -272,6 +322,7 @@ def main() -> None:
                     "the file has to be byte-identical when nothing changed, or the "
                     "nightly commits it every single night for no reason."
                 ),
+                "_scheme": SIG_SCHEME,
                 "urls": dict(sorted(new_state.items())),
             },
             indent=2,
