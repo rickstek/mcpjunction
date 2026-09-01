@@ -113,7 +113,23 @@ def _load_category_overrides(valid_slugs):
     Automation still never INVENTS a category: an override may only name a slug
     that already exists in categories.json.
     """
-    raw = json.loads(CATEGORIES_PATH.read_text(encoding="utf-8"))
+    # object_pairs_hook, not the parsed dict: JSON permits duplicate keys and
+    # every parser silently keeps the last, so a hand-edited list that names the
+    # same server twice with two different categories "works" while quietly
+    # ignoring one of the two decisions. Catch it instead of guessing which was
+    # meant.
+    def _no_dupes(pairs):
+        seen = {}
+        for k, v in pairs:
+            if k in seen:
+                sys.exit(f"REFUSING TO RUN: categories.json names '{k}' twice "
+                         f"(as '{seen[k]}' and '{v}'). JSON keeps only the last, "
+                         f"so remove one.")
+            seen[k] = v
+        return seen
+
+    raw = json.loads(CATEGORIES_PATH.read_text(encoding="utf-8"),
+                     object_pairs_hook=_no_dupes)
     out = {}
     for server_id, slug in (raw.get("overrides") or {}).items():
         key = str(server_id).strip().lower()

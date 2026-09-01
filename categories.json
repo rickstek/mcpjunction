@@ -145,6 +145,8 @@
   "_overrides_comment": "Human-set category for individual servers, keyed by the id in the URL (owner--repo, lowercase, double hyphen). Escape hatch for the cases keyword matching cannot reach, NOT a substitute for good match terms: if several servers need the same override, the category's match list is what should change. Three matchers were measured against the live dataset before this existed (shipping first-match, topics-first, and weighted scoring) and first-match won on every benchmark, so the algorithm is not the problem. What remains are very large general-purpose repos whose descriptions collide with several categories, and repos whose owners tagged them misleadingly. Because category pages sort by stars, those repos land in the top rows where they do the most damage. A value here must name a slug that already exists above; pipeline.py refuses to run otherwise. Keep this list short and keep a reason on every entry.",
   "overrides": {
     "netdata--netdata": "monitoring",
-    "langgenius--dify": "ai-agents"
+    "langgenius--dify": "ai-agents",
+    "mudler--localai": "ai-models",
+    "snailclimb--javaguide": "uncategorized"
   }
 }
