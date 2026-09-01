@@ -127,6 +127,11 @@ def _load_category_overrides(valid_slugs):
 
 CATEGORY_RULES = _load_category_rules()
 CATEGORY_OVERRIDES = _load_category_overrides({slug for slug, _ in CATEGORY_RULES})
+# Ids that actually matched an entry this run. An override whose id is
+# misspelled is silently inert -- the slug is validated but the key is not, and
+# a hand-edited file WILL eventually carry a typo or an id for a repo that has
+# since been renamed or delisted. main() reports the unused ones.
+CATEGORY_OVERRIDES_USED = set()
 MCP_HINT = re.compile(r"mcp|model[\s-]context[\s-]protocol")
 
 
@@ -187,6 +192,7 @@ def categorize(repo):
     server_id = (repo.get("full_name") or "").lower().replace("/", "--")
     override = CATEGORY_OVERRIDES.get(server_id)
     if override:
+        CATEGORY_OVERRIDES_USED.add(server_id)
         return override
     haystack = HAYSTACK_SEP.join([
         repo.get("full_name") or "",
@@ -632,6 +638,11 @@ def main():
     print(f"wrote {CSV_PATH.relative_to(ROOT)}")
     print("categories: " + ", ".join(f"{k} {v}" for k, v in
                                      payload["categories"].items()))
+    unused = sorted(set(CATEGORY_OVERRIDES) - CATEGORY_OVERRIDES_USED)
+    if unused:
+        print(f"WARNING: {len(unused)} categories.json override(s) matched no "
+              f"entry and did nothing — check for a typo, a renamed repo, or "
+              f"one that has aged out: " + ", ".join(unused), file=sys.stderr)
     thin = [k for k, v in payload["topics"].items() if v < 10]
     print(f"topics: {len(payload['topics'])} approved"
           + (f", {len(thin)} below 10 members (noindex on site): "
