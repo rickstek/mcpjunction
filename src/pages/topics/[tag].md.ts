@@ -28,6 +28,11 @@ export const GET: APIRoute = ({ props }) => {
   L.push('');
   L.push(`Servers whose GitHub repository topics include \`${tag}\`. Topics are repository-owner strings imported verbatim; MCP Junction does not assign or curate them.`);
   L.push('');
+  const intro: string | undefined = (topicsFile as any).intros?.[tag];
+  if (intro) {
+    L.push(intro);
+    L.push('');
+  }
   L.push(`${members.length} server${members.length === 1 ? '' : 's'} · updated ${generatedAt} · [${BASE}/topics/${tag}](${BASE}/topics/${tag})`);
   L.push('');
 

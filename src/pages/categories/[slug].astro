@@ -71,6 +71,10 @@ const breadcrumbLd = {
     mcp servers", not "browser automation". */}
 <h1>{category.name} MCP Servers</h1>
 <p>{category.description}</p>
+{/* Human-written orientation for the category, from categories.json. Optional
+    on purpose: an unwritten category renders exactly as it did before, so
+    prose lands page by page as it is approved rather than all at once. */}
+{category.intro && <p>{category.intro}</p>}
 <p class="meta">{members.length} server{members.length === 1 ? '' : 's'} · updated {generatedAt}</p>
 
 {members.length === 0 ? (

@@ -13,6 +13,13 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props;
 
+// Human-written orientation, from the `intros` map in topics.json. Optional:
+// an unwritten topic renders exactly as it did before, so prose lands page by
+// page as it is approved. Kept as a map beside the approved-slug array rather
+// than turning that array into objects — the array is load-bearing in
+// getStaticPaths here, in [tag].md.ts, and in build_sitemap.py.
+const intro: string | undefined = (topicsFile as any).intros?.[tag];
+
 // Exact membership, not term matching: a topic page lists the servers whose
 // owners applied this tag, verbatim. Categories interpret; topics report.
 const members = dataset.servers
@@ -70,6 +77,7 @@ const breadcrumbLd = {
 <p class="meta"><a href="/">Home</a> / <a href="/topics">Topics</a></p>
 <h1>{tag} MCP Servers</h1>
 <p>Servers whose GitHub repository topics include <code>{tag}</code>.</p>
+{intro && <p>{intro}</p>}
 <p class="meta">{members.length} server{members.length === 1 ? '' : 's'} · updated {generatedAt}</p>
 
 {members.length === 0 ? (

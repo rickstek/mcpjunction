@@ -26,6 +26,10 @@ export const GET: APIRoute = ({ props }) => {
   L.push('');
   L.push(category.description);
   L.push('');
+  if (category.intro) {
+    L.push(category.intro);
+    L.push('');
+  }
   L.push(`${members.length} server${members.length === 1 ? '' : 's'} · updated ${generatedAt} · [${BASE}/categories/${category.slug}](${BASE}/categories/${category.slug})`);
   L.push('');
 

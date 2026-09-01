@@ -219,13 +219,20 @@ def build_signatures(dataset: dict, legacy: bool = False) -> dict:
 
     for c in cats["categories"]:
         members = sorted(by_cat.get(c["slug"], []), key=lambda s: s["id"])
-        out[f"/categories/{c['slug']}"] = sig({
+        payload = {
             "template": tpl_cat,
             "name": c.get("name"),
             "description": c.get("description"),
             "noindex": c.get("noindex", False),
             "members": [[m.get(f) for f in MEMBER_SIG_FIELDS] for m in members],
-        })
+        }
+        # Only present once written. Adding the key unconditionally would change
+        # every category's signature the moment intros became possible, which is
+        # a signature-CONSTRUCTION change and would need a SIG_SCHEME bump; this
+        # way an unwritten category hashes exactly as it always did.
+        if c.get("intro"):
+            payload["intro"] = c["intro"]
+        out[f"/categories/{c['slug']}"] = sig(payload)
 
     # Topic pages: exact membership over the topics array, mirroring the
     # template's own filter. A missing topics.json is fine (pre-namespace
@@ -233,7 +240,9 @@ def build_signatures(dataset: dict, legacy: bool = False) -> dict:
     topics_path = ROOT / "topics.json"
     if topics_path.exists():
         try:
-            topic_list = json.loads(topics_path.read_text(encoding="utf-8"))["topics"]
+            topics_raw = json.loads(topics_path.read_text(encoding="utf-8"))
+            topic_list = topics_raw["topics"]
+            topic_intros = topics_raw.get("intros") or {}
         except (OSError, ValueError, KeyError) as exc:
             sys.exit(f"REFUSING TO BUILD SITEMAP: cannot read topics.json ({exc})")
         actives = [s for s in servers if s.get("status") == "active"]
@@ -243,12 +252,15 @@ def build_signatures(dataset: dict, legacy: bool = False) -> dict:
                  if any(str(t).lower() == tag for t in (s.get("topics") or []))),
                 key=lambda s: s["id"],
             )
-            out[f"/topics/{tag}"] = sig({
+            payload = {
                 "template": tpl_topic,
                 "tag": tag,
                 "noindex": len(members) < 10,
                 "members": [[m.get(f) for f in MEMBER_SIG_FIELDS] for m in members],
-            })
+            }
+            if topic_intros.get(tag):
+                payload["intro"] = topic_intros[tag]
+            out[f"/topics/{tag}"] = sig(payload)
 
     return out
 
