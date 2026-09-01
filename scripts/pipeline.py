@@ -97,7 +97,36 @@ def _load_category_rules():
         rules.append((slug, re.compile(pattern)))
     return rules
 
+def _load_category_overrides(valid_slugs):
+    """Human-set category assignments, from `overrides` in categories.json.
+
+    For the handful of repos where keyword matching is wrong and no rule change
+    fixes it. Three strategies were measured against the live dataset before
+    this existed — the shipping first-match matcher, a topics-first pass, and
+    weighted scoring — and first-match won. The residual errors are not an
+    algorithm problem: they are very large, general-purpose projects whose long
+    descriptions collide with several categories, plus repos their own owners
+    tagged misleadingly (a Java study guide carrying `mysql` and `redis` lands
+    in Databases under every strategy). Those repos sort to the top of a
+    category page by stars, so a dozen bad rows do outsized damage.
+
+    Automation still never INVENTS a category: an override may only name a slug
+    that already exists in categories.json.
+    """
+    raw = json.loads(CATEGORIES_PATH.read_text(encoding="utf-8"))
+    out = {}
+    for server_id, slug in (raw.get("overrides") or {}).items():
+        key = str(server_id).strip().lower()
+        if slug not in valid_slugs:
+            sys.exit(f"REFUSING TO RUN: categories.json sets an override for "
+                     f"'{key}' naming unknown category '{slug}'. Overrides may "
+                     f"only point at a slug that already exists.")
+        out[key] = slug
+    return out
+
+
 CATEGORY_RULES = _load_category_rules()
+CATEGORY_OVERRIDES = _load_category_overrides({slug for slug, _ in CATEGORY_RULES})
 MCP_HINT = re.compile(r"mcp|model[\s-]context[\s-]protocol")
 
 
@@ -153,6 +182,12 @@ HAYSTACK_SEP = " | "
 
 
 def categorize(repo):
+    # Same derivation as the entry's own "id" field, so overrides are keyed by
+    # the id that appears in the URL.
+    server_id = (repo.get("full_name") or "").lower().replace("/", "--")
+    override = CATEGORY_OVERRIDES.get(server_id)
+    if override:
+        return override
     haystack = HAYSTACK_SEP.join([
         repo.get("full_name") or "",
         repo.get("description") or "",
