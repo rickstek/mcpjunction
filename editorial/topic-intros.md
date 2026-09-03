@@ -34,6 +34,17 @@ what an intro is for:
 
 Batch 1 — the twelve largest tags. Approved and live (commit `606ebb9`).
 
+Batch 3 — the next twelve. Readings measured before drafting: `sqlite` sits
+in one category and only a minority are query servers — most use SQLite as the
+storage under memory and knowledge tools (a categorisation side effect worth
+the taxonomy owner's eye: the `sqlite` match term files memory servers under
+Databases); `react`, `nextjs`, and `electron` name the framework a product's
+interface is built in, not a subject (few are about building with them);
+`windsurf` co-occurs with `cursor` in all but one server; `opencode` travels
+alone least of any client tag; `langchain` is applied far more often than
+descriptions mention it; `ollama` is named in few descriptions and usually
+sits beside a cloud provider. Audited; awaiting edit.
+
 Batch 2 — the next twelve. Nine specific claims were checked before drafting
 and four were overturned: `skills` is rarely a curated list (a handful of many)
 and mostly platforms that host or run skills; `docker` never means "controls
@@ -271,3 +282,118 @@ the first thing to establish. As with `knowledge-graph`, most servers here point
 it at code rather than prose: finding the function that does a thing across a
 repository. It sits in the same cluster as `rag` and `agent-memory`, and a
 server tagged with one often carries another.
+
+## claude-desktop
+
+The compatibility declaration for Anthropic's desktop app rather than its
+coding harness, which shifts the audience: a chat window reached by people who
+may never open a terminal. A server tagged this way is one its owner expects to
+be configured by hand in a local settings file and used conversationally. It
+travels with `claude-code` and `cursor` often enough that the tag is rarely
+exclusive; what it does tell you is that the server has run in the plainest
+local setup there is.
+
+## nodejs
+
+Almost the same servers as `typescript`, seen from the runtime side: the tag
+says a Node process is what runs, whichever language it was written in. That is
+the practical fact — you need Node installed on the machine your agent uses,
+and installs come through the package registry. Where the two tags differ is
+intent: `typescript` describes how a server was written, `nodejs` what it needs
+to run, and most owners apply both without meaning a distinction.
+
+## opencode
+
+Of all the client tags, this one travels alone least: nearly every server
+carrying it also carries `claude-code`, and most carry `codex` as well. So it
+is not a signal that a server targets this runtime — it is one entry in a list
+of the coding agents an owner has run it from. Read the list, not the tag. If a
+server truly depended on one client, its owner would have had no reason to name
+three.
+
+## react
+
+Not a tag about React development. It marks projects whose own interface is
+built in React — database clients, knowledge bases, desktop workspaces — with
+an MCP server exposed alongside. So the tag tells you about the product's front
+end, not the server's function, and the two can be far apart. If you are
+looking for a server that helps you build React applications, this tag will
+mostly disappoint; the category pages are a better route to that.
+
+## sqlite
+
+Nearly all of these land in the Databases category, yet only a minority are
+servers for querying a SQLite database. Most use SQLite as the storage
+underneath something else — an agent's memory, a knowledge store, a local
+index — because it is a single file, needs no service, and travels with the
+project. Read the tag as "keeps its state in a local file" first, and as "lets
+you query your database" only when the description says so.
+
+## copilot
+
+A compatibility note for GitHub's assistant in VS Code, and one that almost
+never stands alone — it appears beside `cursor` more often than not, and often
+beside `claude-code` too. That pattern says owners are listing the editors they
+tested rather than describing a Copilot-specific server. The one place the tag
+carries extra meaning is game development, where several engine bridges name it
+because the engine's own editor integrates with it. Elsewhere, treat it as one
+item in a compatibility list.
+
+## ollama
+
+A runtime you host rather than a vendor you pay, which makes this the tag to
+look for when you want an agent's model calls to stay on your own hardware. But
+do not assume local-only: many of the servers carrying it also list a cloud
+provider, and Ollama is one option among several. Often the tag is the only
+evidence — the description never names it — so check the configuration for how
+a model endpoint is chosen before relying on the local path.
+
+## electron
+
+The framework, not the function: servers tagged `electron` live inside a
+desktop application built with it — a workspace, a terminal, a knowledge tool —
+and the MCP server is a feature of that app rather than a standalone process.
+Expect to install and open the application, and expect it to keep running while
+the agent uses it. The tag overlaps with `desktop-app`; the difference is that
+this one also tells you the app carries a bundled browser engine and the
+footprint that implies.
+
+## windsurf
+
+In this directory the tag is almost inseparable from `cursor`: virtually every
+server tagged for one editor is tagged for the other, and fewer of their
+descriptions mention either than the tags suggest. That makes it a paired
+declaration — works in the two Cursor-style editors — rather than a signal
+about Windsurf specifically. What differs between them is configuration
+location and discovery, not the server. If you use Windsurf, read the `cursor`
+guidance and expect the same setup shape.
+
+## nextjs
+
+Owners tag the framework their web layer is built on, and Next.js is a common
+one for platforms that ship a hosted interface — agent builders, knowledge
+tools, dashboards — with an MCP server as part of the package. So the tag
+describes the product's web tier, not what the server does, and it can mark a
+whole self-hostable platform rather than a small server you add to a client.
+Weigh the footprint accordingly: you may be deploying an application to get a
+tool.
+
+## langchain
+
+An ecosystem-membership tag more than a description: a project built with or
+alongside LangChain and LangGraph, applied by owners far more often than their
+descriptions mention either name. Servers here skew toward agent frameworks,
+retrieval pipelines, and observability for them, plus a scattering of learning
+material. The tag does not mean a server requires LangChain to use — many are
+ordinary MCP servers whose authors work in that ecosystem. Check whether it
+exposes tools or expects you to be inside a LangGraph graph.
+
+## desktop-app
+
+A form-factor tag: the MCP server ships inside a desktop application you install
+and open, most often a workspace for driving coding agents or an assistant
+client. That has two consequences. The app must be running for the server to
+answer, and the server inherits whatever the app can reach on your machine.
+Sibling tags `electron` and `tauri` tell you what the app is built with; this
+one tells you only that there is an app. Prefer ones that let you scope what
+the agent can touch.
