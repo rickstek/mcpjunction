@@ -5,18 +5,21 @@
       "slug": "browser-automation",
       "name": "Browser Automation",
       "description": "MCP servers that drive browsers, scrape the web, or crawl pages — Playwright, Puppeteer, Selenium, and headless Chromium tooling.",
+      "intro": "Browser automation servers let an agent act on pages a plain HTTP fetch cannot reach — anything behind a login, rendered by JavaScript, or gated by a click. The distinction worth checking when choosing: some drive a full browser engine, which is heavier but survives dynamic pages, while others fetch and parse HTML directly and cost far less per page. Sites that fingerprint automated traffic will defeat a naive setup, so look at how a server handles detection before committing.",
       "match": ["browser", "browser-automation", "playwright", "puppeteer", "selenium", "chrome", "chromium", "webdriver", "scrape", "scraping", "crawler", "web-scraping", "headless-browser", "hyperbrowser", "camoufox", "web-research"]
     },
     {
       "slug": "databases",
       "name": "Databases",
       "description": "MCP servers for relational, document, vector, and time-series databases — Postgres, MySQL, SQLite, MongoDB, Redis, Snowflake, BigQuery, and vector stores.",
+      "intro": "Database servers let an agent inspect a schema and run queries without a person pasting results into a chat window. Before connecting one to anything real, find out whether it can write as well as read — few descriptions say, and the difference is the difference between a useful assistant and an unreviewed migration. Check what the connection itself grants and take into consideration: a server inherits whatever its credentials carry, which is easy to over-scope by accident.",
       "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric", "olap", "dbt", "powerbi", "power bi"]
     },
     {
       "slug": "communication",
       "name": "Communication",
       "description": "MCP servers for chat, email, messaging, and video conferencing — Slack, Discord, Telegram, Gmail, Teams, and Matrix.",
+      "intro": "These servers connect an agent to the places people actually talk — chat platforms, email, and messaging APIs. Two things decide whether one fits: whether it can send as well as read, and how it authenticates. The platforms behind them almost all require an OAuth grant or a bot token scoped to a workspace you control, whatever the server's own description says. Read access is the safer place to start. Anything that can post is acting under your name.",
       "match": ["slack", "discord", "telegram", "whatsapp", "email", "gmail", "imap", "smtp", "microsoft-teams", "teams", "matrix", "sms", "twilio", "messaging", "chat", "signal", "emails", "resend", "gsuite", "microsoft 365"]
     },
     {
@@ -35,6 +38,7 @@
       "slug": "design-tools",
       "name": "Design Tools",
       "description": "MCP servers for design and diagramming apps — Figma, Canva, Excalidraw, drawio, 3D modeling, CAD, and UI component libraries.",
+      "intro": "Three kinds of server share this category: integrations that drive a design or modelling application, generators that produce diagrams and charts from text, and bridges into UI component libraries. The practical question for the first kind is whether it talks to a cloud API or to software on your machine — the latter usually means installing a plugin and leaving the app open. Reading a document's structure is common; producing finished artwork faithfully is not.",
       "match": ["figma", "canva", "excalidraw", "drawio", "blender", "photoshop", "sketch", "cad", "kicad", "freecad", "bim", "3d-modeling", "component-library", "shadcn-ui", "swiftui", "design-system", "davinci-resolve", "video-editor", "video-editing", "powerpoint", "keynote", "adobe", "visualization", "data-visualization", "charts", "charting", "charting-library", "c4model", "magicui", "aseprite", "blockbench", "icons", "manim", "penpot", "mermaid", "touchdesigner"]
     },
     {
@@ -59,6 +63,7 @@
       "slug": "security",
       "name": "Security",
       "description": "MCP servers for auth, vulnerability scanning, pentesting, secrets management, encryption, and reverse engineering.",
+      "intro": "Security servers hand an agent tooling built for people who already knew what they were doing: scanners, secret stores, reverse-engineering suites, identity providers. That combination deserves care, because an agent driving a scanner generates real traffic against real hosts. Being listed here is not a security review. Look at what a server is permitted to reach before connecting it, and prefer ones that state their scope rather than inheriting your whole environment.",
       "match": ["security", "oauth", "authentication", "vulnerability", "pentest", "penetration-testing", "penetration-test", "scanner", "encrypt", "encryption", "secrets", "secret-management", "nuclei", "nmap", "burp", "binary-analysis", "reverse-engineering", "ida-pro", "ghidra", "cybersecurity", "infosec", "idapro", "idalib", "ida pro", "pwn", "binary ninja", "bitwarden", "solidity", "static-code-analyzer", "sonarqube", "sonarcloud", "vulnerable", "metasploit"]
     },
     {
@@ -71,12 +76,14 @@
       "slug": "cloud-devops",
       "name": "Cloud & DevOps",
       "description": "MCP servers for cloud platforms, infrastructure-as-code, containers, and deployment — AWS, Azure, GCP, Kubernetes, Docker, Terraform, and CDN edges.",
+      "intro": "The question to ask of any server here is whether it only reads state — listing resources, pulling logs, describing a cluster — or can also change it. Read-only access is genuinely useful for diagnosis and costs little when an agent misunderstands. Anything that can apply a plan, scale a deployment, or restart a service belongs behind a role whose limits you set deliberately, because an agent will do exactly what it was told and not what you meant.",
       "match": ["aws", "azure", "gcp", "google-cloud", "kubernetes", "k8s", "docker", "terraform", "cloudflare", "vercel", "netlify", "ansible", "helm", "devops", "infrastructure", "infrastructure-as-code", "cloud-native", "deploy", "deployment", "ci-cd", "cicd", "gcloud", "volcengine", "portainer", "containerization", "netbox", "e2b", "code-execution"]
     },
     {
       "slug": "search",
       "name": "Search & Retrieval",
       "description": "MCP servers for web search, semantic search, and retrieval-augmented generation — Brave, Perplexity, Tavily, Exa, and vector-search backends.",
+      "intro": "Retrieval servers answer what a model cannot answer from its own weights. Most here are retrieval over a corpus you supply — RAG pipelines and semantic search that need an index you build and keep current. A smaller set wrap a commercial web-search API and need a key. The cost profiles differ sharply: one spends disk and setup time before it answers anything, the other bills per query and knows nothing about your documents.",
       "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine", "mapbox", "openstreetmap", "location-based", "geospatial"]
     },
     {
@@ -89,6 +96,7 @@
       "slug": "mcp-infrastructure",
       "name": "Infrastructure & SDKs",
       "description": "MCP infrastructure: servers and tooling for building, running, routing, and cataloguing MCP itself — framework libraries and official SDKs, gateways, routers and proxies, installers and desktop managers, and registries listing other servers.",
+      "intro": "Come here to build or operate MCP itself rather than to add a capability to an agent. If you are writing a server, start with an official SDK; if you run many servers, a gateway or proxy puts one endpoint in front of them. The specification is still moving and the official SDKs follow it closely — so a gateway or client pinned to an older version can quietly drop capabilities a newer server advertises.",
       "match": ["awesome-mcp", "mcp-framework", "mcp-sdk", "mcp-toolkit", "mcp-gateway", "mcp-router", "mcp-proxy", "mcp-bridge", "mcp-registry", "mcp-marketplace", "mcp-store", "mcp-hub", "mcp-inspector", "mcp-installer", "mcp-manager", "mcp-cli", "sdk for model context protocol", "sdk for the model context protocol", "implementation of the model context protocol", "implementation for the model context protocol", "implementations of the model context protocol", "model context protocol servers", "model context protocol (mcp) servers", "collection of mcp servers", "collection of model context protocol", "curated list of model context protocol", "curated list of mcp", "list of mcp servers", "list for mcp servers", "building mcp servers", "build mcp servers", "creating mcp servers", "create mcp servers", "managing mcp servers", "manage mcp servers", "installs other mcp servers", "aggregates and serves multiple mcp", "mcp-adapter", "mcp-nest", "mcp framework", "server implementations", "mcp server installation", "install mcp servers", "router for mcp", "reference mcp servers", "create model context protocol", "mcptools", "create a python mcp server"]
     },
     {
@@ -101,12 +109,14 @@
       "slug": "ai-coding",
       "name": "AI Coding Assistants",
       "description": "MCP servers built for AI coding tools — Claude Code, Cursor, Codex, Windsurf, Copilot, and IDE-integrated assistants.",
+      "intro": "These servers sit alongside a coding assistant rather than replacing it, extending what it can reach from inside the editor or terminal. Many advertise support for several assistants; others are written against exactly one. So the first thing to check is whether a server actually speaks to the client you use — one built for a single harness often needs a configuration shim before another will load it, and that detail rarely makes it into the description.",
       "match": ["claude-code", "cursor", "codex", "windsurf", "copilot", "opencode", "ai-coding", "ide", "vscode", "jetbrains", "coding-assistant", "ai-assistant", "ai-ide", "spec-driven-development", "aider", "nuxt", "vite", "rails", "phoenix", "wordpress", "elementor", "colab", "app-store-connect", "delphi", "1c-enterprise", "xcode"]
     },
     {
       "slug": "ai-agents",
       "name": "AI Agents",
       "description": "MCP servers for agent frameworks, agent memory, orchestration, and general agentic infrastructure — LangChain, LangGraph, multi-agent systems, and agent skills.",
+      "intro": "Servers here deal in scaffolding rather than a single capability: orchestration, memory that outlives a session, planning loops, and coordination between several agents. Many are frameworks first and MCP servers second, so it is worth reading what a project actually exposes over the protocol before assuming its headline features are reachable from your client. The gap between what a framework does and what it serves over MCP can be wide.",
       "match": ["agent", "agents", "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "agent-framework", "agent-memory", "agent-skills", "swarm", "autonomous", "langchain", "langgraph", "autogen", "crewai", "dify"]
     },
     {
