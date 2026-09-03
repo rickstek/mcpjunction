@@ -32,8 +32,18 @@ what an intro is for:
 
 ## Status
 
-Batch 1 — the twelve largest tags. Drafted from measured co-occurrence and
-category spread; audited; awaiting edit.
+Batch 1 — the twelve largest tags. Approved and live (commit `606ebb9`).
+
+Batch 2 — the next twelve. Nine specific claims were checked before drafting
+and four were overturned: `skills` is rarely a curated list (a handful of many)
+and mostly platforms that host or run skills; `docker` never means "controls
+Docker" here — not one description does — only "ships as a container";
+`chatgpt` is not a class of chat interface (few are) but behaves like `openai`;
+and `knowledge-graph` and `semantic-search` are both majority CODE tools, not
+document tools. Also measured: `agent-memory` has three storage backends with
+none dominant; `golang` is undercounted because owners split between it and a
+bare `go` tag that is not an approved topic; `local-first` and `self-hosted`
+rarely co-occur, so the contrast between them is real. Audited; awaiting edit.
 
 Corrections the data forced before drafting: `self-hosted` servers mention
 Docker in only a minority, so no "expect Docker"; `rag` is applied across the
@@ -151,3 +161,113 @@ tag, `gemini-cli`, is a compatibility claim like `claude-code` — servers used
 from Google's terminal agent, not servers that call its API. If you
 specifically want Gemini, look for the model named in the description rather
 than trusting the tag.
+
+## local-first
+
+A claim about where your data lives: on the machine running the agent, in
+files or a local store, with no account and often no network needed. It is not
+the same claim as `self-hosted` — that means you run a server; this means there
+is no server. The tag clusters with memory and note-taking tools, which is
+where it matters most: an agent's accumulated context is exactly the kind of
+thing you may not want on someone else's infrastructure.
+
+## skills
+
+Marks servers built around the skills convention — packaged instructions and
+tools an agent loads on demand — and it spans most categories because skills
+are a way of shipping capability, not a kind of capability. The distinction to
+make is whether a server provides skills for an agent to use, or is a platform
+that hosts and runs them. The tag travels most often with `claude-code`, but is
+not specific to it.
+
+## rust
+
+Usually the implementation language, and the consequence for you is a single
+compiled binary: no interpreter, no runtime to install, typically fetched with
+`cargo` or as a prebuilt release. That also means these servers tend to be fast
+to start and light to run, which matters for a local process an agent spawns
+often. A share of them are desktop applications with an MCP server inside
+rather than standalone servers — check which you are getting.
+
+## openclaw
+
+A compatibility declaration for another agent runtime, one that owners list
+alongside `claude-code` and `codex` in the same breath — and the tag often
+appears with one of those. Read it the way you would read them: the server has
+been run from this runtime, not built for it or dependent on it. What the
+server does is in its category; what differs between runtimes is the
+configuration that connects them.
+
+## chatgpt
+
+A product name attached to servers, not a description of them. Few of these are
+chat interfaces or clones; the tag mostly appears on tools that list every
+model family they can talk to, and it travels with `claude` and `gemini` far
+more than it travels alone. So it tells you OpenAI's models are supported, not
+that they are preferred or required. For the API-level question — is this
+server built for one provider or does it route to many — the `openai` page is
+the one to read.
+
+## docker
+
+Owners use this tag to say the server ships as a container, or runs alongside
+a self-hosted service that does — not that it controls Docker. It clusters with
+`self-hosted` and `kubernetes` and sits mostly on the infrastructure and
+database shelves. A container is usually one option rather than the only one,
+and these servers typically also install as an ordinary local process. Choose
+the container
+when the server has service dependencies you would rather not set up by hand.
+
+## golang
+
+The implementation language, and the practical result is a single static
+binary that runs anywhere without a runtime — the lightest kind of local
+process an agent can spawn. Two things to know: owners split between this tag
+and a plain `go` tag, so this page undercounts Go servers; and Go is common in
+infrastructure and database tooling, which is where many of these sit. Fetch
+with `go install` or a release binary.
+
+## agent-memory
+
+A genuine subject: persistent memory an agent carries between sessions, so it
+stops forgetting what it learned yesterday. What "memory" is built on varies
+more than the tag suggests — vector stores, knowledge graphs, and plain files
+on disk are all represented, with no single approach dominant — and that choice
+decides everything about portability and cost. The tag sits in a cluster with
+`rag`, `knowledge-graph`, and `semantic-search`; a server often carries more
+than one.
+
+## deepseek
+
+Almost never alone: servers carrying `deepseek` nearly always carry `openai`,
+`claude`, or `gemini` as well, which marks a provider-agnostic server that can
+route to DeepSeek's models among others. Read it as a signal that a server
+supports open-weight model options, not as a dedicated integration. The single-provider case is rare here; when you find one, it is
+the bridge, and everything else is a router.
+
+## knowledge-graph
+
+The name suggests notes and documents, but most servers carrying this tag build
+graphs of code — functions, files, and their relationships — for agents that
+need to understand a repository rather than a wiki. The rest are knowledge and
+note graphs in the older sense. Both kinds cluster with `agent-memory`, `rag`,
+and `semantic-search`. Check which kind a server is before assuming it will map
+your documents; the tag alone will not tell you.
+
+## macos
+
+Some servers tagged `macos` are genuinely Mac-specific — written in Swift,
+driving AppleScript or native frameworks — and others list macOS as one of
+several platforms they run on; the tag does not separate the two. The reading
+that helps: check whether `windows` or `linux` appears beside it. If they do,
+this is a portability note. If `macos` stands alone, expect Mac-only automation,
+with the reach into your desktop that implies.
+
+## semantic-search
+
+Search by meaning rather than by keyword, which needs an embedding model —
+either one running locally or an API you pay per call — and that dependency is
+the first thing to establish. As with `knowledge-graph`, most servers here point
+it at code rather than prose: finding the function that does a thing across a
+repository. It sits in the same cluster as `rag` and `agent-memory`, and a
+server tagged with one often carries another.
