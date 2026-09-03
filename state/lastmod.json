@@ -7327,8 +7327,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/anthropic": {
-      "sig": "db55f6c9f44e3a2c233b17b997bcaca5",
-      "lastmod": "2026-09-02"
+      "sig": "9bd37983caafa70675efd8af38b88285",
+      "lastmod": "2026-09-03"
     },
     "/topics/chatbot": {
       "sig": "0633f50d6c8b6504e76fe75f2119bfe0",
@@ -7339,11 +7339,11 @@
       "lastmod": "2026-09-03"
     },
     "/topics/claude": {
-      "sig": "eda5e206fc40021b807563931dfa8a4b",
+      "sig": "9badd0564e02d033feedbbf744bfd79a",
       "lastmod": "2026-09-03"
     },
     "/topics/claude-code": {
-      "sig": "113c667eceb52136e408a407882686aa",
+      "sig": "3185dedd34f0b20aef10ffbce9688a30",
       "lastmod": "2026-09-03"
     },
     "/topics/claude-desktop": {
@@ -7351,11 +7351,11 @@
       "lastmod": "2026-09-02"
     },
     "/topics/cli": {
-      "sig": "6da574d2493f498fca90233c7795d4fc",
+      "sig": "44ec0c0ece70e7b21815f8befeaa8cd7",
       "lastmod": "2026-09-03"
     },
     "/topics/codex": {
-      "sig": "47ea802744f939509b0e7504492525b7",
+      "sig": "03bd049b6cb79f9872d5a089eaf9fcac",
       "lastmod": "2026-09-03"
     },
     "/topics/context-engineering": {
@@ -7367,8 +7367,8 @@
       "lastmod": "2026-09-01"
     },
     "/topics/cursor": {
-      "sig": "a24a37674affdd29f62c15785c270e6d",
-      "lastmod": "2026-09-02"
+      "sig": "9bff5343a2e28a64359c97fa04f3f324",
+      "lastmod": "2026-09-03"
     },
     "/topics/deepseek": {
       "sig": "987d856105703bf78ba12f1089560c5e",
@@ -7387,8 +7387,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/gemini": {
-      "sig": "3606ab70aa9508742a7bbc28f2b3dd5d",
-      "lastmod": "2026-09-02"
+      "sig": "fae22fec7acc539cb6e1cf1ffcfa3731",
+      "lastmod": "2026-09-03"
     },
     "/topics/gemini-cli": {
       "sig": "888ac28a446cfc526e3ec7263a032c43",
@@ -7435,7 +7435,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/openai": {
-      "sig": "374f59f809884166be309f0b840fb347",
+      "sig": "6dc5d9ef50f575c84eae417095eb6b40",
       "lastmod": "2026-09-03"
     },
     "/topics/openapi": {
@@ -7459,11 +7459,11 @@
       "lastmod": "2026-09-01"
     },
     "/topics/python": {
-      "sig": "94898096ee9b9078a05c234103089daf",
+      "sig": "5909aab3aeceec79da9876c8f0946354",
       "lastmod": "2026-09-03"
     },
     "/topics/rag": {
-      "sig": "70b474992fb64c227b258ac2f3b04e73",
+      "sig": "658d29de10af6449bbafb862ef4015ce",
       "lastmod": "2026-09-03"
     },
     "/topics/react": {
@@ -7475,7 +7475,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/self-hosted": {
-      "sig": "f539695f0669055e9dd02bbef5b72e1e",
+      "sig": "f0c6f9864b944d6287a5c87843feaba9",
       "lastmod": "2026-09-03"
     },
     "/topics/semantic-search": {
@@ -7491,7 +7491,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/typescript": {
-      "sig": "58ee88b4f0558644a80ef3fc94cd7b7c",
+      "sig": "2e8d63e64c46a2fb26d71f5b20ebdb91",
       "lastmod": "2026-09-03"
     },
     "/topics/vibe-coding": {
