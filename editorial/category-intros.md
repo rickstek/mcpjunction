@@ -35,8 +35,15 @@ nothing publishes without approval.
 
 ## Status
 
-Batch 1 — the ten largest categories. Drafted, audited against the dataset,
-corrected. Awaiting edit.
+Batch 1 — the ten largest categories. Approved and live (commit `4faa316`).
+
+Batch 2 — the remaining twelve. Composition data was pulled BEFORE drafting
+this time; audited; awaiting edit. One taxonomy note surfaced by the data, for
+the human owner rather than for prose: `embedded` is the top match term in
+`iot-hardware` and most of its hits are software ("embedded code search",
+"embedded component framework"), not hardware. Narrowing it to
+`embedded-systems` / `embedded-hardware` would clean that shelf without an
+override.
 
 ---
 
@@ -131,3 +138,116 @@ and bridges into UI component libraries. The practical question for the first
 kind is whether it talks to a cloud API or to software on your machine — the
 latter usually means installing a plugin and leaving the app open. Reading a
 document's structure is common; producing finished artwork faithfully is not.
+
+## finance
+
+Research and trading set the tone here rather than bookkeeping — servers that
+read prices, run analysis, and manage positions, with the payments-and-ledgers
+side a smaller presence. Anything that can place an order or move funds is a
+different class of risk from anything that only reads, and an agent cannot tell
+the difference unless the server enforces it. Almost none advertise a
+paper-trading or read-only mode, so assume a server is live until you have
+confirmed otherwise.
+
+## storage
+
+The bulk of this category handles documents rather than storage back ends:
+reading and converting PDFs, spreadsheets, and office files so an agent can work
+with their contents, with cloud-drive and object-storage connectors a smaller
+group. A server that reads a format well does not necessarily write it back in
+the same format, and a description that mentions reading does not promise
+writing. Decide whether you need extraction or a round trip before assuming a
+server does both.
+
+## home-automation
+
+A small category, and one hub accounts for much of it: several servers wrap the
+same platform from different angles, alongside a few that speak to specific
+device lines or network gear directly. With physical devices the question is not
+read versus write but blast radius — a wrong instruction can unlock a door or
+switch off the heating. Prefer servers that expose a narrow set of entities you
+choose over ones that hand the agent everything the hub can see.
+
+## iot-hardware
+
+A thin and varied shelf: single-board computers and microcontrollers, IoT
+devices, and robot middleware share it, with no single platform dominating. What
+unites them is that an agent's command reaches a motor, a relay, or a radio with
+no undo. Look for a simulation or dry-run mode before connecting anything that
+moves, and keep hardware credentials on a device you are willing to have
+misbehave while you learn how a server interprets instructions.
+
+## gaming
+
+Nearly everything here is a bridge into a game engine's editor, so an agent can
+build scenes, edit scripts, and run the project rather than only discuss it.
+These typically need a package installed inside the editor and kept in step
+with the engine version, which is where they break: an engine upgrade can
+silently strand the server. Check which releases a server actually tracks, and expect the
+player-facing tools to be a much smaller group than the editor bridges.
+
+## monitoring
+
+Two kinds of observability meet here and are easy to confuse. One is
+infrastructure monitoring — metrics, logs, and traces from running systems, read
+by an agent for diagnosis. The other is observability of agents and models
+themselves: tracing what an LLM pipeline did and why. A server built for one is
+rarely useful for the other, and their descriptions often use the same words.
+Decide which you are debugging first, then read past the label.
+
+## productivity
+
+The centre of gravity here is knowledge rather than task lists: notes, wikis,
+documentation, and knowledge graphs an agent can read and extend, with
+project-management and calendar connectors a smaller share. The useful
+distinction is whether the knowledge lives in a tool's cloud or in files you
+own — local-first notes are simpler to connect and leave no third party holding
+your context. For anything that writes, check whether it appends or overwrites;
+an agent tidying a wiki can erase more than it adds.
+
+## ai-media
+
+Media servers give an agent a way to produce or interpret images, speech, and
+video rather than only text. The split that matters in practice is generation
+versus recognition: turning a prompt into a picture or a voice, or turning audio
+and images into text an agent can reason over. Generation nearly always means
+either a paid API key or a GPU you run yourself, and which one a server assumes
+is worth establishing before anything else.
+
+## ai-models
+
+These servers put a model provider behind the protocol so an agent can call
+another model — for a second opinion, a cheaper draft, or a capability its own
+model lacks. Much of the shelf is bridges to a single hosted provider, with a
+scattering for local runtimes and other APIs. The thing to check is cost and
+data handling: every call leaves your environment unless the server points at a
+runtime on your own machine, and not every description says which.
+
+## desktop-automation
+
+These servers hand an agent the whole machine rather than one application:
+keyboard and mouse, open applications, the clipboard, native scripting, and
+control of phones and simulators. That reach is the point and the hazard — an
+agent with the mouse can do anything you can, including things you would not.
+Run these in a session or account you do not mind losing, and prefer servers
+that expose named actions over raw pointer control.
+
+## social-media
+
+These servers read from and post to platforms where the platform, not you, sets
+the rules. Reading a feed is usually safe; posting or messaging under an account
+is where terms of service and rate limits bite, and several platforms actively
+resist automation. A noticeable share of this shelf targets Chinese platforms,
+where official APIs are scarce and servers often work through unofficial routes.
+Check how a server authenticates — that tells you how long it is likely to keep
+working.
+
+## devtools
+
+The sharpest tools in the directory live here: servers that run shell commands,
+drive a terminal, or wrap a CLI so an agent can execute what you would type.
+Beside them sit OpenAPI bridges that turn any documented HTTP service into
+callable tools, and the inspectors and harnesses for building MCP servers
+themselves. Scope anything that executes commands to a sandbox or a container
+you can discard, and read exactly what a server passes to the shell before
+trusting it.
