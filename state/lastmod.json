@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "c62197efe8993e2450802eaf3a9c0d68",
+      "sig": "31721b5cc870272d8cf80c653e5fae52",
       "lastmod": "2026-09-03"
     },
     "/categories": {
@@ -27,7 +27,7 @@
       "lastmod": "2026-09-03"
     },
     "/categories/browser-automation": {
-      "sig": "c768bdb62e9f095ea3a1be6ab5af0e2f",
+      "sig": "365cb1a410b3e74f504817e81c844b54",
       "lastmod": "2026-09-03"
     },
     "/categories/cloud-devops": {
@@ -99,15 +99,15 @@
       "lastmod": "2026-09-03"
     },
     "/data": {
-      "sig": "a14d9af46216f8f0c9e97d84d327494e",
+      "sig": "0ab5aa82f0538bc5b4d28dbfdb4fa84e",
       "lastmod": "2026-09-03"
     },
     "/data/mcp_servers.csv": {
-      "sig": "61fdb2a8658df7ca2d5843db2e8179d8",
+      "sig": "a2310d79461497cd423be505a93d07dc",
       "lastmod": "2026-09-03"
     },
     "/data/mcp_servers.json": {
-      "sig": "d64254d3dbd08fe181ecfdb9599261dc",
+      "sig": "da342406caf725c6b5da13dd0611271f",
       "lastmod": "2026-09-03"
     },
     "/licensing": {
@@ -2363,8 +2363,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/firecrawl--firecrawl-mcp-server": {
-      "sig": "cfe972317531d6bda0ebcb2e6a59187b",
-      "lastmod": "2026-08-29"
+      "sig": "9e8e15e03c9e855bfc256ce7667be2e3",
+      "lastmod": "2026-09-03"
     },
     "/servers/fireredteam--firered-openstoryline": {
       "sig": "707e1aa6097b9f26ee57c940611926cf",
@@ -7339,7 +7339,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/claude": {
-      "sig": "425f62098161aed5e8f79f78ce75a016",
+      "sig": "eda5e206fc40021b807563931dfa8a4b",
       "lastmod": "2026-09-03"
     },
     "/topics/claude-code": {
