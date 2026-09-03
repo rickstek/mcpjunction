@@ -3,20 +3,20 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "b8303a6e7b36fe3415abdd950ee391b2",
-      "lastmod": "2026-09-02"
+      "sig": "46a033f7657a79e3d395fbd9c230cf13",
+      "lastmod": "2026-09-03"
     },
     "/categories": {
-      "sig": "a331b47f8728d8ad5d38765cead209f9",
-      "lastmod": "2026-09-02"
+      "sig": "26e1ae8ed4eef270cd259b616faf9f4c",
+      "lastmod": "2026-09-03"
     },
     "/categories/ai-agents": {
       "sig": "4917b41bf6da03bda368438cf39f9595",
       "lastmod": "2026-09-02"
     },
     "/categories/ai-coding": {
-      "sig": "9d865df8fba4f4cfa79cd58748581f6a",
-      "lastmod": "2026-09-02"
+      "sig": "e16006a9908c8b9bdf65d7da0426e75e",
+      "lastmod": "2026-09-03"
     },
     "/categories/ai-media": {
       "sig": "31064c1004bc55ade44d3b5155fd2808",
@@ -35,16 +35,16 @@
       "lastmod": "2026-09-02"
     },
     "/categories/communication": {
-      "sig": "ac6b803b437ceef746cd8ba8902fa84f",
-      "lastmod": "2026-09-02"
+      "sig": "3a4b1f5dddd8f2b296609e504240de60",
+      "lastmod": "2026-09-03"
     },
     "/categories/databases": {
-      "sig": "b0ffc1c23753b704ba437cf6160075ef",
-      "lastmod": "2026-09-01"
+      "sig": "b53bfe525a38d9312f265c598ef5ddd7",
+      "lastmod": "2026-09-03"
     },
     "/categories/design-tools": {
-      "sig": "17a006fb8a69e9d169652caff16246d1",
-      "lastmod": "2026-09-01"
+      "sig": "7957d1afa93c517fe90fd84ea572fb65",
+      "lastmod": "2026-09-03"
     },
     "/categories/desktop-automation": {
       "sig": "8ab458be125226686c74f74d305a4304",
@@ -67,8 +67,8 @@
       "lastmod": "2026-09-01"
     },
     "/categories/iot-hardware": {
-      "sig": "a627976640b9af569a6a29c044012ec0",
-      "lastmod": "2026-09-01"
+      "sig": "8c20c19c38d106aa70788e72b09a5425",
+      "lastmod": "2026-09-03"
     },
     "/categories/mcp-infrastructure": {
       "sig": "6ec6a8eb93bb9177a1e99004271813cb",
@@ -79,12 +79,12 @@
       "lastmod": "2026-09-01"
     },
     "/categories/productivity": {
-      "sig": "e7342064e6e1f1ac90b219bad8e42a2f",
-      "lastmod": "2026-09-02"
+      "sig": "b7fe03747441de1c2bdf45298a9b4e3d",
+      "lastmod": "2026-09-03"
     },
     "/categories/search": {
-      "sig": "44650b01037d761b0c4e6722104f38fa",
-      "lastmod": "2026-09-01"
+      "sig": "6b2bafc3b3d619b7364fbac1a9f36927",
+      "lastmod": "2026-09-03"
     },
     "/categories/security": {
       "sig": "ef800d5d6311ba9c078d374166c246dc",
@@ -99,16 +99,16 @@
       "lastmod": "2026-09-01"
     },
     "/data": {
-      "sig": "d450b92d1c621ce2c6f9fce1d6c4863f",
-      "lastmod": "2026-09-02"
+      "sig": "e72ebf82cc8d721601ac5a897b7c6f66",
+      "lastmod": "2026-09-03"
     },
     "/data/mcp_servers.csv": {
-      "sig": "f5a4cf65c08062b6f9dedfd3dbbc3ef6",
-      "lastmod": "2026-09-02"
+      "sig": "ee23b6865b1c60de872c3b8dd0b8d2a6",
+      "lastmod": "2026-09-03"
     },
     "/data/mcp_servers.json": {
-      "sig": "3f498ad16304608a0ca0142d2b96240e",
-      "lastmod": "2026-09-02"
+      "sig": "43d060e1174897b4d41f84546f2e98d8",
+      "lastmod": "2026-09-03"
     },
     "/licensing": {
       "sig": "2c61fa4437a29eed2ee02d9255716a9b",
@@ -179,8 +179,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/53ai--53aihub": {
-      "sig": "2ad5aefe3c94f41c8d3b88524d88f201",
-      "lastmod": "2026-08-29"
+      "sig": "44cee2e3727af140f33a490b83fce4cf",
+      "lastmod": "2026-09-03"
     },
     "/servers/54yyyu--zotero-mcp": {
       "sig": "cb844996ce76f317d6e59094b44aac6a",
@@ -399,8 +399,8 @@
       "lastmod": "2026-08-31"
     },
     "/servers/agents365-ai--drawio-skill": {
-      "sig": "696663eb9779fc7af58a2960c9808a6e",
-      "lastmod": "2026-09-01"
+      "sig": "e3969f61fcff4d676c8c660a1b05ce07",
+      "lastmod": "2026-09-03"
     },
     "/servers/agentscope-ai--agentscope": {
       "sig": "0cac60605985a63b465dc75e4c5f0381",
@@ -562,10 +562,6 @@
       "sig": "6beb9a0d0f5425fa2ac04dc32bf7d2e0",
       "lastmod": "2026-08-29"
     },
-    "/servers/alvinunreal--openpets": {
-      "sig": "3595521547a0b0c0e44cac20a549a71f",
-      "lastmod": "2026-08-29"
-    },
     "/servers/amicalhq--amical": {
       "sig": "78f389035898c7741825d8e8229b898e",
       "lastmod": "2026-08-29"
@@ -628,10 +624,6 @@
     },
     "/servers/anentrypoint--gm-exec": {
       "sig": "3fd096d44742917af6c01ae1c5612af2",
-      "lastmod": "2026-08-29"
-    },
-    "/servers/anil-matcha--awesome-openclaw": {
-      "sig": "071a278f73f1c2c9e6231bf96c4aaa05",
       "lastmod": "2026-08-29"
     },
     "/servers/ankimcp--anki-mcp-server": {
@@ -915,8 +907,8 @@
       "lastmod": "2026-08-31"
     },
     "/servers/avids2--memorix": {
-      "sig": "9d71d0b4046438cea13c790852224582",
-      "lastmod": "2026-08-29"
+      "sig": "8d0074f429cff9d7e5dabc0b85b3922a",
+      "lastmod": "2026-09-03"
     },
     "/servers/awdr74100--figwright": {
       "sig": "5bbba135e795a027bfab1aa8447d0176",
@@ -1314,6 +1306,10 @@
       "sig": "8f77649bac77a9fd558fb46de02f78ab",
       "lastmod": "2026-08-29"
     },
+    "/servers/cesiumgs--cesium-ai-integrations": {
+      "sig": "ca9d58183be1e52062a35dfe8a79aeae",
+      "lastmod": "2026-09-03"
+    },
     "/servers/chaindead--telegram-mcp": {
       "sig": "3f6586606dda53ceb69a4eefa803c2a7",
       "lastmod": "2026-08-29"
@@ -1679,8 +1675,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/cranot--roam-code": {
-      "sig": "2985d5573e5363782290c029456a66ad",
-      "lastmod": "2026-08-29"
+      "sig": "73a32480b2ed1361d4f5e56a5fc360b5",
+      "lastmod": "2026-09-03"
     },
     "/servers/crbnos--carbon": {
       "sig": "eafe2d5211b93ee3015506d9cf740420",
@@ -2179,8 +2175,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/enderfga--claw-orchestrator": {
-      "sig": "4df3abdb85965770bc869b554963eab2",
-      "lastmod": "2026-08-29"
+      "sig": "865513626a167d6c7f499c98c0ffdd19",
+      "lastmod": "2026-09-03"
     },
     "/servers/engasnm111--lnwjud": {
       "sig": "7db9b26b6f84f90a9ebb9f8a54c2c761",
@@ -2375,8 +2371,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/firerpa--lamda": {
-      "sig": "e0615ae8d7b8e7c87913561477029205",
-      "lastmod": "2026-08-29"
+      "sig": "73eabb48bace777aed0f1eeb65820268",
+      "lastmod": "2026-09-03"
     },
     "/servers/firstbatchxyz--mem-agent-mcp": {
       "sig": "3471f66232b78f9f7a3b3d62dbb97bda",
@@ -2539,8 +2535,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/gentleman-programming--engram": {
-      "sig": "eb3875d2e71320a8551ad2e2ea24076f",
-      "lastmod": "2026-08-29"
+      "sig": "7f8cebe779ec72fc866c0463802a8a18",
+      "lastmod": "2026-09-03"
     },
     "/servers/georgeantonopoulos--basecamp-mcp-server": {
       "sig": "abb7d32555ca75649b177d09d8d4cc1e",
@@ -2847,8 +2843,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/hashgraph-online--awesome-ai-plugins": {
-      "sig": "e07e02c59b29583d3c6ece60a115cc53",
-      "lastmod": "2026-08-29"
+      "sig": "3db90708e00060601b05b068884a5303",
+      "lastmod": "2026-09-03"
     },
     "/servers/hashgraph-online--hol-guard": {
       "sig": "79ec30cab50cc7795d1953b68fbaed66",
@@ -2923,8 +2919,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/higangssh--homebutler": {
-      "sig": "c7f9b127c87bb862542ecb58f98257b2",
-      "lastmod": "2026-08-29"
+      "sig": "61adf96810bd84ce161b68ec8a66699e",
+      "lastmod": "2026-09-03"
     },
     "/servers/higress-group--himarket": {
       "sig": "40d89126df3c89a32d9176adae1d4bc1",
@@ -3810,6 +3806,10 @@
       "sig": "ede1327e22a564392a29204ad2b9d50b",
       "lastmod": "2026-08-29"
     },
+    "/servers/leima-max--origin-pro-mcp-skill": {
+      "sig": "9d1a692b24961e9764d2df697882312d",
+      "lastmod": "2026-09-03"
+    },
     "/servers/lemonade-sdk--lemonade": {
       "sig": "5575642d4a6341c86fde576f9cb8f73d",
       "lastmod": "2026-08-29"
@@ -4091,8 +4091,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/maxfreedompollard--compartment": {
-      "sig": "09272d393fa36814f4d805bf474613cb",
-      "lastmod": "2026-08-29"
+      "sig": "7fccd23863377202364a2198774350e4",
+      "lastmod": "2026-09-03"
     },
     "/servers/maximhq--bifrost": {
       "sig": "fe85c7579f38750fb31ae853be3d90ab",
@@ -4859,8 +4859,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/nvidia-ai-blueprints--video-search-and-summarization": {
-      "sig": "6fde7fac7f4702179f64a5e5e03b92dc",
-      "lastmod": "2026-08-29"
+      "sig": "b79d4fc6a17869bae01dba972f777625",
+      "lastmod": "2026-09-03"
     },
     "/servers/nvidia-nemo--datadesigner": {
       "sig": "8d51b3d3cf5a9ff566732e10d847bd6e",
@@ -4967,8 +4967,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/open-multi-agent--open-multi-agent": {
-      "sig": "bd2f39729b7a53b27eca55901fc0b0e3",
-      "lastmod": "2026-08-29"
+      "sig": "2d5041f69882d3b311a1f1052e494e60",
+      "lastmod": "2026-09-03"
     },
     "/servers/open-webui--mcpo": {
       "sig": "86970300eba4a5eb630cb04d974af96a",
@@ -5041,6 +5041,10 @@
     "/servers/openosint--openosint": {
       "sig": "66e1ad56287d0f4fd1a695e7e8323f20",
       "lastmod": "2026-08-29"
+    },
+    "/servers/openpetshq--openpets": {
+      "sig": "9d6bb2f7bc0a6d192fa05b63dbdc4734",
+      "lastmod": "2026-09-03"
     },
     "/servers/opensolon--solon": {
       "sig": "331d204da6d03b13af3091dfe3d39772",
@@ -5663,8 +5667,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/rokbenko--quackd": {
-      "sig": "64d13d3d1048f8fe1bf1b9e2dd06d835",
-      "lastmod": "2026-09-01"
+      "sig": "cab173d080aafbd34d850eb03111923b",
+      "lastmod": "2026-09-03"
     },
     "/servers/root-gg--plik": {
       "sig": "25bc164c6918ab970404e93e7b7907d2",
@@ -5963,8 +5967,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/silverstein--minutes": {
-      "sig": "d35bad69e36a7d6233d4543a41f76aae",
-      "lastmod": "2026-08-29"
+      "sig": "305ff0e272d6b6cd0bd70308697ac37d",
+      "lastmod": "2026-09-03"
     },
     "/servers/simon-ami--win-cli-mcp-server": {
       "sig": "ea7450717b026850a520769dd8c878e3",
@@ -6273,6 +6277,10 @@
     "/servers/supercorp-ai--supergateway": {
       "sig": "2dafe491b414b780e196cfebb7cea303",
       "lastmod": "2026-08-29"
+    },
+    "/servers/superdesigndev--treg": {
+      "sig": "ff3c3a799200a4d1813e5cda32ebb019",
+      "lastmod": "2026-09-03"
     },
     "/servers/superglue-ai--superglue": {
       "sig": "3731e7ce7860f1c1e5110850a8937f55",
@@ -6855,8 +6863,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/vshulcz--deja-vu": {
-      "sig": "2a804716f56d543c7cce91489d65c726",
-      "lastmod": "2026-09-02"
+      "sig": "ca82f23c781e325eb0ca4aa8fdd647c2",
+      "lastmod": "2026-09-03"
     },
     "/servers/vstorm-co--pydantic-deepagents": {
       "sig": "a4422daa341e1bca46be56df8f8be717",
@@ -6973,10 +6981,6 @@
     "/servers/whitenightshadow--camoufox-reverse-mcp": {
       "sig": "5afd4bed905d46a98b3da981c637773d",
       "lastmod": "2026-08-29"
-    },
-    "/servers/wildcard-official--deepcontext-mcp": {
-      "sig": "ffca958f101c4289be1ddce7777ef1a9",
-      "lastmod": "2026-08-30"
     },
     "/servers/wilwaldon--claude-code-frontend-design-toolkit": {
       "sig": "1caba7831d614d28c183fc9ec24baef5",
@@ -7121,6 +7125,10 @@
     "/servers/yjacquin--fast-mcp": {
       "sig": "72fc49d79a80c661ce75f756ee415610",
       "lastmod": "2026-08-29"
+    },
+    "/servers/ymuskrat--arcticdb_mcp": {
+      "sig": "f5b50b4c5313afe52e47cd624adb3ca0",
+      "lastmod": "2026-09-03"
     },
     "/servers/yoanbernabeu--grepai": {
       "sig": "7843cec9bbb8109f03c997ab9d9dfe60",
@@ -7306,6 +7314,10 @@
       "sig": "5a2bb40a7ddecaa782444ad5167b2c23",
       "lastmod": "2026-08-29"
     },
+    "/servers/zvec-ai--zvec-grep": {
+      "sig": "113285d1096c98682e3eb7737ed83dbd",
+      "lastmod": "2026-09-03"
+    },
     "/servers/zwldarren--akshare-one-mcp": {
       "sig": "88fd3aa852814cb501ab661b661a34d3",
       "lastmod": "2026-08-29"
@@ -7315,44 +7327,44 @@
       "lastmod": "2026-08-29"
     },
     "/topics": {
-      "sig": "41906b925d1805a4393d3c3690bcf823",
-      "lastmod": "2026-09-02"
+      "sig": "bc1f6819d7566bc06dffc1fac9298481",
+      "lastmod": "2026-09-03"
     },
     "/topics/agent-memory": {
-      "sig": "cec9f91b1e84ab76543e27ff448c6bf7",
-      "lastmod": "2026-09-01"
+      "sig": "d23d4db4ee5d3d636d00d4f596e5ec13",
+      "lastmod": "2026-09-03"
     },
     "/topics/anthropic": {
       "sig": "db55f6c9f44e3a2c233b17b997bcaca5",
       "lastmod": "2026-09-02"
     },
     "/topics/chatbot": {
-      "sig": "d907b57029c1369e84db0e168276f1cf",
-      "lastmod": "2026-09-01"
+      "sig": "0633f50d6c8b6504e76fe75f2119bfe0",
+      "lastmod": "2026-09-03"
     },
     "/topics/chatgpt": {
-      "sig": "e214a08965288045ea57e9787b14cfab",
-      "lastmod": "2026-09-02"
+      "sig": "d1cacf4466aa6d9095d711d6a7669879",
+      "lastmod": "2026-09-03"
     },
     "/topics/claude": {
-      "sig": "763c994ff26daaee2f998c5bc3623188",
-      "lastmod": "2026-09-02"
+      "sig": "47290ed49662561c3ad439044b3d808b",
+      "lastmod": "2026-09-03"
     },
     "/topics/claude-code": {
-      "sig": "bd094130861d885ae938da33b599b8ba",
-      "lastmod": "2026-09-02"
+      "sig": "9e3f401894208df5182c4295d8076a2f",
+      "lastmod": "2026-09-03"
     },
     "/topics/claude-desktop": {
       "sig": "4d8678aab00c267a67a4def352f32e12",
       "lastmod": "2026-09-02"
     },
     "/topics/cli": {
-      "sig": "b4afdf7ce245abea349e0247f93dbdf1",
-      "lastmod": "2026-09-02"
+      "sig": "459b888c24844ee620b9066d30f5025e",
+      "lastmod": "2026-09-03"
     },
     "/topics/codex": {
-      "sig": "fb319575b4e6fa6336fe53f694fe995f",
-      "lastmod": "2026-09-02"
+      "sig": "2ea50bc0376daa56d7c1d86a640b562e",
+      "lastmod": "2026-09-03"
     },
     "/topics/context-engineering": {
       "sig": "e8c6ce58acd768cf35d15678a130a8cc",
@@ -7375,24 +7387,24 @@
       "lastmod": "2026-09-02"
     },
     "/topics/docker": {
-      "sig": "3e66e0a8d926e64763b78ce2c991973d",
-      "lastmod": "2026-09-02"
+      "sig": "1b342cd74d999001d8184123292050c5",
+      "lastmod": "2026-09-03"
     },
     "/topics/electron": {
-      "sig": "ca0fefd58040d0b0215caec62ea931b5",
-      "lastmod": "2026-09-01"
+      "sig": "3cd047c10459c5733c087adb7ddc303c",
+      "lastmod": "2026-09-03"
     },
     "/topics/gemini": {
       "sig": "3606ab70aa9508742a7bbc28f2b3dd5d",
       "lastmod": "2026-09-02"
     },
     "/topics/gemini-cli": {
-      "sig": "4b3fdcd8c0c5ab979efff236e45f984f",
-      "lastmod": "2026-09-01"
+      "sig": "888ac28a446cfc526e3ec7263a032c43",
+      "lastmod": "2026-09-03"
     },
     "/topics/golang": {
-      "sig": "a3635fd12f68fd495a03f448e0585339",
-      "lastmod": "2026-09-01"
+      "sig": "ac7791ed6663905a426e337430f3cf13",
+      "lastmod": "2026-09-03"
     },
     "/topics/java": {
       "sig": "9478bc1e1640fc6dc665d5fef110c46c",
@@ -7411,8 +7423,8 @@
       "lastmod": "2026-09-02"
     },
     "/topics/local-first": {
-      "sig": "d5151a8cc45f6909729a01d21f3bc536",
-      "lastmod": "2026-09-02"
+      "sig": "4f551ca706841d39ea99891c7baf36c9",
+      "lastmod": "2026-09-03"
     },
     "/topics/macos": {
       "sig": "2daab87bef104bd734163dd1b9cb7791",
@@ -7423,28 +7435,28 @@
       "lastmod": "2026-09-02"
     },
     "/topics/nodejs": {
-      "sig": "53fed880200f7269c0763602cf63f93e",
-      "lastmod": "2026-09-02"
+      "sig": "c172aa5f5b77798563ceb7366974fa4a",
+      "lastmod": "2026-09-03"
     },
     "/topics/ollama": {
-      "sig": "7e6dc875b983390cc95bbbeef2d11827",
-      "lastmod": "2026-09-01"
+      "sig": "f9b836717559b05451b5b64e20f992e9",
+      "lastmod": "2026-09-03"
     },
     "/topics/openai": {
-      "sig": "81db285ec777414df192457eb29674b1",
-      "lastmod": "2026-09-01"
+      "sig": "4b41f30fa7e4bce3410721cc39ef209c",
+      "lastmod": "2026-09-03"
     },
     "/topics/openapi": {
       "sig": "ed1aa863d08df184223d5ede7c299f9b",
       "lastmod": "2026-09-02"
     },
     "/topics/openclaw": {
-      "sig": "559c74a6a9229b86b74450b7d742ea9a",
-      "lastmod": "2026-09-01"
+      "sig": "f5d47982a600437bd223e5a763259f11",
+      "lastmod": "2026-09-03"
     },
     "/topics/opencode": {
-      "sig": "f36c884ee1fa8c863f086d000456fcb7",
-      "lastmod": "2026-09-02"
+      "sig": "a70157ba6c6d1d3cd5c0acc72c53503a",
+      "lastmod": "2026-09-03"
     },
     "/topics/postgresql": {
       "sig": "a0891faefe4d866578517aad324caf61",
@@ -7455,40 +7467,40 @@
       "lastmod": "2026-09-01"
     },
     "/topics/python": {
-      "sig": "b1bc98077200b8b006fe0671aaa3a5f7",
-      "lastmod": "2026-09-02"
+      "sig": "3306b5637c13387f2853458e463254a0",
+      "lastmod": "2026-09-03"
     },
     "/topics/rag": {
-      "sig": "e073b014695aecbefe3cd7536c9b6e91",
-      "lastmod": "2026-09-01"
+      "sig": "70b474992fb64c227b258ac2f3b04e73",
+      "lastmod": "2026-09-03"
     },
     "/topics/react": {
       "sig": "f2111f7ddcb039f8a1933cc7d4ecaee5",
       "lastmod": "2026-09-02"
     },
     "/topics/rust": {
-      "sig": "78c3e541ece407b4a439ac996c09af90",
-      "lastmod": "2026-09-02"
+      "sig": "9a870f489c479176094d60c42c291cb6",
+      "lastmod": "2026-09-03"
     },
     "/topics/self-hosted": {
-      "sig": "43a0eb38fc8a6959929869ab6996c8bf",
-      "lastmod": "2026-09-02"
+      "sig": "f539695f0669055e9dd02bbef5b72e1e",
+      "lastmod": "2026-09-03"
     },
     "/topics/semantic-search": {
-      "sig": "dea920c051586efd6d2ef5c3065204e8",
-      "lastmod": "2026-09-01"
+      "sig": "188adec9a806bf7b50bcd692feb05461",
+      "lastmod": "2026-09-03"
     },
     "/topics/skills": {
-      "sig": "332a68ef7dcc29018b14e8300951cef9",
-      "lastmod": "2026-09-02"
+      "sig": "be2ce5bc37338c97d0f204bd63faa644",
+      "lastmod": "2026-09-03"
     },
     "/topics/sqlite": {
-      "sig": "440d2b6a7a9ba67b60bdd0fe29014872",
-      "lastmod": "2026-09-01"
+      "sig": "dfaa13094742fb8a548787bad16a64c1",
+      "lastmod": "2026-09-03"
     },
     "/topics/typescript": {
-      "sig": "ab7fd2954e72b5450da1810a9bc1b2bb",
-      "lastmod": "2026-09-02"
+      "sig": "410d136669247b1b63d1e6e0ffa2cbf7",
+      "lastmod": "2026-09-03"
     },
     "/topics/vibe-coding": {
       "sig": "3004a4c25a73b9fc305a54439794b98f",
