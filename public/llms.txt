@@ -25,6 +25,7 @@
 Every category, in full. Each of these also serves markdown - append `.md` or
 send `Accept: text/markdown`.
 
+- [Agent Memory & Knowledge](https://mcpjunction.ai/categories/agent-memory)
 - [AI Agents](https://mcpjunction.ai/categories/ai-agents)
 - [AI Coding Assistants](https://mcpjunction.ai/categories/ai-coding)
 - [AI Media Generation](https://mcpjunction.ai/categories/ai-media)
