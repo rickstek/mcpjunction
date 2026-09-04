@@ -7,20 +7,20 @@
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "d9abc9904ab911833690f4e45caca92e",
+      "sig": "a1939948a1e473c2ed79974c4e3a01d0",
       "lastmod": "2026-09-04"
     },
     "/categories/ai-agents": {
-      "sig": "63c0bbd3db0ffc4c1bfbbc1333bb214a",
-      "lastmod": "2026-09-03"
+      "sig": "12cb3b81cdb00cbe48a8ccf929df1476",
+      "lastmod": "2026-09-04"
     },
     "/categories/ai-coding": {
       "sig": "a3e48fcbff912cb25e2485691b3a9eaa",
       "lastmod": "2026-09-04"
     },
     "/categories/ai-media": {
-      "sig": "394533758dc284ea27f409e123668360",
-      "lastmod": "2026-09-03"
+      "sig": "0d8ea67c54574a809d28a901f824850f",
+      "lastmod": "2026-09-04"
     },
     "/categories/ai-models": {
       "sig": "3b48458825a5696c8b1ff9e9c23965c4",
@@ -51,8 +51,8 @@
       "lastmod": "2026-09-03"
     },
     "/categories/devtools": {
-      "sig": "0a624c50b502dc63779db06f92f154f6",
-      "lastmod": "2026-09-03"
+      "sig": "f4ac2a11568665781765e6e3e83811b7",
+      "lastmod": "2026-09-04"
     },
     "/categories/finance": {
       "sig": "9662ffaf525e08c303b40cac0bd82fb6",
@@ -67,8 +67,8 @@
       "lastmod": "2026-09-03"
     },
     "/categories/iot-hardware": {
-      "sig": "475418804de6074e4b2f0adb18539530",
-      "lastmod": "2026-09-03"
+      "sig": "12891a0c47177f58bc262dfdade50ed9",
+      "lastmod": "2026-09-04"
     },
     "/categories/mcp-infrastructure": {
       "sig": "eb7c9da89d139a8b1902156b7285f522",
@@ -83,8 +83,8 @@
       "lastmod": "2026-09-03"
     },
     "/categories/search": {
-      "sig": "c7dbbc3e99b8b4cd78774c528709b84e",
-      "lastmod": "2026-09-03"
+      "sig": "05073cf793d29e36f4ddca0c92f61fc4",
+      "lastmod": "2026-09-04"
     },
     "/categories/security": {
       "sig": "f3d9a018c1fdfeff513992b3f95b3e56",
@@ -107,7 +107,7 @@
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.json": {
-      "sig": "ab09b263b4ca158342ca595166da60a5",
+      "sig": "1676821474becb65dad4dc2c8509b029",
       "lastmod": "2026-09-04"
     },
     "/licensing": {
@@ -1203,7 +1203,7 @@
       "lastmod": "2026-08-29"
     },
     "/servers/bytechefhq--bytechef": {
-      "sig": "9981ca96f24e393f09bcc9a3602c30cb",
+      "sig": "b0dbf9e46f216bb1f6bf3a27f2b86be6",
       "lastmod": "2026-09-04"
     },
     "/servers/bytedance--ui-tars-desktop": {
@@ -1483,8 +1483,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/cocoindex-io--cocoindex-code": {
-      "sig": "c2705da85fb7e553d2f38b85e3177eae",
-      "lastmod": "2026-08-29"
+      "sig": "9badf50e1585eb6479229aa19b3c09e0",
+      "lastmod": "2026-09-04"
     },
     "/servers/coddingtonbear--obsidian-local-rest-api": {
       "sig": "fcbe3ffb332aea746f2031fd10bb5d40",
@@ -1595,8 +1595,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/constantineb6--comfy-pilot": {
-      "sig": "7559f8dd7c12c3f9a4ac24eb57ab0be5",
-      "lastmod": "2026-08-29"
+      "sig": "5bc02e9be8ad7ac74aa58645822f0b4d",
+      "lastmod": "2026-09-04"
     },
     "/servers/containers--kubernetes-mcp-server": {
       "sig": "1047136ebb962670ada1aac5d4bf7cfd",
@@ -4427,8 +4427,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/modelcontextprotocol--ext-apps": {
-      "sig": "974309aa3954355f3dfbbcbc36bad062",
-      "lastmod": "2026-08-29"
+      "sig": "c777035aadd5a938bbc26a3177a478bd",
+      "lastmod": "2026-09-04"
     },
     "/servers/modelcontextprotocol--go-sdk": {
       "sig": "7d5b1672a02f95e24a5bd762d8c92eb1",

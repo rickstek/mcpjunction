@@ -55,7 +55,7 @@
       "name": "IoT, Hardware & Robotics",
       "description": "MCP servers for embedded devices, microcontrollers, hardware interfaces, and robotics — ESP32, Arduino, Raspberry Pi, MQTT, sensor networks, ROS, and drones. Robotics may split into its own category as coverage grows.",
       "intro": "A thin and varied shelf: single-board computers and microcontrollers, IoT devices, and robot middleware share it, with no single platform dominating. What unites them is that an agent's command reaches a motor, a relay, or a radio with no undo. Look for a simulation or dry-run mode before connecting anything that moves, and keep hardware credentials on a device you are willing to have misbehave while you learn how a server interprets instructions.",
-      "match": ["esp32", "esp-idf", "esp8266", "arduino", "raspberry-pi", "raspberrypi", "iot", "embedded", "microcontroller", "mqtt", "firmware", "sensors", "hardware", "rp2040", "stm32", "ros", "ros2", "moveit", "gazebo", "drone", "uav", "ardupilot", "betaflight", "robot", "robotics", "embodied-ai", "plc", "industrial-automation", "siemens"]
+      "match": ["esp32", "esp-idf", "esp8266", "arduino", "raspberry-pi", "raspberrypi", "iot", "microcontroller", "mqtt", "firmware", "sensors", "hardware", "rp2040", "stm32", "ros", "ros2", "moveit", "gazebo", "drone", "uav", "ardupilot", "betaflight", "robot", "robotics", "embodied-ai", "plc", "industrial-automation", "siemens"]
     },
     {
       "slug": "gaming",
