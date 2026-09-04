@@ -3,11 +3,11 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "9f9995010ac48dab7d0a5b65c8395322",
+      "sig": "80301481bf98fc3edd0d38ef16e78e67",
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "a1939948a1e473c2ed79974c4e3a01d0",
+      "sig": "aa7b2dba78b7faa2a4c41b904778e4b0",
       "lastmod": "2026-09-04"
     },
     "/categories/ai-agents": {
@@ -15,7 +15,7 @@
       "lastmod": "2026-09-04"
     },
     "/categories/ai-coding": {
-      "sig": "a3e48fcbff912cb25e2485691b3a9eaa",
+      "sig": "c919c0a7979402411a6bbbb97c188e1b",
       "lastmod": "2026-09-04"
     },
     "/categories/ai-media": {
@@ -99,15 +99,15 @@
       "lastmod": "2026-09-03"
     },
     "/data": {
-      "sig": "6c60d29f644f92ab2b8aa08e72581618",
+      "sig": "d984c997e31e62949cd44a5ee427c4a3",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.csv": {
-      "sig": "09925e1bdfbcc63e1269e0c937de2fc8",
+      "sig": "04422267c271e85807fb716d493a13ff",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.json": {
-      "sig": "1676821474becb65dad4dc2c8509b029",
+      "sig": "869c06ff55af76a00ca8a0052bee2332",
       "lastmod": "2026-09-04"
     },
     "/licensing": {
@@ -2469,10 +2469,6 @@
     "/servers/fuzzinglabs--mcp-security-hub": {
       "sig": "ff3b4d99d57906e4c17bb301ef82d4c3",
       "lastmod": "2026-08-29"
-    },
-    "/servers/fy-agent--fyagent": {
-      "sig": "0b000bd3dc07a0382cb697c84aeec214",
-      "lastmod": "2026-09-04"
     },
     "/servers/gadicc--yahoo-finance2": {
       "sig": "c6fba8f7948240a5c198def0acf8eaa6",
@@ -7323,7 +7319,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics": {
-      "sig": "c01af6451386c148d6f3088358ca3ed7",
+      "sig": "92c51ec50d20e37c762ab76142e23392",
       "lastmod": "2026-09-04"
     },
     "/topics/agent-memory": {
@@ -7379,7 +7375,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/desktop-app": {
-      "sig": "5246333ba2f6295b2da921b103c7182b",
+      "sig": "fdeb8abec199a74500767e30c6d7c9be",
       "lastmod": "2026-09-04"
     },
     "/topics/docker": {
@@ -7447,7 +7443,7 @@
       "lastmod": "2026-09-04"
     },
     "/topics/openclaw": {
-      "sig": "995b0d31ff89f7be963b3ab5a220cad7",
+      "sig": "c2252b3a8db28b282ee7551a76e71722",
       "lastmod": "2026-09-04"
     },
     "/topics/opencode": {
@@ -7475,7 +7471,7 @@
       "lastmod": "2026-09-04"
     },
     "/topics/rust": {
-      "sig": "cb1d531511e1930377d5bde5eda11402",
+      "sig": "51b35ab57414f67a1774e12aae8e83eb",
       "lastmod": "2026-09-04"
     },
     "/topics/self-hosted": {
