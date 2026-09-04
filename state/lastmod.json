@@ -7347,8 +7347,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/claude-desktop": {
-      "sig": "4d8678aab00c267a67a4def352f32e12",
-      "lastmod": "2026-09-02"
+      "sig": "ce330abf0fc03fe6f252e50594bdf4f9",
+      "lastmod": "2026-09-04"
     },
     "/topics/cli": {
       "sig": "44ec0c0ece70e7b21815f8befeaa8cd7",
@@ -7363,8 +7363,8 @@
       "lastmod": "2026-09-01"
     },
     "/topics/copilot": {
-      "sig": "8cc524d8fce56e521c36ebb473991824",
-      "lastmod": "2026-09-01"
+      "sig": "1fc6c2bd7facd2080c26314ca2d0f97f",
+      "lastmod": "2026-09-04"
     },
     "/topics/cursor": {
       "sig": "9bff5343a2e28a64359c97fa04f3f324",
@@ -7375,16 +7375,16 @@
       "lastmod": "2026-09-03"
     },
     "/topics/desktop-app": {
-      "sig": "cd068ec8fbf641c10bd70f6ed721a30f",
-      "lastmod": "2026-09-03"
+      "sig": "fdeb8abec199a74500767e30c6d7c9be",
+      "lastmod": "2026-09-04"
     },
     "/topics/docker": {
       "sig": "dc32097d272bee6a176a7e69641a5529",
       "lastmod": "2026-09-03"
     },
     "/topics/electron": {
-      "sig": "091dccf60057522a3bed3d1ebf839d0e",
-      "lastmod": "2026-09-03"
+      "sig": "af99431077dfecfb0dfeb8aff9d3f42c",
+      "lastmod": "2026-09-04"
     },
     "/topics/gemini": {
       "sig": "fae22fec7acc539cb6e1cf1ffcfa3731",
@@ -7411,8 +7411,8 @@
       "lastmod": "2026-09-02"
     },
     "/topics/langchain": {
-      "sig": "47ec40b143aede587c02ab73f9846907",
-      "lastmod": "2026-09-02"
+      "sig": "5e8158727646e499c9157e7e6e4e610a",
+      "lastmod": "2026-09-04"
     },
     "/topics/local-first": {
       "sig": "f258084f9c6b630d334b0ff0ad821a13",
@@ -7423,16 +7423,16 @@
       "lastmod": "2026-09-03"
     },
     "/topics/nextjs": {
-      "sig": "e002ce5023eff28dcb1237313e4d6901",
-      "lastmod": "2026-09-02"
+      "sig": "03b24603e077f89201101bc52f2527d9",
+      "lastmod": "2026-09-04"
     },
     "/topics/nodejs": {
-      "sig": "10a1aaa08883f786f6c253ec11357bd7",
-      "lastmod": "2026-09-03"
+      "sig": "c6d73454c598904db49bc58516ea1e31",
+      "lastmod": "2026-09-04"
     },
     "/topics/ollama": {
-      "sig": "f7e08a65eee874d3b4e31190229e1144",
-      "lastmod": "2026-09-03"
+      "sig": "606a27eec158505b6f1b5cb1773492e0",
+      "lastmod": "2026-09-04"
     },
     "/topics/openai": {
       "sig": "6dc5d9ef50f575c84eae417095eb6b40",
@@ -7447,8 +7447,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/opencode": {
-      "sig": "7850d21246608402d97aff7f2f5ea217",
-      "lastmod": "2026-09-03"
+      "sig": "a8687e4118c380f3b447fcee9914b2f7",
+      "lastmod": "2026-09-04"
     },
     "/topics/postgresql": {
       "sig": "a0891faefe4d866578517aad324caf61",
@@ -7467,8 +7467,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/react": {
-      "sig": "f2111f7ddcb039f8a1933cc7d4ecaee5",
-      "lastmod": "2026-09-02"
+      "sig": "1d1d34cae7373303f451e05dd54c02ba",
+      "lastmod": "2026-09-04"
     },
     "/topics/rust": {
       "sig": "51b35ab57414f67a1774e12aae8e83eb",
@@ -7487,8 +7487,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/sqlite": {
-      "sig": "dfaa13094742fb8a548787bad16a64c1",
-      "lastmod": "2026-09-03"
+      "sig": "4334653fca2027877dbbace33ddac739",
+      "lastmod": "2026-09-04"
     },
     "/topics/typescript": {
       "sig": "2e8d63e64c46a2fb26d71f5b20ebdb91",
@@ -7503,8 +7503,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/windsurf": {
-      "sig": "c9cbdd8aadb112b34ead1c38c1ff1944",
-      "lastmod": "2026-09-02"
+      "sig": "6401c187d6d958138680c767b5d573ee",
+      "lastmod": "2026-09-04"
     },
     "/topics/workflow-automation": {
       "sig": "909637f9f08d4b57d65a7f703960a494",
