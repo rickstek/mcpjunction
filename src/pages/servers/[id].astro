@@ -253,6 +253,17 @@ const related = (() => {
   </>
 )}
 
+{/* Owners linking back to their own page is the one authority signal a
+    directory can earn at scale. Wording is "listed", never "verified" — the
+    badge must not read as review or endorsement (see /badge). */}
+{server.status === 'active' && (
+  <>
+    <h2>Add a badge to your README</h2>
+    <p><img src="https://mcpjunction.ai/badge/listed.svg" alt="Listed on MCP Junction" width="132" height="20"> — links back to this page. Listing is not a review or endorsement; <a href="/badge">what the badge means</a>.</p>
+    <pre class="block"><code>{`[![Listed on MCP Junction](https://mcpjunction.ai/badge/listed.svg)](${canonicalUrl})`}</code></pre>
+  </>
+)}
+
 <h2>Cite this entry</h2>
 <table>
   <tr><th>Canonical page</th><td><a href={canonicalUrl}>{canonicalUrl}</a></td></tr>

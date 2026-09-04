@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="132" height="20" role="img" aria-label="Listed on MCP Junction">
+  <title>Listed on MCP Junction</title>
+  <!-- Static file, no per-viewer tracking. "Listed", not "verified": listing is
+       not a review or an endorsement. See https://mcpjunction.ai/badge -->
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#fff" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="132" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="88" height="20" fill="#1a1a2e"/>
+    <rect x="88" width="44" height="20" fill="#1f4e79"/>
+    <rect width="132" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="44" y="14" fill="#010101" fill-opacity=".3" textLength="78">MCP Junction</text>
+    <text x="44" y="13" textLength="78">MCP Junction</text>
+    <text x="110" y="14" fill="#010101" fill-opacity=".3" textLength="34">listed</text>
+    <text x="110" y="13" textLength="34">listed</text>
+  </g>
+</svg>

@@ -4,8 +4,9 @@
 # directory and strips it from the published output (it is not itself served).
 #
 # The CSP is unusually strict because the site genuinely earns it: there is no
-# executable JavaScript anywhere in the build, no external origins, no images,
-# and no forms. The only <script> tags are application/ld+json, which is data
+# executable JavaScript anywhere in the build, no external origins, and no
+# forms. The only image is our own static badge SVG (same origin, covered by
+# img-src 'self'). The only <script> tags are application/ld+json, which is data
 # rather than code and is unaffected by script-src. Inline <style> is emitted
 # by Astro with a per-build hash, so 'unsafe-inline' is used rather than
 # pinning hashes that would change on every deploy — style injection is a far
@@ -25,4 +26,12 @@
 # The dataset is published for programmatic use and explicitly licensed for
 # agent retrieval, so it is readable cross-origin by design.
 /data/*
+  Access-Control-Allow-Origin: *
+
+# The README badge is embedded in third-party repositories and fetched through
+# GitHub's image proxy on every README view. Cache for a day: long enough to be
+# cheap, short enough that a wording change propagates. A static file with no
+# tracking — see /badge.
+/badge/*
+  Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *

@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+const badgeUrl = 'https://mcpjunction.ai/badge/listed.svg';
+const exampleId = 'owner--repo';
+const md = `[![Listed on MCP Junction](${badgeUrl})](https://mcpjunction.ai/servers/${exampleId})`;
+const html = `<a href="https://mcpjunction.ai/servers/${exampleId}"><img src="${badgeUrl}" alt="Listed on MCP Junction"></a>`;
+---
+<Base
+  title="Badge — MCP Junction"
+  description="Add a 'Listed on MCP Junction' badge to your MCP server's README. What the badge means, what it does not mean, and how to add or remove it."
+  canonical="/badge"
+>
+<h1>Badge</h1>
+<p>If your MCP server is listed here, you can say so in your README.
+The badge links back to your server's page in the directory.</p>
+<p><img src={badgeUrl} alt="Listed on MCP Junction" width="132" height="20"></p>
+
+<h2>What it means</h2>
+<p>Exactly what it says: the repository is listed in this directory. Listing is
+automatic — the nightly refresh finds public repositories that identify
+themselves as MCP servers and meet a small star threshold. It is <strong>not</strong>
+a review, a security audit, or an endorsement, and the badge is deliberately
+worded so it cannot be read as one. Review status is a separate, human-set
+field described on the <a href="/licensing#editorial-independence">licensing
+page</a>.</p>
+
+<h2>How to add it</h2>
+<p>Every server page shows these snippets with your own id filled in. Replace
+<code>{exampleId}</code> below with the id from your page's URL.</p>
+<p>Markdown:</p>
+<pre class="block"><code>{md}</code></pre>
+<p>HTML:</p>
+<pre class="block"><code>{html}</code></pre>
+
+<h2>What it does not do</h2>
+<ul>
+  <li><strong>No tracking.</strong> The badge is a static SVG file. There is no
+  per-viewer tracking, no script, and no cookie. GitHub serves README images
+  through its own proxy, so we do not see who views your README.</li>
+  <li><strong>No effect on your listing.</strong> Adding the badge does not
+  change your category, position, or review status. Listings are not for
+  sale and are not influenced by who links to us.</li>
+</ul>
+
+<h2>Corrections and removal</h2>
+<p>If your repository is listed and you would rather it were not, or its entry
+is wrong, use the contact on the <a href="/licensing">licensing page</a>.
+Takedown and correction requests are honored promptly.</p>
+</Base>

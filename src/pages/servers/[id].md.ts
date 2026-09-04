@@ -133,6 +133,16 @@ export const GET: APIRoute = ({ props }) => {
   L.push(`- Query this directory from an agent: POST ${BASE}/mcp — an MCP server over streamable HTTP, no auth. Tools: search_servers, get_server, list_categories, get_dataset_info.`);
   L.push(`- Licensing: ${BASE}/licensing — agent retrieval free during launch with attribution; bulk retrieval and AI training require a license.`);
   L.push('');
+  if (server.status === 'active') {
+    L.push('## Badge');
+    L.push('');
+    L.push(`Owners may add a "Listed on MCP Junction" badge to their README; it links back to this page. Listing is not a review or endorsement (${BASE}/badge).`);
+    L.push('');
+    L.push('```markdown');
+    L.push(`[![Listed on MCP Junction](${BASE}/badge/listed.svg)](${canonical})`);
+    L.push('```');
+    L.push('');
+  }
 
   return new Response(L.join('\n'), {
     headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
