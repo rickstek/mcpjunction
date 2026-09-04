@@ -3,8 +3,8 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "c4a544636086958a47381d25f0263ac3",
-      "lastmod": "2026-09-03"
+      "sig": "ceb2335227de12d0576994e9d8e2d475",
+      "lastmod": "2026-09-04"
     },
     "/categories": {
       "sig": "ded34a27021ff27a6b6e5263f94f59c6",
@@ -87,8 +87,8 @@
       "lastmod": "2026-09-03"
     },
     "/categories/security": {
-      "sig": "42127fa8895da49771efda4f1bebec94",
-      "lastmod": "2026-09-03"
+      "sig": "f3d9a018c1fdfeff513992b3f95b3e56",
+      "lastmod": "2026-09-04"
     },
     "/categories/social-media": {
       "sig": "29eac21584ef4f5cd4b04f557a8746e4",
@@ -99,16 +99,16 @@
       "lastmod": "2026-09-03"
     },
     "/data": {
-      "sig": "40b2bc24b32c35debfee7c6b620cdc6a",
-      "lastmod": "2026-09-03"
+      "sig": "4808bf302e44f4fddfe667f46bb3c42c",
+      "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.csv": {
-      "sig": "d388a5b6e01958ff8d09e4ddaa1bbe7c",
-      "lastmod": "2026-09-03"
+      "sig": "da8663bab85c69a874e8457d73cfd00f",
+      "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.json": {
-      "sig": "aeae6a9705d6ed0a0e1f0d763e71b33d",
-      "lastmod": "2026-09-03"
+      "sig": "f485e83c4872f55f52e9bd81fdd7a6f4",
+      "lastmod": "2026-09-04"
     },
     "/licensing": {
       "sig": "2c61fa4437a29eed2ee02d9255716a9b",
@@ -175,8 +175,8 @@
       "lastmod": "2026-08-29"
     },
     "/servers/2akouwu--reverify": {
-      "sig": "befcc62e3fa0a266524d22c70c062f90",
-      "lastmod": "2026-09-03"
+      "sig": "2ab3f5e139c99289b9fd53230e0f4e93",
+      "lastmod": "2026-09-04"
     },
     "/servers/53ai--53aihub": {
       "sig": "44cee2e3727af140f33a490b83fce4cf",
@@ -7319,8 +7319,8 @@
       "lastmod": "2026-08-29"
     },
     "/topics": {
-      "sig": "7869e3fef3b9e0ac0a6bfe9665acccda",
-      "lastmod": "2026-09-03"
+      "sig": "92c51ec50d20e37c762ab76142e23392",
+      "lastmod": "2026-09-04"
     },
     "/topics/agent-memory": {
       "sig": "61cf0c1be7d1d32139401cf9d3221305",
@@ -7359,8 +7359,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/context-engineering": {
-      "sig": "e8c6ce58acd768cf35d15678a130a8cc",
-      "lastmod": "2026-09-01"
+      "sig": "6219d38ea24022984505377bd90027ae",
+      "lastmod": "2026-09-04"
     },
     "/topics/copilot": {
       "sig": "1fc6c2bd7facd2080c26314ca2d0f97f",
@@ -7459,8 +7459,8 @@
       "lastmod": "2026-09-01"
     },
     "/topics/python": {
-      "sig": "5909aab3aeceec79da9876c8f0946354",
-      "lastmod": "2026-09-03"
+      "sig": "c3bab4fbba9660352220e8607a1e690f",
+      "lastmod": "2026-09-04"
     },
     "/topics/rag": {
       "sig": "658d29de10af6449bbafb862ef4015ce",
