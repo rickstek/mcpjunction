@@ -7331,8 +7331,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/chatbot": {
-      "sig": "0633f50d6c8b6504e76fe75f2119bfe0",
-      "lastmod": "2026-09-03"
+      "sig": "6560a7b93b2ae5e954d2c23b9ce143cf",
+      "lastmod": "2026-09-04"
     },
     "/topics/chatgpt": {
       "sig": "a184110f16eca017e930467980351342",
@@ -7359,7 +7359,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/context-engineering": {
-      "sig": "6219d38ea24022984505377bd90027ae",
+      "sig": "31db2b646eb180ab107236c12f2f3e4a",
       "lastmod": "2026-09-04"
     },
     "/topics/copilot": {
@@ -7391,24 +7391,24 @@
       "lastmod": "2026-09-03"
     },
     "/topics/gemini-cli": {
-      "sig": "888ac28a446cfc526e3ec7263a032c43",
-      "lastmod": "2026-09-03"
+      "sig": "6917f46bce83c3894a841aa27695c53b",
+      "lastmod": "2026-09-04"
     },
     "/topics/golang": {
       "sig": "a7a35f0c10f6d9b6ad303bf17dc62c47",
       "lastmod": "2026-09-03"
     },
     "/topics/java": {
-      "sig": "9478bc1e1640fc6dc665d5fef110c46c",
-      "lastmod": "2026-09-01"
+      "sig": "a3e0605d1ced7cacea0807dd7b48dadd",
+      "lastmod": "2026-09-04"
     },
     "/topics/knowledge-graph": {
       "sig": "908e34f3584c66c39a7d2d6b7e3bc142",
       "lastmod": "2026-09-03"
     },
     "/topics/kubernetes": {
-      "sig": "ebb3ea89f2176e9f4979a50298079a29",
-      "lastmod": "2026-09-02"
+      "sig": "01d32b32b697cbeae11eb4a5865e2d8d",
+      "lastmod": "2026-09-04"
     },
     "/topics/langchain": {
       "sig": "5e8158727646e499c9157e7e6e4e610a",
@@ -7439,8 +7439,8 @@
       "lastmod": "2026-09-03"
     },
     "/topics/openapi": {
-      "sig": "7e447ef834463e659299cf1c43cb4d36",
-      "lastmod": "2026-09-03"
+      "sig": "47cb00d88592c59cfe1b990fa826d2c5",
+      "lastmod": "2026-09-04"
     },
     "/topics/openclaw": {
       "sig": "c2252b3a8db28b282ee7551a76e71722",
@@ -7451,12 +7451,12 @@
       "lastmod": "2026-09-04"
     },
     "/topics/postgresql": {
-      "sig": "a0891faefe4d866578517aad324caf61",
-      "lastmod": "2026-09-01"
+      "sig": "5e5023e5b14a1f6da98bf4d7ef352ea0",
+      "lastmod": "2026-09-04"
     },
     "/topics/prompt-engineering": {
-      "sig": "485c4611269b81b5b3c0511979192abc",
-      "lastmod": "2026-09-01"
+      "sig": "2c186a6dd59fcc4dd065b3cbf6a092eb",
+      "lastmod": "2026-09-04"
     },
     "/topics/python": {
       "sig": "c3bab4fbba9660352220e8607a1e690f",
@@ -7495,20 +7495,20 @@
       "lastmod": "2026-09-03"
     },
     "/topics/vibe-coding": {
-      "sig": "3004a4c25a73b9fc305a54439794b98f",
-      "lastmod": "2026-09-01"
+      "sig": "2a349dafedd5b13d9c0fd51ef6687026",
+      "lastmod": "2026-09-04"
     },
     "/topics/windows": {
-      "sig": "d6ebcf7af5e9a7f30c5fab539c53641c",
-      "lastmod": "2026-09-03"
+      "sig": "657feccce9af7835d74cabb7fe5bcf09",
+      "lastmod": "2026-09-04"
     },
     "/topics/windsurf": {
       "sig": "6401c187d6d958138680c767b5d573ee",
       "lastmod": "2026-09-04"
     },
     "/topics/workflow-automation": {
-      "sig": "909637f9f08d4b57d65a7f703960a494",
-      "lastmod": "2026-09-02"
+      "sig": "2eb07cf90e8c527ffe1753dc0952063d",
+      "lastmod": "2026-09-04"
     }
   }
 }
