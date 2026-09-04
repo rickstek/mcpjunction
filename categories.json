@@ -176,6 +176,15 @@
     "netdata--netdata": "monitoring",
     "langgenius--dify": "ai-agents",
     "mudler--localai": "ai-models",
-    "snailclimb--javaguide": "uncategorized"
+    "snailclimb--javaguide": "uncategorized",
+    "joeanamier--xhs-downloader": "social-media",
+    "builderz-labs--mission-control": "ai-agents",
+    "tianma-if--edgeever": "productivity",
+    "sheshbabu--zen": "productivity",
+    "markrai--scrumboy": "productivity",
+    "jklthinking--retinue": "productivity",
+    "cronusl-1141--ai-company": "ai-agents",
+    "daymonio--daymon": "ai-agents",
+    "bybit-exchange--kaas": "agent-memory"
   }
 }
