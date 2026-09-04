@@ -3,11 +3,11 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "556e05679a87f4ffd396b36da865ea06",
+      "sig": "e2a343aa6e67effd780d6a1b7c072f01",
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "29ecce4b9327eb45f5a5f45707434a09",
+      "sig": "a835b4bd16e27827cf5527f33ab82b27",
       "lastmod": "2026-09-04"
     },
     "/categories/agent-memory": {
@@ -15,7 +15,7 @@
       "lastmod": "2026-09-04"
     },
     "/categories/ai-agents": {
-      "sig": "3fb6ebd37f0f3c3ea3740081d187d1e5",
+      "sig": "e9f559d2f49213ad564902ff9258c74b",
       "lastmod": "2026-09-04"
     },
     "/categories/ai-coding": {
@@ -103,15 +103,15 @@
       "lastmod": "2026-09-04"
     },
     "/data": {
-      "sig": "cb598f385a16636bce6214a7cac4d299",
+      "sig": "9f3dfbf4372407393177974886962390",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.csv": {
-      "sig": "57bb37130523dbd783dafecbcb3f2fc2",
+      "sig": "dfdf10ee9acfa6178d17826a0ecf9bbe",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.json": {
-      "sig": "3253afea1150a6e17217584f623a63c7",
+      "sig": "ed750a62b428090a65a2edfb6c6a1bf1",
       "lastmod": "2026-09-04"
     },
     "/licensing": {
@@ -477,6 +477,10 @@
     "/servers/aipexstudio--aipex": {
       "sig": "e5caf66f631897728af05ae9310edf2c",
       "lastmod": "2026-08-29"
+    },
+    "/servers/aipoch--open-science": {
+      "sig": "c656316b9be984f11e4ecf776c5a4503",
+      "lastmod": "2026-09-04"
     },
     "/servers/aipotheosis-labs--aci": {
       "sig": "b1bcaa36e21953797797f07e331c1481",
@@ -7323,7 +7327,7 @@
       "lastmod": "2026-09-04"
     },
     "/topics": {
-      "sig": "92c51ec50d20e37c762ab76142e23392",
+      "sig": "03bbc1e2895fd7b4a8035b8232bc6188",
       "lastmod": "2026-09-04"
     },
     "/topics/agent-memory": {
@@ -7379,7 +7383,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/desktop-app": {
-      "sig": "fdeb8abec199a74500767e30c6d7c9be",
+      "sig": "9ad17487a86edc1f06b8c907f9371e4c",
       "lastmod": "2026-09-04"
     },
     "/topics/docker": {
@@ -7419,12 +7423,12 @@
       "lastmod": "2026-09-04"
     },
     "/topics/local-first": {
-      "sig": "f258084f9c6b630d334b0ff0ad821a13",
-      "lastmod": "2026-09-03"
+      "sig": "9d928a965bd5da0b2e43958f6d1d6703",
+      "lastmod": "2026-09-04"
     },
     "/topics/macos": {
-      "sig": "169ef0d3920de5072bd3308b3d6cd0bd",
-      "lastmod": "2026-09-03"
+      "sig": "47401022ed9c22c460444be7cb30199b",
+      "lastmod": "2026-09-04"
     },
     "/topics/nextjs": {
       "sig": "03b24603e077f89201101bc52f2527d9",
@@ -7503,7 +7507,7 @@
       "lastmod": "2026-09-04"
     },
     "/topics/windows": {
-      "sig": "657feccce9af7835d74cabb7fe5bcf09",
+      "sig": "66afa1b89e69f05976349a23fe3781e1",
       "lastmod": "2026-09-04"
     },
     "/topics/windsurf": {
