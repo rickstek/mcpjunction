@@ -34,6 +34,22 @@ what an intro is for:
 
 Batch 1 — the twelve largest tags. Approved and live (commit `606ebb9`).
 
+Batch 4 — the final eleven. Readings measured before drafting: `kubernetes`
+behaves like `docker` (almost none manage a cluster; the tag marks
+infrastructure-grade services that run in one); `postgresql` is the mirror of
+`sqlite` — not a backend but one engine in a multi-database client's list, with
+dedicated Postgres servers the minority; `chatbot` co-occurs with a
+messaging-platform tag in one server out of many — owners mean an assistant or
+agent framework, not a Telegram bot; `openapi` splits into spec-to-tools
+bridges and servers merely documented with OpenAPI; `workflow-automation` is
+loose — a few platforms, a few bridges, and general agent tooling in between;
+the concept tags (`context-engineering`, `prompt-engineering`, `vibe-coding`)
+are almost never named in descriptions and signal the author's focus or
+audience, not function. **Product gap for the pipeline owner, found while
+measuring `java`:** every active Java, Kotlin, and C# server has no install
+hint — `guess_install` in pipeline.py has no JVM or .NET branch. Audited;
+awaiting edit.
+
 Batch 3 — the next twelve. Readings measured before drafting: `sqlite` sits
 in one category and only a minority are query servers — most use SQLite as the
 storage under memory and knowledge tools (a categorisation side effect worth
@@ -397,3 +413,111 @@ answer, and the server inherits whatever the app can reach on your machine.
 Sibling tags `electron` and `tauri` tell you what the app is built with; this
 one tells you only that there is an app. Prefer ones that let you scope what
 the agent can touch.
+
+## kubernetes
+
+Like `docker`, a statement about where a server runs rather than what it does:
+almost none of these manage a cluster, and the handful that touch the
+Kubernetes API are the exception. The tag gathers infrastructure-grade services
+— gateways, observability, service discovery — that expect to be deployed into
+a cluster and expose MCP from there. If you want an agent that operates
+Kubernetes for you, this page is mostly the wrong place; read descriptions for
+`kubectl`, manifests, or Helm instead.
+
+## gemini-cli
+
+The compatibility declaration for Google's terminal agent, and one of the least
+independent tags in the directory: nearly every server carrying it also carries
+`claude-code`, and most carry `cursor` or `codex`. Owners are listing every
+agent CLI they support, and this is one line of that list. It is distinct from
+`gemini`, which is about the model API. What the tag tells you is that the
+server works from a terminal-based agent; what it does is in its category.
+
+## workflow-automation
+
+A loose tag with two firm kinds inside it and a good deal in between. Some
+servers are the automation platform itself — a low-code engine you host that
+now exposes its workflows to agents. Some are bridges that let an agent trigger
+or build workflows in such a platform. The rest are general agent tooling whose
+owners see agents as automation, which is a reasonable view and an unhelpful
+tag. Decide which of the three you want before reading the list.
+
+## windows
+
+More often a portability note than a platform commitment: most servers tagged
+`windows` also carry `macos` or `linux` and are simply saying they run
+everywhere. The minority that stand alone are the interesting ones —
+Windows-specific automation that drives the desktop, its windows and its input.
+For those, the reach is the risk: an agent with the desktop can do anything
+your user account can. Favour servers that expose specific
+actions over ones that hand over the mouse, and run them in an account you can
+afford to lose.
+
+## chatbot
+
+Not what the word suggests. Almost none of these are bots for a messaging
+platform; hardly any carry a Telegram, Discord, or WeChat tag. What owners mean
+by `chatbot` here is a conversational assistant or agent framework — a personal
+assistant you run yourself, a multi-agent system with a chat front — that also
+speaks MCP. If you want to put an agent into a chat app, the Communication
+category is the shelf; this tag mostly marks the agent, not the channel.
+
+## context-engineering
+
+Names a discipline rather than a feature: deciding what reaches the model's
+context window and in what shape. The servers that carry it are the tools of
+that discipline — memory that persists, retrieval that selects, compression
+that trims tool output before it costs tokens — and it sits squarely in the
+`agent-memory` and `rag` cluster. Almost no description uses the phrase; owners
+apply it as a statement of what they think the hard problem is. Read it as a
+signal of intent, then check the mechanism.
+
+## java
+
+The implementation language, and here it changes the install story more than
+any other: a JVM, a build tool, and usually no one-line install hint on this
+directory — expect Maven or Gradle rather than a package runner. A share of
+these sit in the Spring ecosystem, and Java servers are spread thinly across
+categories rather than clustered anywhere. A few entries are learning material
+rather than servers. Check the README for how a server actually starts; the
+install hint will not tell you.
+
+## openapi
+
+Two directions share this tag, and they are opposites. Many are bridges: give
+them an OpenAPI or Swagger spec and they turn every endpoint into an MCP tool,
+which is the fastest way to put an existing API in front of an agent. Others
+are servers that happen to be documented with OpenAPI themselves. The first
+kind is a generic adapter you point at anything; the second is a specific
+service. The description settles which — look for "expose" or "any API" versus
+a product name.
+
+## postgresql
+
+The mirror of `sqlite`: where that tag usually means storage underneath
+something else, this one usually means one engine in a list. Most servers
+tagged `postgresql` are multi-database clients and query tools that also name
+MySQL, MongoDB, or ClickHouse, and support Postgres among them. Dedicated
+Postgres servers — schema inspection and queries against one database — are
+the minority. If Postgres is specifically what you run, look for it alone in
+the tags, or for a description that names nothing else.
+
+## prompt-engineering
+
+A practice, not a function, and owners apply it two ways. Some servers are
+libraries: collections of prompts and templates an agent can load. More are
+tools whose authors treat prompt design as the central problem — output
+compression, loop and harness patterns, skill marketplaces — and tag the
+discipline rather than the mechanism. The phrase itself almost never appears in
+a description. It travels most with `claude-code`, and it tells you the
+author's focus more reliably than it tells you what the server does.
+
+## vibe-coding
+
+A positioning tag: the owner is saying this is built for AI-first coding, where
+the agent writes and the person directs. Many servers carrying it are tools for
+that workflow — documentation feeds, code search, context management for coding
+agents — and a few are courses or guides rather than servers at all. It travels
+with `claude-code` and `cursor`, and it says nothing about function. Treat it
+as a hint about the intended audience, and read the category for what the
+server does.
