@@ -231,14 +231,57 @@ def guess_install(repo):
     a prompt. Hints are labeled as unverified in the dataset disclaimer."""
     lang = (repo.get("language") or "").lower()
     name = (repo.get("name") or "").lower()
+    url = repo.get("html_url") or ""
     if lang in ("python",):
         return f"uvx {name}" if "-" in name else f"pip install {name}"
     if lang in ("typescript", "javascript"):
         return f"npx {name}"
     if lang in ("go",):
-        return f"go install {repo.get('html_url','').replace('https://','')}@latest"
+        return f"go install {url.replace('https://','')}@latest"
     if lang in ("rust",):
         return f"cargo install {name}"
+    # Languages with a real package-runner convention, extended in kind: the
+    # same speculation level as the hints above (a registry package of this
+    # name may or may not exist), and the same disclaimer covers them.
+    if lang in ("ruby",):
+        return f"gem install {name}"
+    if lang in ("php",):
+        # Composer packages are vendor/name; the GitHub owner is the usual vendor.
+        owner = ((repo.get("owner") or {}).get("login") or "").lower()
+        return f"composer require {owner}/{name}" if owner else None
+    if lang in ("dart",):
+        return f"dart pub global activate {name}"
+    # Languages with NO package-runner convention for applications. Inventing
+    # one (`dotnet tool install`, `mvn ...`) would assert something the
+    # language alone cannot tell us -- which build tool, whether it is even
+    # published. The one step that is always correct is the clone; the comment
+    # points at the build system the language implies and defers to the README,
+    # which is what the on-page disclaimer already tells the reader to do.
+    # Before this branch existed every server in these languages -- 83 JVM/.NET
+    # alone -- showed no install section at all.
+    CLONE_NOTE = {
+        "java": "Java: build with Maven or Gradle",
+        "kotlin": "Kotlin: build with Gradle",
+        "c#": ".NET: dotnet build / dotnet run",
+        "swift": "Swift: swift build, or open in Xcode",
+        "c++": "C++: see README for the build (CMake/Make)",
+        "c": "C: see README for the build (Make/CMake)",
+        "shell": "shell script: run per README",
+        "powershell": "PowerShell script: run per README",
+        "gdscript": "Godot addon: install into your project per README",
+        "lua": "Lua: run per README",
+        "zig": "Zig: zig build",
+        "elixir": "Elixir: mix deps.get && mix run",
+        "clojure": "Clojure: run with clj or lein per README",
+        "nix": "Nix: nix run . or per README",
+        "pascal": "Pascal: build per README",
+        "emacs lisp": "Emacs package: install per README",
+    }
+    if lang in CLONE_NOTE and url:
+        return f"git clone {url}   # {CLONE_NOTE[lang]} — see README"
+    # Documentation, notebooks, sites, and repos with no detected language:
+    # nothing to install, so no hint -- the page hides the section rather than
+    # showing a command that means nothing.
     return None
 
 
