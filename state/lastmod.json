@@ -3,20 +3,20 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "ceb2335227de12d0576994e9d8e2d475",
+      "sig": "9f9995010ac48dab7d0a5b65c8395322",
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "ded34a27021ff27a6b6e5263f94f59c6",
-      "lastmod": "2026-09-03"
+      "sig": "d9abc9904ab911833690f4e45caca92e",
+      "lastmod": "2026-09-04"
     },
     "/categories/ai-agents": {
       "sig": "63c0bbd3db0ffc4c1bfbbc1333bb214a",
       "lastmod": "2026-09-03"
     },
     "/categories/ai-coding": {
-      "sig": "c919c0a7979402411a6bbbb97c188e1b",
-      "lastmod": "2026-09-03"
+      "sig": "a3e48fcbff912cb25e2485691b3a9eaa",
+      "lastmod": "2026-09-04"
     },
     "/categories/ai-media": {
       "sig": "394533758dc284ea27f409e123668360",
@@ -99,15 +99,15 @@
       "lastmod": "2026-09-03"
     },
     "/data": {
-      "sig": "4808bf302e44f4fddfe667f46bb3c42c",
+      "sig": "6c60d29f644f92ab2b8aa08e72581618",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.csv": {
-      "sig": "da8663bab85c69a874e8457d73cfd00f",
+      "sig": "09925e1bdfbcc63e1269e0c937de2fc8",
       "lastmod": "2026-09-04"
     },
     "/data/mcp_servers.json": {
-      "sig": "f485e83c4872f55f52e9bd81fdd7a6f4",
+      "sig": "00ee6e2115f669c4bf1f5c3f5f7bc75a",
       "lastmod": "2026-09-04"
     },
     "/licensing": {
@@ -2469,6 +2469,10 @@
     "/servers/fuzzinglabs--mcp-security-hub": {
       "sig": "ff3b4d99d57906e4c17bb301ef82d4c3",
       "lastmod": "2026-08-29"
+    },
+    "/servers/fy-agent--fyagent": {
+      "sig": "0b000bd3dc07a0382cb697c84aeec214",
+      "lastmod": "2026-09-04"
     },
     "/servers/gadicc--yahoo-finance2": {
       "sig": "c6fba8f7948240a5c198def0acf8eaa6",
@@ -7319,7 +7323,7 @@
       "lastmod": "2026-08-29"
     },
     "/topics": {
-      "sig": "92c51ec50d20e37c762ab76142e23392",
+      "sig": "c01af6451386c148d6f3088358ca3ed7",
       "lastmod": "2026-09-04"
     },
     "/topics/agent-memory": {
@@ -7375,7 +7379,7 @@
       "lastmod": "2026-09-03"
     },
     "/topics/desktop-app": {
-      "sig": "fdeb8abec199a74500767e30c6d7c9be",
+      "sig": "5246333ba2f6295b2da921b103c7182b",
       "lastmod": "2026-09-04"
     },
     "/topics/docker": {
@@ -7443,8 +7447,8 @@
       "lastmod": "2026-09-04"
     },
     "/topics/openclaw": {
-      "sig": "c2252b3a8db28b282ee7551a76e71722",
-      "lastmod": "2026-09-03"
+      "sig": "995b0d31ff89f7be963b3ab5a220cad7",
+      "lastmod": "2026-09-04"
     },
     "/topics/opencode": {
       "sig": "a8687e4118c380f3b447fcee9914b2f7",
@@ -7471,8 +7475,8 @@
       "lastmod": "2026-09-04"
     },
     "/topics/rust": {
-      "sig": "51b35ab57414f67a1774e12aae8e83eb",
-      "lastmod": "2026-09-03"
+      "sig": "cb1d531511e1930377d5bde5eda11402",
+      "lastmod": "2026-09-04"
     },
     "/topics/self-hosted": {
       "sig": "f0c6f9864b944d6287a5c87843feaba9",
