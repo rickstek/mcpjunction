@@ -9,24 +9,25 @@
   "count": 1801,
   "count_including_delisted": 1916,
   "categories": {
-    "ai-coding": 192,
-    "databases": 167,
-    "search": 159,
-    "ai-agents": 151,
-    "security": 140,
+    "ai-coding": 184,
+    "agent-memory": 146,
+    "ai-agents": 139,
+    "security": 138,
+    "search": 128,
     "browser-automation": 116,
-    "communication": 116,
-    "cloud-devops": 111,
+    "communication": 112,
+    "cloud-devops": 106,
+    "databases": 105,
     "mcp-infrastructure": 87,
-    "design-tools": 79,
-    "productivity": 68,
+    "design-tools": 78,
     "finance": 67,
     "devtools": 61,
-    "uncategorized": 55,
-    "monitoring": 45,
-    "storage": 42,
+    "productivity": 59,
+    "uncategorized": 53,
+    "monitoring": 44,
     "gaming": 39,
-    "ai-media": 28,
+    "storage": 34,
+    "ai-media": 27,
     "ai-models": 19,
     "iot-hardware": 18,
     "social-media": 16,
@@ -373,7 +374,7 @@
       "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
       "repo_url": "https://github.com/Graphify-Labs/graphify",
       "homepage": "https://www.graphify.com",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "antigravity",
@@ -1049,7 +1050,7 @@
       "description": "The best-benchmarked open-source AI memory system. And it's free.",
       "repo_url": "https://github.com/MemPalace/mempalace",
       "homepage": "http://mempalaceofficial.com/",
-      "category": "uncategorized",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "chromadb",
@@ -1409,7 +1410,7 @@
       "description": "An open-source, privacy-first, self-hosted knowledge workspace where humans and AI agents work together 开源、隐私优先、自托管的知识工作空间，让人与智能体在此协作",
       "repo_url": "https://github.com/siyuan-note/siyuan",
       "homepage": "https://b3log.org/siyuan",
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "agentic-ai",
         "ai-agent",
@@ -1510,7 +1511,7 @@
       "description": "《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码",
       "repo_url": "https://github.com/bojieli/ai-agent-book",
       "homepage": null,
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agent-memory",
@@ -1739,7 +1740,7 @@
       "description": "High-performance code intelligence MCP server. Indexes codebases into a persistent knowledge graph — average repo in milliseconds. 158 languages, sub-ms queries, 99% fewer tokens. Single static binary, zero dependencies.",
       "repo_url": "https://github.com/DeusData/codebase-memory-mcp",
       "homepage": "https://deusdata.github.io/codebase-memory-mcp/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "aider",
         "ast",
@@ -2445,7 +2446,7 @@
       "description": "Local-first code intelligence graph for MCP and CLI. Builds a persistent map of your codebase so AI coding tools read only what matters, with benchmarked context reductions on reviews and large-repo workflows.",
       "repo_url": "https://github.com/tirth8205/code-review-graph",
       "homepage": "https://code-review-graph.com",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-coding",
         "claude",
@@ -3091,7 +3092,7 @@
       "description": "Open-source AI orchestration framework for building context-engineered, production-ready LLM applications. Design modular pipelines and agent workflows with explicit control over retrieval, routing, memory, and generation. Built for scalable agents, RAG, multimodal applications, semantic search, and conversational systems.",
       "repo_url": "https://github.com/deepset-ai/haystack",
       "homepage": "https://haystack.deepset.ai",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-framework",
         "agentic-ai",
@@ -3529,7 +3530,7 @@
       "description": "YC (S26) | Open Computer History | Record your screen continuously locally and provide context to your agents (Claude, Codex, Openclaw, Hermes, Runner...)",
       "repo_url": "https://github.com/screenpipe/screenpipe",
       "homepage": "https://screenpipe.com",
-      "category": "ai-media",
+      "category": "agent-memory",
       "topics": [
         "agents",
         "agi",
@@ -4790,7 +4791,7 @@
       "description": "Personal memory across agents",
       "repo_url": "https://github.com/NevaMind-AI/memU",
       "homepage": "https://memu.pro",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "claude-skills",
@@ -5176,7 +5177,7 @@
       "description": "One portable memory layer for every AI agent: local-first, Markdown-native, user-owned, and self-evolving across apps, tools, and workflows.",
       "repo_url": "https://github.com/EverMind-AI/EverOS",
       "homepage": "https://evermind.ai/everos",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agentic-ai",
@@ -5224,7 +5225,7 @@
       "description": "小红书（XiaoHongShu、RedNote）链接提取/作品采集工具",
       "repo_url": "https://github.com/JoeanAmier/XHS-Downloader",
       "homepage": "https://discord.com/invite/ZYtmgKud9Y",
-      "category": "databases",
+      "category": "cloud-devops",
       "topics": [
         "api",
         "docker",
@@ -5275,7 +5276,7 @@
       "description": "Code search MCP for Claude Code. Make entire codebase the context for any coding agent.",
       "repo_url": "https://github.com/zilliztech/claude-context",
       "homepage": "https://github.com/zilliztech/claude-context/tree/master/docs",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agentic-rag",
@@ -5669,7 +5670,7 @@
       "description": "Self-evolving memory OS for LLM & AI Agents: ultra-persistent memory, hybrid-retrieval, and cross-task skill reuse, with 35.24% token savings and DeepSeek Harness support.",
       "repo_url": "https://github.com/MemTensor/MemOS",
       "homepage": "https://memos.openmem.net",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agentic-ai",
@@ -6239,7 +6240,7 @@
       "description": "Polyglot document intelligence with a Rust core: extract text, metadata, images, tables, and structured data from 106 formats across 140 file extensions, plus code intelligence for 371 languages. Fifteen bindings, with CLI, REST API, and MCP server.",
       "repo_url": "https://github.com/xberg-io/xberg",
       "homepage": "https://docs.xberg.io",
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "bun",
         "csharp",
@@ -7078,7 +7079,7 @@
       "description": "Own your AI. The native macOS harness for AI agents -- any model, persistent memory, autonomous execution, cryptographic identity. Built in Swift. Fully offline. Open source.",
       "repo_url": "https://github.com/osaurus-ai/osaurus",
       "homepage": "https://osaurus.ai",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "anthropic",
         "apple-foundation-models",
@@ -7770,7 +7771,7 @@
       "description": "可私有部署的多租户知识智能体平台：统一 RAG、知识图谱、多智能体、MCP/Skills、沙盒与权限管理。Self-hosted knowledge agent platform for RAG, knowledge graphs and multi-agent workflows.",
       "repo_url": "https://github.com/xerrors/Yuxi",
       "homepage": "https://xerrors.github.io/Yuxi/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agentic-rag",
         "ai-agents",
@@ -8011,7 +8012,7 @@
       "description": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
       "repo_url": "https://github.com/repowise-dev/repowise",
       "homepage": "https://repowise.dev",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "code-complexity",
@@ -8104,7 +8105,7 @@
       "description": "Persistent memory system for AI coding agents. Agent-agnostic Go binary with SQLite + FTS5, MCP server, HTTP API, CLI, and TUI.",
       "repo_url": "https://github.com/Gentleman-Programming/engram",
       "homepage": "https://engram.gentlemanprogramming.com/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [],
       "language": "Go",
       "license": "MIT",
@@ -8392,7 +8393,7 @@
       "description": "Self-hosted control plane for AI agents: dispatch tasks, review runs, track spend, and operate OpenClaw, Claude Code, Codex, and other runtimes.",
       "repo_url": "https://github.com/builderz-labs/mission-control",
       "homepage": "https://mc.builderz.dev",
-      "category": "databases",
+      "category": "monitoring",
       "topics": [
         "agent-observability",
         "agent-operations",
@@ -9513,7 +9514,7 @@
       "description": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
       "repo_url": "https://github.com/trailhq/Graft",
       "homepage": "https://graft.nanonets.ai",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "anthropic",
@@ -10459,7 +10460,7 @@
       "description": "The ultimate RAG for your monorepo. Query, understand, and edit multi-language codebases with the power of AI and knowledge graphs",
       "repo_url": "https://github.com/vitali87/code-graph-rag",
       "homepage": "https://code-graph-rag.com",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ast",
@@ -10653,7 +10654,7 @@
       "description": "Zotero MCP: Connects your Zotero research library with Claude and other AI assistants via the Model Context Protocol to discuss papers, get summaries, analyze citations, and more.",
       "repo_url": "https://github.com/54yyyu/zotero-mcp",
       "homepage": "https://stevenyuyy.com/zotero-mcp/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "claude",
         "mcp",
@@ -10688,7 +10689,7 @@
       "description": "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase.",
       "repo_url": "https://github.com/NanoNets/Graft",
       "homepage": "https://graft.nanonets.ai",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "anthropic",
@@ -11255,7 +11256,7 @@
       "description": "Open Brain — The infrastructure layer for your thinking. One database, one AI gateway, one chat channel — any AI plugs in. No middleware, no SaaS.",
       "repo_url": "https://github.com/NateBJones-Projects/OB1",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "mcp",
@@ -11332,7 +11333,7 @@
       "description": "A bio-inspired cognitive memory engine — a new paradigm for Graph RAG.",
       "repo_url": "https://github.com/FlowElement-xinliuyuansu/m_flow",
       "homepage": "https://flowelement.ai",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agentic-ai",
@@ -12520,7 +12521,7 @@
       "description": "Awesome list for AI agent harness engineering: tools, patterns, evals, memory, MCP, permissions, observability, and orchestration.",
       "repo_url": "https://github.com/ai-boost/awesome-harness-engineering",
       "homepage": "https://github.com/ai-boost/awesome-harness-engineering",
-      "category": "monitoring",
+      "category": "agent-memory",
       "topics": [
         "agent-harness",
         "agent-memory",
@@ -13054,7 +13055,7 @@
       "description": "SimpleMem: Efficient Lifelong Memory for LLM Agents — Text & Multimodal",
       "repo_url": "https://github.com/aiming-lab/SimpleMem",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "audio",
@@ -14365,7 +14366,7 @@
       "description": "Enterprise-grade (40m+ LOC) codebase intelligence, zero-setup, local & private Plugin/Skill/Extension or MCP: hybrid semantic search, polyglot dependency graphs, symbol-level impact analysis & call-flow, interactive HTML viewer, cross-project & branch-aware search, DB/API/infra knowledge. 61% less tokens, 84% fewer calls, 37x faster. Cloud in beta.",
       "repo_url": "https://github.com/giancarloerra/SocratiCode",
       "homepage": "https://socraticode.cloud",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-assistant",
@@ -14456,7 +14457,7 @@
       "description": "Neo.mjs is a self-evolving software organism: a professional end-to-end AI engineering team whose cross-model swarm inhabits live apps via Neural Link, Active Hybrid GraphRAG, DreamService, and self-healing loops.",
       "repo_url": "https://github.com/neomjs/neo",
       "homepage": "https://neomjs.com",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai",
@@ -15240,7 +15241,7 @@
       "description": "PentestAgent is an AI agent framework for black-box security testing, supporting bug bounty, red-team, and penetration testing workflows.",
       "repo_url": "https://github.com/GH05TCREW/pentestagent",
       "homepage": null,
-      "category": "security",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-agents",
@@ -17231,7 +17232,7 @@
       "description": "Documentation compiler for humans and machines. One Markdown source to website, search, AI context, and knowledge formats together.",
       "repo_url": "https://github.com/docmd-io/docmd",
       "homepage": "https://docmd.io",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "ai-skills",
         "api",
@@ -18823,7 +18824,7 @@
       "description": "Asynchronous coordination layer for AI coding agents: identities, inboxes, searchable threads, and advisory file leases over FastMCP + Git + SQLite",
       "repo_url": "https://github.com/Dicklesworthstone/mcp_agent_mail",
       "homepage": null,
-      "category": "databases",
+      "category": "ai-agents",
       "topics": [
         "ai-agents",
         "coordination",
@@ -19339,7 +19340,7 @@
       "description": "Professional context and harness engineering for Claude Code and OpenAI Codex. Build production-grade software with spec-driven development, TDD, persistent memory, quality gates, code intelligence, human oversight, and end-to-end verification.",
       "repo_url": "https://github.com/maxritter/pilot-shell",
       "homepage": "https://pilot-shell.com",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-skills",
         "agentic-engineering",
@@ -19530,7 +19531,7 @@
       "description": "Local-first search across your workspace, built for humans and AI agents.",
       "repo_url": "https://github.com/zvec-ai/zvec-grep",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "bm25",
@@ -20010,7 +20011,7 @@
       "description": "Your Personal AI OS",
       "repo_url": "https://github.com/RedPlanetHQ/core",
       "homepage": "https://getcore.me",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "ai-agent",
         "ai-memory",
@@ -20213,7 +20214,7 @@
       "description": "Open-source persistent memory for AI agent pipelines (LangGraph, CrewAI, AutoGen) and Claude. REST API + knowledge graph + autonomous consolidation.",
       "repo_url": "https://github.com/doobidoo/mcp-memory-service",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agentic-ai",
@@ -21147,7 +21148,7 @@
       "description": "Semantic Search & Call Graphs for AI Agents (100% Local)",
       "repo_url": "https://github.com/yoanbernabeu/grepai",
       "homepage": "https://yoanbernabeu.github.io/grepai/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "claude-code",
@@ -22059,7 +22060,7 @@
       "description": "Your memories are in ChatGPT... But nowhere else. Universal Memory MCP makes your memories available to every single LLM. No logins or paywall. One command to set it up.",
       "repo_url": "https://github.com/supermemoryai/supermemory-mcp",
       "homepage": "https://mcp.supermemory.ai",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "cloudflare",
         "mcp"
@@ -22869,7 +22870,7 @@
       "description": "Markdown knowledge graph — LSP for your editor, CLI + MCP memory for your AI agents",
       "repo_url": "https://github.com/iwe-org/iwe",
       "homepage": "https://iwe.md",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "ai-memory",
@@ -24091,7 +24092,7 @@
       "description": "Persistent project memory for AI coding agents. Structured scaffold + drift detection CLI.",
       "repo_url": "https://github.com/mex-memory/mex",
       "homepage": "https://mexmemory.com",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "claude-code",
         "claude-code-skills",
@@ -24274,7 +24275,7 @@
       "description": "High-performance code-intelligence engine for AI agents and IDE, supports 257 languages, multi repositories, based on graph, with access via CLI, MCP Server, and API. AI coding agents teammate - expose only needed information, cutting token usage up to 50x. 100% local. Discord: https://discord.gg/39MFHu3J5d",
       "repo_url": "https://github.com/zzet/gortex",
       "homepage": "https://gortex.dev/",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "ai-tools",
         "antigravity",
@@ -24544,7 +24545,7 @@
       "description": "An official Qdrant Model Context Protocol (MCP) server implementation",
       "repo_url": "https://github.com/qdrant/mcp-server-qdrant",
       "homepage": "https://qdrant.tech",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "claude",
         "cursor",
@@ -25004,7 +25005,7 @@
       "description": "An AI co-worker with its own computer. Self-evolving, persistent memory, MCP server, secure credential collection, email identity. Built on the Claude Agent SDK.",
       "repo_url": "https://github.com/ghostwright/phantom",
       "homepage": "https://ghostwright.dev/phantom",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "ai-coworker",
@@ -25391,7 +25392,7 @@
       "description": "Your entire engineering context, deeply understood",
       "repo_url": "https://github.com/chunkhound/chunkhound",
       "homepage": "https://chunkhound.ai",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "ai",
@@ -25602,7 +25603,7 @@
       "description": "Decision audit trail + persistent memory for AI trading agents. Outcome-weighted recall, tamper-evident SHA-256 chain with RFC 3161 anchoring, 20 MCP tools.",
       "repo_url": "https://github.com/mnemox-ai/tradememory-protocol",
       "homepage": "https://mnemox.ai/tradememory/",
-      "category": "finance",
+      "category": "agent-memory",
       "topics": [
         "agentic-trading",
         "ai-agents",
@@ -25647,7 +25648,7 @@
       "description": "Prismer Cloud",
       "repo_url": "https://github.com/Prismer-AI/PrismerCloud",
       "homepage": "https://prismer.cloud",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "agent-communication",
         "agent-memory",
@@ -26234,7 +26235,7 @@
       "description": "Zig code intelligence server and MCP toolset for AI agents. Fast tree, outline, symbol, search, read, edit, deps, snapshot, and remote GitHub repo queries.",
       "repo_url": "https://github.com/justrach/codedb",
       "homepage": "https://codegraff.com/blog/codedb-code-intelligence",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agentic-ai",
         "agents",
@@ -26374,7 +26375,7 @@
       "description": "基于AI的工作效率提升工具（聊天、绘画、知识库、工作流、 MCP服务市场、语音输入输出、长期记忆） | Ai-based productivity tools (Chat,Draw,RAG,Workflow,MCP marketplace, ASR,TTS, Long-term memory etc)",
       "repo_url": "https://github.com/moyangzhan/langchain4j-aideepin",
       "homepage": "http://www.aideepin.com",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "ai-agent",
         "ai-workflow",
@@ -26459,7 +26460,7 @@
       "description": "Open-source, AI-native Evernote alternative with native MCP. Zero-cost on Cloudflare or self-hosted with Docker.",
       "repo_url": "https://github.com/tianma-if/edgeever",
       "homepage": "https://edgeever.org",
-      "category": "databases",
+      "category": "cloud-devops",
       "topics": [
         "ai-agent",
         "cloudflare",
@@ -26626,7 +26627,7 @@
       "description": "A lightweight, rollbackable, and visual Long-Term Memory Server for MCP Agents. Say goodbye to Vector RAG and amnesia. Empower your AI with persistent, graph-like structured memory across any model, session, or tool. Drop-in replacement for OpenClaw.",
       "repo_url": "https://github.com/Dataojitori/nocturne_memory",
       "homepage": "https://misaligned.top/memory",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agentic-ai",
         "ai-identity",
@@ -26854,7 +26855,7 @@
       "description": "🧠 RepoBrain (formerly Antigravity) — Give your repo a brain. ChatGPT for your codebase: works in Claude Code, Cursor, Codex, Windsurf & more.",
       "repo_url": "https://github.com/study8677/repobrain",
       "homepage": "https://deepwiki.com/study8677/antigravity-workspace-template",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agents-sdk",
         "ai-agent",
@@ -26945,7 +26946,7 @@
       "description": "Build your HUMAN.md.",
       "repo_url": "https://github.com/Intuition-Lab/personal-model",
       "homepage": "https://intuition-lab.github.io/personal-model/",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "local-first",
@@ -27092,7 +27093,7 @@
       "description": "ApeRAG: Production-ready GraphRAG with multi-modal indexing, AI agents, MCP support, and scalable K8s deployment",
       "repo_url": "https://github.com/apecloud/ApeRAG",
       "homepage": null,
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "agents",
         "context-engineering",
@@ -27209,7 +27210,7 @@
       "description": "Zero-dependency TypeScript framework for production AI agents: durable execution, long-term memory, hybrid RAG, MCP tool calling, human-in-the-loop approval, planning and CodeAct sandboxes. One streaming API for Claude, GPT, Gemini, Grok, Mistral and DeepSeek — Node, Bun, Deno, serverless and edge.",
       "repo_url": "https://github.com/Deuz-AI/Deuz-SDK",
       "homepage": "http://deuz-sdk.tech/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-framework",
         "agentic-ai",
@@ -27745,7 +27746,7 @@
       "description": "Ouroboros — self-creating AI agent. Born Feb 16, 2026.",
       "repo_url": "https://github.com/razzant/ouroboros",
       "homepage": "https://ouroboros-agent.ai/",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agentic-ai",
         "ai-agent",
@@ -29028,7 +29029,7 @@
       "description": "Selfhosted notes app. Single golang binary, notes stored as markdown within SQLite, full-text search, very low resource usage",
       "repo_url": "https://github.com/sheshbabu/zen",
       "homepage": "https://www.sheshbabu.com/zen/",
-      "category": "databases",
+      "category": "search",
       "topics": [
         "markdown",
         "mcp-server",
@@ -29099,7 +29100,7 @@
       "description": "AuditPilot: auditable enterprise AI agents for evidence-grounded workflows, governed tools, evaluation harnesses, human review, and remediation delivery.",
       "repo_url": "https://github.com/Ricky-7-Yan/intelligent-audit-system",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-evaluation",
         "agent-runtime",
@@ -29408,7 +29409,7 @@
       "description": "Lightweight Long-Term Memory for LLM Agents.",
       "repo_url": "https://github.com/LycheeMem/LycheeMem",
       "homepage": "https://lycheemem.github.io",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai",
@@ -29543,7 +29544,7 @@
       "description": "MCP server that gets Claude to 97.9% (188/192) on a real coding benchmark at -80% active tokens and -83% wall time, vs 78.3% plain. Structural code navigation + persistent memory engine. Works with every MCP client.",
       "repo_url": "https://github.com/Mibayy/token-savior",
       "homepage": "https://mibayy.github.io/token-savior/",
-      "category": "uncategorized",
+      "category": "agent-memory",
       "topics": [],
       "language": "Python",
       "license": "MIT",
@@ -30515,7 +30516,7 @@
       "description": "Lakehouse native graph engine with git-style workflows",
       "repo_url": "https://github.com/ModernRelay/omnigraph",
       "homepage": "https://omnigraph.dev",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "apache-arrow",
         "context-graph",
@@ -30758,7 +30759,7 @@
       "description": "小遥搜索，听懂你的话、看懂你的图，用AI找到本地任何文件。让搜索像聊天一样简单。XiaoyaoSearch: Understands your words, reads your images, finds any local file with AI. Making search as easy as chatting.",
       "repo_url": "https://github.com/dtsola/xiaoyaosearch",
       "homepage": "https://project.xiaoyaosai.com",
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "agent-skills",
         "ai-search",
@@ -33426,7 +33427,7 @@
       "description": "Code research platform for AI agents; find, understand, and prove context across your code and all of GitHub, in a fraction of the tokens. One toolset, MCP or CLI",
       "repo_url": "https://github.com/bgauryy/octocode",
       "homepage": "https://octocode.ai/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "ai",
@@ -33697,7 +33698,7 @@
       "description": "Self-hostable channel-native AI teammate for Slack. Open source alternative to Claude Tag. LLM-agnostic.",
       "repo_url": "https://github.com/Anil-matcha/open-claude-tag",
       "homepage": null,
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "ai-agent",
         "ai-memory",
@@ -34247,7 +34248,7 @@
       "description": "MCP server enabling persistent memory for Claude through a local knowledge graph - fork focused on local development",
       "repo_url": "https://github.com/shaneholloman/mcp-knowledge-graph",
       "homepage": null,
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-memory",
         "claude-ai",
@@ -34546,7 +34547,7 @@
       "description": "AgentChat 是一个基于 LLM 的智能体交流平台，内置默认 Agent 并支持用户自定义 Agent。通过多轮对话和任务协作，Agent 可以理解并协助完成复杂任务。项目集成 LangChain、Function Call、MCP 协议、RAG、Memory、HITL、Skill、Milvus 和 ElasticSearch 等技术，实现高效的知识检索与工具调用，使用 FastAPI 构建高性能后端服务。",
       "repo_url": "https://github.com/Shy2593666979/AgentChat",
       "homepage": "http://agentchat.cloud",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agent-memory",
@@ -35020,7 +35021,7 @@
       "description": "A cyber brain for your AI. It never forgets a detail, remembers exactly what you said, and learns how you work over time. Free, local, works with Cursor, Claude Code, Codex, OpenClaw, Hermes and more. MIT.",
       "repo_url": "https://github.com/CodeAbra/iai-personal-memory-engine",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-memory",
@@ -35200,7 +35201,7 @@
       "description": "vMLX - Use MLX models easily - JANGQ (GGUF for MLX) - Not dependant on mlx_vlm",
       "repo_url": "https://github.com/jjang-ai/vmlx",
       "homepage": "https://vmlx.net",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "anthropic-api",
         "kvcache-compression",
@@ -35467,7 +35468,7 @@
       "description": "Add Obsidian integrations like semantic search and custom Templater prompts to Claude or any MCP client.",
       "repo_url": "https://github.com/jacksteamdev/obsidian-mcp-tools",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "mcp",
         "mcp-server",
@@ -36290,7 +36291,7 @@
       "description": "Open-source coding agent memory. Records issues, attempts, fixes and decisions, then warns your agent before it repeats an approach that already failed. Native MCP server for Claude Code, Cursor, Antigravity and Codex. 100% local, no cloud, no telemetry. MIT.",
       "repo_url": "https://github.com/riponcm/projectmem",
       "homepage": "https://www.projectmem.dev",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -36582,7 +36583,7 @@
       "description": "Codebase intelligence for AI. Detects patterns & conventions + remembers decisions across sessions. MCP server for any IDE. Offline CLI.",
       "repo_url": "https://github.com/dadbodgeoff/drift",
       "homepage": null,
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "ai-tools",
         "cli",
@@ -37023,7 +37024,7 @@
       "description": "Stash — persistent memory layer for AI agents. Episodes, facts, and working context stored in Postgres. MCP server included. Self-hosted, single binary, no cloud required.",
       "repo_url": "https://github.com/alash3al/stash",
       "homepage": "https://usestash.io/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-agents",
@@ -37103,7 +37104,7 @@
       "description": "Context Portal (ConPort): A memory bank MCP server building a project-specific knowledge graph to supercharge AI assistants. Enables powerful Retrieval Augmented Generation (RAG) for context-aware development in your IDE.",
       "repo_url": "https://github.com/GreatScottyMac/context-portal",
       "homepage": null,
-      "category": "finance",
+      "category": "agent-memory",
       "topics": [],
       "language": "Python",
       "license": "Apache-2.0",
@@ -37174,7 +37175,7 @@
       "description": "Memory for coding agents built from the session history already on disk: Claude Code, Codex, Cursor, Copilot CLI, OpenClaw and 17 more. Search months of past sessions, including everything from before you installed it, and recall them in any agent. No LLM, no embeddings, one local Go binary.",
       "repo_url": "https://github.com/vshulcz/deja-vu",
       "homepage": "https://vshulcz.github.io/deja-vu/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-memory",
@@ -37321,7 +37322,7 @@
       "description": "One memory layer, every AI tool. Store anything once — recall it in Claude, ChatGPT, Cursor, or any MCP client. Self-hosted on Cloudflare's free tier.",
       "repo_url": "https://github.com/rahilp/second-brain-cloudflare",
       "homepage": "https://www.thesecondbrain.dev",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "ai-memory",
         "claude",
@@ -37437,7 +37438,7 @@
       "description": "Local code intelligence MCP server and CLI for AI coding agents",
       "repo_url": "https://github.com/bartolli/codanna",
       "homepage": "https://docs.codanna.sh/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "call-graph-analysis",
@@ -37751,7 +37752,7 @@
       "description": "Open-source cross-agent memory layer for coding agents via MCP. Compatible with Claude Code, Codex, Cursor, Windsurf, Gemini CLI, Antigravity, OpenClaw, Hermes Agent, Oh-my-Pi, Pi, Copilot, Kiro, OpenCode, and Trae.",
       "repo_url": "https://github.com/AVIDS2/memorix",
       "homepage": "https://mem.rglens.com",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-coding",
@@ -37931,7 +37932,7 @@
       "description": "Give your AI agents persistent, collective memory — with deduplicating absorb, supersession lineage, semantic search, and a graph UI. Speaks MCP.",
       "repo_url": "https://github.com/agentic-box/memora",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agent",
@@ -38339,7 +38340,7 @@
       "description": "MCP server for long term agent memory with Mem0. Also useful as a template to get you started building your own MCP server with Python!",
       "repo_url": "https://github.com/coleam00/mcp-mem0",
       "homepage": null,
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [],
       "language": "Python",
       "license": "MIT",
@@ -38369,7 +38370,7 @@
       "description": "The local-first LLM Wiki: open-source knowledge graph builder, RAG knowledge base, and agent memory store. Built on Andrej Karpathy's pattern. An Obsidian alternative for personal knowledge management, AI second brain, and durable Claude Code / Codex / OpenClaw memory.",
       "repo_url": "https://github.com/swarmclawai/swarmvault",
       "homepage": "https://www.swarmvault.ai",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -39040,7 +39041,7 @@
       "description": "Open-source self-hosted AI agent runtime and multi-agent framework for autonomous agent swarms. Agent memory, MCP tools, schedules, delegation, and 23+ LLM providers (Claude, GPT, Gemini, OpenRouter, Ollama). A practical Claude Code and LangChain alternative.",
       "repo_url": "https://github.com/swarmclawai/swarmclaw",
       "homepage": "https://www.swarmclaw.ai",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-framework",
         "agent-memory",
@@ -40305,7 +40306,7 @@
       "description": "AI-powered spec generation and review using multi-repo code graph intelligence for backend teams that ship to production.",
       "repo_url": "https://github.com/Corbell-AI/Corbell",
       "homepage": null,
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "code-analysis",
         "code-embedding",
@@ -40684,7 +40685,7 @@
       "description": "The most comprehensive code intelligence MCP server for AI coding agents. 40+ tools, 30+ languages, 9 agent integrations. Pre-indexed semantic knowledge graphs for instant code understanding — fewer tokens, fewer tool calls, 100% local.",
       "repo_url": "https://github.com/aovestdipaperino/tokensave",
       "homepage": null,
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [],
       "language": "Rust",
       "license": "MIT",
@@ -40714,7 +40715,7 @@
       "description": "Vestige enhances agents by deterministic root-cause retrieval that reaches backward through time to find the quiet change, decision, or service that caused today’s failure, not the lookalike.",
       "repo_url": "https://github.com/samvallad33/vestige",
       "homepage": "https://github.com/samvallad33/vestige",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-memory",
         "claude",
@@ -41344,7 +41345,7 @@
       "description": "Encrypted, fully offline agentic memory. One click install, GUI w/ memory map, all OS and agents. Superior memory creation, storage and retrieval.",
       "repo_url": "https://github.com/MaxFreedomPollard/Compartment",
       "homepage": "https://maxfreedompollard.github.io/Compartment/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -41631,7 +41632,7 @@
       "description": "Repo-aware recommendations for skills, agents, MCP servers, and model harnesses. Use your own inventory or the shipped 79,958-node graph with 68,494 skills, 467 agents, 10,790 MCPs, and 207 harnesses.",
       "repo_url": "https://github.com/stevesolun/ctx",
       "homepage": "https://stevesolun.github.io/ctx/",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "agents",
         "ai-agents",
@@ -42999,7 +43000,7 @@
       "description": "Turn local files into searchable context for AI agents.",
       "repo_url": "https://github.com/liliu-z/stashbase",
       "homepage": "https://stashbase.ai",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "document-search",
@@ -43279,7 +43280,7 @@
       "description": "An open-source desktop AI agent built around Cyrene’s persona and powered by the self-developed Cyrene_Harness framework. It combines immersive character chat with practical Agent capabilities for daily tasks, coding assistance, learning, and tools like music and weather.",
       "repo_url": "https://github.com/Playa-0v0/Cyrene-Agent",
       "homepage": "https://space.bilibili.com/260670644",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "ai-agent",
@@ -43868,7 +43869,7 @@
       "description": "Local codebase intelligence CLI + MCP server for AI coding agents: SQLite code graph, 28 languages, 287 commands, 246 MCP tools, change-safety gates, audit evidence, zero API keys.",
       "repo_url": "https://github.com/Cranot/roam-code",
       "homepage": "https://roam-code.com/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "ai-coding",
@@ -43956,7 +43957,7 @@
       "description": "Persistent project knowledge graph for coding agents. MCP server with semantic search, in-process embeddings, and web explorer.",
       "repo_url": "https://github.com/0xK3vin/MegaMemory",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agentic-coding",
         "ai",
@@ -44098,7 +44099,7 @@
       "description": "Measure token savings per AI coding agent, optimize context, and share a live local knowledge graph across 16 CLI clients.",
       "repo_url": "https://github.com/ooples/token-optimizer-mcp",
       "homepage": null,
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "caching",
@@ -44995,7 +44996,7 @@
       "description": "The open-source memory and observability layer for AI agents — persistent memory, loop detection, hash-chained audit trails, and a live dashboard, automatic on pip install.",
       "repo_url": "https://github.com/RyjoxTechnologies/Octopoda-OS",
       "homepage": "https://octopodas.com",
-      "category": "monitoring",
+      "category": "agent-memory",
       "topics": [
         "agent-framework",
         "ai-agents",
@@ -45046,7 +45047,7 @@
       "description": "TeleMem is a high-performance drop-in replacement for Mem0, featuring semantic deduplication, long-term dialogue memory, and multimodal video reasoning.",
       "repo_url": "https://github.com/TeleAI-UAGI/telemem",
       "homepage": "https://teleai-uagi.github.io/telemem/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agent-memory",
@@ -45761,7 +45762,7 @@
       "description": "Caura (formerly MemClaw) — governed shared memory for AI agent fleets. Multi-agent, multi-tenant, MCP-native. Trust tiers, keystone policies, audit trails, knowledge graph, self-improving retrieval. Apache 2.0.",
       "repo_url": "https://github.com/caura-ai/caura",
       "homepage": "https://caura.ai",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agentic-ai",
@@ -45989,7 +45990,7 @@
       "description": "AI-native ontology engine: a Rust MCP server with tools for building, validating, querying, and reasoning over RDF/OWL ontologies. In-memory Oxigraph triple store, native OWL2-DL tableaux reasoner, SHACL validation, SPARQL, versioning. Single binary, no JVM.",
       "repo_url": "https://github.com/fabio-rovai/open-ontologies",
       "homepage": "https://gov.tesseract.academy/research",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-native",
         "claude",
@@ -46108,7 +46109,7 @@
       "description": "Structural memory for AI coding agents. Bi-temporal graph, MCP-native, zero LLM calls. Cursor · Claude Code · Codex · DeepSeek Harness · Hermes · VS Code · Windsurf.",
       "repo_url": "https://github.com/syncable-dev/memtrace-public",
       "homepage": "https://memtrace.io",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -46277,7 +46278,7 @@
       "description": "Structural code intelligence for AI agents — semantic search, knowledge graphs, and a built-in MCP server in one Rust binary. Give Claude, Cursor, and any MCP client a deep understanding of your codebase.",
       "repo_url": "https://github.com/Muvon/octocode",
       "homepage": "https://octomind.run/product/octocode",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-agents",
@@ -46429,7 +46430,7 @@
       "description": "High-performance Model Context Protocol (MCP) server for Obsidian that provides AI tools with direct vault access through semantic operations and HTTP transport.",
       "repo_url": "https://github.com/aaronsb/obsidian-mcp-plugin",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "claude",
@@ -46856,7 +46857,7 @@
       "description": "Your First LLM-Wiki Conversation Knowledge Base",
       "repo_url": "https://github.com/Beever-AI/beever-atlas",
       "homepage": "https://docs.beever.ai/atlas",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agents",
@@ -46988,7 +46989,7 @@
       "description": "Harness-oriented agent system framework for production-grade LLM agent applications",
       "repo_url": "https://github.com/CodeSoul-co/Hypha",
       "homepage": "https://codesoul-co.github.io/Hypha/",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent-framework",
         "agent-harness",
@@ -47700,7 +47701,7 @@
       "description": "Self-hosted project management, featuring customizable project boards, cross-project workload and flow analytics, calendar-aware planning, a sticky-note wall, portable imports/backups, realtime email notifications, and a MCP/Agent automation layer.",
       "repo_url": "https://github.com/markrai/scrumboy",
       "homepage": "https://scrumboy.com",
-      "category": "databases",
+      "category": "communication",
       "topics": [
         "agile",
         "ai-integration",
@@ -47868,7 +47869,7 @@
       "description": "Portable semantic memory for AI agents: core engine, TypeScript SDK, framework adapters, MCP server, CLI, and host plugins.",
       "repo_url": "https://github.com/atomicstrata/atomicmemory",
       "homepage": "https://docs.atomicstrata.ai",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-infrastructure",
         "agent-memory",
@@ -48060,7 +48061,7 @@
       "description": "Halofy is the open access and governance layer for AI agents across your organization. Identity, policy, provenance, audit, and signed erasure.",
       "repo_url": "https://github.com/halofyai/halofy",
       "homepage": "https://halofy.ai",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "access-control",
         "agent-governance",
@@ -50623,7 +50624,7 @@
       "description": "Local-first RAG server for developers. Semantic + keyword search for code and technical docs. Works with MCP or CLI. Fully private, zero setup.",
       "repo_url": "https://github.com/shinpr/mcp-local-rag",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-skills",
         "cli-tool",
@@ -50925,7 +50926,7 @@
       "description": "The memory your AI should have had from the start. Automatic capture, automatic recall, 100% local. One SQLite file, zero cloud. Works with Claude Code, Claude CLI, Cursor, Codex CLI, Gemini CLI.",
       "repo_url": "https://github.com/buildingjoshbetter/TrueMemory",
       "homepage": "https://truememory.net",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai",
@@ -51013,7 +51014,7 @@
       "description": "Paper trading simulator for Polymarket — built for AI agents. MCP server, live order books, strategy backtesting. Install: npx clawhub install polymarket-paper-trader",
       "repo_url": "https://github.com/agent-next/polymarket-paper-trader",
       "homepage": "https://clawhub.com/robotlearning123/polymarket-paper-trader",
-      "category": "databases",
+      "category": "finance",
       "topics": [
         "ai-agent",
         "algorithmic-trading",
@@ -51302,7 +51303,7 @@
       "description": "Config-driven engine that turns JSON into production-grade AI agents. Multi-agent orchestration, 12+ LLM providers, MCP/A2A protocols, RAG, persistent memory, and enterprise compliance (EU AI Act, GDPR, HIPAA). Built on Quarkus.",
       "repo_url": "https://github.com/labsai/EDDI",
       "homepage": "https://eddi.technology",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "a2a",
         "ai-agents",
@@ -51387,7 +51388,7 @@
       "description": "Correction-first persistent memory for AI agents. MCP server + SDK + CLI. Compounds across sessions.",
       "repo_url": "https://github.com/Goldentrii/AgentRecall-X",
       "homepage": null,
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-learning",
         "agent-memory",
@@ -51664,7 +51665,7 @@
       "description": "Daymon puts your favorite AI to work 24/7. It schedules, remembers, and orchestrates your own virtual team. Free.",
       "repo_url": "https://github.com/daymonio/daymon",
       "homepage": "http://daymon.io",
-      "category": "databases",
+      "category": "ai-coding",
       "topics": [
         "ai",
         "ai-agents",
@@ -51974,7 +51975,7 @@
       "description": "Multi-agent team operating system for Claude Code. 108 MCP tools, 40+ agent templates, 10 lifecycle hooks, 7 pipeline workflows. Persistent teams, structured meetings, task wall, real-time React dashboard. No LangChain/AutoGen — pure CC native integration.",
       "repo_url": "https://github.com/CronusL-1141/AI-company",
       "homepage": null,
-      "category": "databases",
+      "category": "communication",
       "topics": [
         "agent-framework",
         "agent-orchestration",
@@ -52528,7 +52529,7 @@
       "description": "Local-first 3-in-1 AI memory layer & MCP server for Claude Code, Codex, Grok, Gemini, VS Code and Cursor. Fuses session history, codebase indexing & concept graphs in SQLite. Enables zero-cloud, privacy-first context & instant recall, supports multi-agent swarms.",
       "repo_url": "https://github.com/Lyellr88/marm-memory",
       "homepage": "https://lyellr88.github.io/marm-memory",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -53248,7 +53249,7 @@
       "description": "MCP Documentation Server - Bridge the AI Knowledge Gap.  ✨ Features: Document management • Gemini integration • AI-powered semantic search • File uploads • Smart chunking • Multilingual support • Zero-setup  🎯 Perfect for: New frameworks • API docs • Internal guides",
       "repo_url": "https://github.com/andrea9293/mcp-documentation-server",
       "homepage": null,
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "documents",
         "gemini",
@@ -54386,7 +54387,7 @@
       "description": "Local-first persistent agentic memory powered by Recursive Memory Harness (RMH). Open source must win.",
       "repo_url": "https://github.com/aayoawoyemi/Ori-Mnemos",
       "homepage": "https://orimnemos.com.",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agent",
@@ -55313,7 +55314,7 @@
       "description": "台灣法律 MCP 伺服器 + CLI（免費、免註冊、免 API key）：2,250 萬筆裁判書、行政函釋、憲法法庭裁判，附引用查核。Free Taiwan legal MCP server for Claude/ChatGPT/Codex — bring your own LLM, retrieval-only.",
       "repo_url": "https://github.com/aa0101181514/tw-legal-rag",
       "homepage": "https://dr-legal.com.tw",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "claude-mcp",
         "court-judgments",
@@ -55694,7 +55695,7 @@
       "description": "Shared context, memory, and task coordination across AI coding agents. Single Go binary, local SQLite, hybrid keyword and semantic search.",
       "repo_url": "https://github.com/mathomhaus/guild",
       "homepage": "https://github.com/mathomhaus/guild",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-coordination",
         "agent-memory",
@@ -56824,7 +56825,7 @@
       "description": "🦀 Prevents outdated Rust code suggestions from AI assistants. This MCP server fetches current crate docs, uses embeddings/LLMs, and provides accurate context via a tool call.",
       "repo_url": "https://github.com/Govcraft/rust-docs-mcp-server",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-safety",
@@ -57169,7 +57170,7 @@
       "description": "Deterministic, local-first memory and guardrails for AI coding agents with no LLM in the hot path.",
       "repo_url": "https://github.com/clay-good/OpenLore",
       "homepage": "https://www.npmjs.com/package/openlore",
-      "category": "cloud-devops",
+      "category": "agent-memory",
       "topics": [
         "adr",
         "agentic-workflows",
@@ -57982,7 +57983,7 @@
       "description": "Mine your Claude Code and Codex logs into a local you.md agent profile.",
       "repo_url": "https://github.com/ohad6k/emulo",
       "homepage": "https://emulo.vercel.app",
-      "category": "monitoring",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agent-skills",
@@ -58704,7 +58705,7 @@
       "description": "Local-first persistent memory for AI coding agents (Claude Code, Cursor, Codex) over MCP. Decisions, lessons and facts live in one SQLite file on your disk. Offline, multilingual.",
       "repo_url": "https://github.com/oleksiijko/pmb",
       "homepage": "https://pypi.org/project/pmb-ai/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "ai-memory",
@@ -58924,7 +58925,7 @@
       "description": "DeepContext is an MCP server that adds symbol-aware semantic search to Claude Code, Codex CLI, and other agents for faster, smarter context on large codebases.",
       "repo_url": "https://github.com/Wildcard-Official/deepcontext-mcp",
       "homepage": "https://wild-card.ai/deepcontext",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-agents",
@@ -59019,7 +59020,7 @@
       "description": "Local, LLM-free memory for AI agents. A single offline Rust binary — deterministic and auditable — that learns from use, forgets the irrelevant, and strengthens what matters. No cloud, no API keys.",
       "repo_url": "https://github.com/varun29ankuS/shodh-memory",
       "homepage": "https://www.shodh-memory.com",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agentic-ai",
@@ -59268,7 +59269,7 @@
       "description": "Memory and context manager just works.",
       "repo_url": "https://github.com/nowledge-co/nowledge-mem",
       "homepage": "https://mem.nowledge.co/",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "context-manager",
@@ -59723,7 +59724,7 @@
       "description": "Local RAG MCP server for Claude Code — hybrid search (semantic + BM25), cross-encoder reranking, 13 MCP tools, 20 format parsers. Zero external servers, zero API keys.",
       "repo_url": "https://github.com/lyonzin/knowledge-rag",
       "homepage": "https://pypi.org/project/knowledge-rag/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "antigravity",
         "claude",
@@ -59965,7 +59966,7 @@
       "description": "Agentic AI memory with Ebbinghaus forgetting curve decay. +16pp better recall than Mem0 on LoCoMo.",
       "repo_url": "https://github.com/sachitrafa/YourMemory",
       "homepage": "https://yourmemoryai.xyz/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -60720,7 +60721,7 @@
       "description": "Save 30% token costs when using Claude Code, Codex, OpenCode for free - with open source, local semantic search. Works for small and large codebases and monorepos! Enterprise-ready and fully compliant via Ollama and SQLite-vec.",
       "repo_url": "https://github.com/ory/lumen",
       "homepage": "https://www.ory.com/blog/ory-lumen-semantic-search-claude-code",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agentic-coding",
         "claude",
@@ -61739,7 +61740,7 @@
       "description": "A semantic search engine for files and code.",
       "repo_url": "https://github.com/scarletkc/vexor",
       "homepage": "https://pypi.org/project/vexor/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "claude",
@@ -61852,7 +61853,7 @@
       "description": "🧠 The Brain for Your AI — Local-first memory engine for AI agents. Store, recall, and search memories with semantic embeddings. Single Rust binary, zero config, fully offline.",
       "repo_url": "https://github.com/codecoradev/uteke",
       "homepage": "https://codecora.dev",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai",
@@ -61903,7 +61904,7 @@
       "description": "Turn Reddit's chaos into structured insights with full citations. MCP server for competitive analysis, customer discovery, and market research. Zero-setup hosted solution with semantic search across 20,000+ subreddits.",
       "repo_url": "https://github.com/dialog-tools/reddit-research-mcp",
       "homepage": "https://dialog.tools/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai-tools",
         "competitive-analysis",
@@ -62025,7 +62026,7 @@
       "description": "让智能体像人一样学习和工作，共享智能体和项目记忆",
       "repo_url": "https://github.com/agents-universe/agents-universe",
       "homepage": "https://agents-universe.com/",
-      "category": "ai-agents",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agent-framework",
@@ -62323,7 +62324,7 @@
       "description": "A persistent local memory for AI, LLMs, or Copilot in VS Code.",
       "repo_url": "https://github.com/savantskie/persistent-ai-memory",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-assistant",
         "embeddings",
@@ -62897,7 +62898,7 @@
       "description": "Opptrix — AI驱动的全球多市场投研工作台 | Open-source LLM research assistant for China A-shares. 170+ MCP tools, factor screening, backtest, watchlist & Electron desktop. TypeScript · React · Fastify monorepo.",
       "repo_url": "https://github.com/Travisun/Opptrix",
       "homepage": "https://www.opptrix.org",
-      "category": "databases",
+      "category": "finance",
       "topics": [
         "a-shares",
         "china-stock-market",
@@ -63343,7 +63344,7 @@
       "description": "Open-source governed, local-first memory control plane for AI agents and teams. arXiv:2608.08253",
       "repo_url": "https://github.com/qualixar/superlocalmemory",
       "homepage": "https://www.superlocalmemory.com",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agent-reliability",
@@ -63886,7 +63887,7 @@
       "description": "LeanKG: Stop Burning Tokens. Start Coding Lean.",
       "repo_url": "https://github.com/FreePeak/LeanKG",
       "homepage": "https://www.leankg.com",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-memory",
         "codebase-memory",
@@ -64026,7 +64027,7 @@
       "description": "Persistent memory for AI coding agents",
       "repo_url": "https://github.com/omega-memory/omega-memory",
       "homepage": "https://omegamax.co",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai-agent",
         "ai-memory",
@@ -64314,7 +64315,7 @@
       "description": "Open-source control plane and runtime for organisational agents: shared company context, isolated execution, approvals and MCP.",
       "repo_url": "https://github.com/lobu-ai/lobu",
       "homepage": "https://lobu.ai",
-      "category": "communication",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "agent-infrastructure",
@@ -64926,7 +64927,7 @@
       "description": "On-device memory layer for AI agents. Claude Code, OpenClaw and Hermes. Hooks + MCP server + hybrid RAG search.",
       "repo_url": "https://github.com/yoloshii/ClawMem",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agent-memory",
         "ai-agents",
@@ -65054,7 +65055,7 @@
       "description": "Connect any MCP-compatible AI client (Claude Code, Cursor, Windsurf) to Unity or Godot. 275+ granular tools, an editor aware system prompt, game design document project context, script semantic search, and skill calibration.",
       "repo_url": "https://github.com/Glade-tool/glade-mcp",
       "homepage": "https://www.gladekit.com/",
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-tools",
@@ -65151,7 +65152,7 @@
       "description": "Server-enforced workflow discipline for AI agents. An MCP server providing persistent work items, dependency graphs, quality gates, and actor attribution. Schemas define what agents must produce — the server blocks the call if they don't. Works with any MCP-compatible client.",
       "repo_url": "https://github.com/jpicklyk/task-orchestrator",
       "homepage": "https://github.com/jpicklyk/task-orchestrator/wiki",
-      "category": "productivity",
+      "category": "agent-memory",
       "topics": [
         "ai-coding-assistant",
         "ai-development",
@@ -65402,7 +65403,7 @@
       "description": "The leading, most token-efficient MCP server for documentation exploration and retrieval via structured section indexing",
       "repo_url": "https://github.com/jgravelle/jdocmunch-mcp",
       "homepage": "https://j.gravelle.us/jDocMunch",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "claude",
         "claude-code",
@@ -66289,7 +66290,7 @@
       "description": "AI semantic search for Zotero, with a built-in MCP server for AI agents (Claude Code, Codex). Find papers by meaning. 100% local and private.",
       "repo_url": "https://github.com/introfini/ZotSeek",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "academic",
         "academic-research",
@@ -66391,7 +66392,7 @@
       "description": "Local-first MCP tools and dashboard for investigating Codex token usage, credits, costs, caching, and thread patterns.",
       "repo_url": "https://github.com/douglasmonsky/codex-usage-tracker",
       "homepage": "https://github.com/douglasmonsky/codex-usage-tracker",
-      "category": "databases",
+      "category": "monitoring",
       "topics": [
         "cli",
         "codex",
@@ -66520,7 +66521,7 @@
       "description": "Local persistent memory store for LLM applications including continue.dev, cursor, claude desktop, github copilot, codex, antigravity, etc.",
       "repo_url": "https://github.com/Intina47/context-sync",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "ai-memory",
@@ -66565,7 +66566,7 @@
       "description": "Human-like memory for AI agents — semantic, episodic & procedural. Experience-driven procedures that learn from failures. Free API, Python & JS SDKs, LangChain, CrewAI & OpenClaw integrations.",
       "repo_url": "https://github.com/alibaizhanov/mengram",
       "homepage": "https://mengram.io",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -68519,7 +68520,7 @@
       "description": "Local-first AI memory you can see, edit, and override — portable across Claude Code, Codex, Cursor, Windsurf, and other MCP coding tools.",
       "repo_url": "https://github.com/Patdolitse/piia-engram",
       "homepage": "https://pypi.org/project/piia-engram/",
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agent",
@@ -68802,7 +68803,7 @@
       "description": "Persistent session memory for AI coding agents — local-first, with on-device inference, associative recall, and drift detection. Works with Claude Code, Cursor, and Codex.",
       "repo_url": "https://github.com/dcostenco/prism-coder",
       "homepage": "https://synalux.ai/prism-mcp",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agent",
@@ -68852,7 +68853,7 @@
       "description": "AKB — Agent Knowledgebase. Organizational memory for AI agents: vault-scoped docs / tables / files unified by URI graph, served over MCP.",
       "repo_url": "https://github.com/dnotitia/akb",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "claude",
@@ -69128,7 +69129,7 @@
       "description": "Graph-native code intelligence that replaces embedding-based RAG with deterministic program understanding.",
       "repo_url": "https://github.com/getArbor-dev/arbor",
       "homepage": "https://getarbor.dev/",
-      "category": "design-tools",
+      "category": "agent-memory",
       "topics": [
         "ai-tools",
         "ast",
@@ -71146,7 +71147,7 @@
       "description": "MCP server that lets Claude Code and other AI agents work through large PDFs, and whole folders of them, without overflowing context: hybrid semantic + keyword search, selective page reading, tables, images, OCR, chart data, and multi-column/CJK layouts.",
       "repo_url": "https://github.com/jztan/pdf-mcp",
       "homepage": "https://pdf-mcp.jztan.com",
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "agentic-rag",
         "ai",
@@ -71436,7 +71437,7 @@
       "description": "Memory that learns what works.",
       "repo_url": "https://github.com/roampal-ai/roampal",
       "homepage": "https://roampal.ai/",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai-assistant",
         "ai-memory",
@@ -71805,7 +71806,7 @@
       "description": "An agentic memory database that cuts session tokens by 82–99%. One portable SQLite file — your agent's memory, anywhere.",
       "repo_url": "https://github.com/radimsem/remindb",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -72408,7 +72409,7 @@
       "description": "Turn scattered notes, docs and transcripts into a queryable Markdown wiki — an LLM knowledge-base compiler with MCP access, no embeddings, self-hosted.",
       "repo_url": "https://github.com/bybit-exchange/kaas",
       "homepage": "https://bybit-exchange.github.io/kaas-doc/",
-      "category": "databases",
+      "category": "search",
       "topics": [
         "ai-agents",
         "claude-code",
@@ -72547,7 +72548,7 @@
       "description": "MCP for semantic code search & navigation that reduces token waste",
       "repo_url": "https://github.com/st3v3nmw/sourcerer-mcp",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "claude-code",
         "code-analysis",
@@ -73012,7 +73013,7 @@
       "description": "Shared memory MCP server — persistent, searchable, cross-client Claude, Opencode",
       "repo_url": "https://github.com/ogham-mcp/ogham-mcp",
       "homepage": "https://ogham-mcp.dev",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-memory",
@@ -73264,7 +73265,7 @@
       "description": "DreamGraph is a graph-governed conceptual development environment (CDE) that turns plans, architecture decisions, and project knowledge into auditable execution through a persistent cognitive graph.",
       "repo_url": "https://github.com/mmethodz/dreamgraph",
       "homepage": null,
-      "category": "security",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -73428,7 +73429,7 @@
       "description": "Shared memory + orchestration for your coding agents — one MCP server, persistent vector memory, agent registry",
       "repo_url": "https://github.com/pouyahasanamreji/continuum",
       "homepage": null,
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agent-orchestration",
@@ -73984,7 +73985,7 @@
       "description": "Поиск по коду для ИИ-агентов: 32 инструмента MCP, индекс на SQLite, один бинарник без зависимостей. Разбирает выгрузки 1С:Предприятие — Конфигуратор и EDT; конфигурация на 88 тыс. файлов индексируется за 6 минут, ответ на запрос — 10 мс. Code index MCP server: tree-sitter AST for 14 languages, 20 universal tools + 12 for 1C/BSL.",
       "repo_url": "https://github.com/Regsorm/code-index-mcp",
       "homepage": "https://infostart.ru/1c/tools/2677918/",
-      "category": "databases",
+      "category": "search",
       "topics": [
         "1c-enterprise",
         "ast",
@@ -74114,7 +74115,7 @@
       "description": "众卿 RETINUE - self-hosted task board where humans and AI agents work the same cards. 人和 AI 智能体共用的自托管任务板：对话开卡、审计链、租约围栏、MCP 接入。PolyForm Noncommercial 1.0.0, commercial licensing reserved.",
       "repo_url": "https://github.com/jklthinking/retinue",
       "homepage": "https://jklthinking.github.io/retinue/",
-      "category": "databases",
+      "category": "communication",
       "topics": [
         "agent-orchestration",
         "agents",
@@ -74249,7 +74250,7 @@
       "description": "Self improving agents through iterations",
       "repo_url": "https://github.com/AgentToolkit/altk-evolve",
       "homepage": "https://agenttoolkit.github.io/altk-evolve/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-learning",
         "agent-memory",
@@ -74389,7 +74390,7 @@
       "description": "Your durable workspace across AI agents.",
       "repo_url": "https://github.com/lsaint/aikito",
       "homepage": null,
-      "category": "ai-coding",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "agent-skills",
@@ -75515,7 +75516,7 @@
       "description": "A memory system using mem0 for AI applications. Enables long-term memory for AI agents as a drop-in MCP server.",
       "repo_url": "https://github.com/pinkpixel-dev/mem0-mcp",
       "homepage": "https://pinkpixel.dev",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent",
         "assistant",
@@ -76040,7 +76041,7 @@
       "description": "Local-first AI daemon for Logseq OG: background semantic indexing, link hygiene, and agent-ready CLI/MCP — edits Markdown on disk (no cloud, no Logseq API). Karpathy LLM-Wiki inspired.",
       "repo_url": "https://github.com/MarcoPorcellato/matryca-plumber",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agentic-memory",
         "ai-agents",
@@ -76547,7 +76548,7 @@
       "description": "Persistent memory for AI coding agents. Local-first, cross-session context, global knowledge, and optional autonomous task execution.",
       "repo_url": "https://github.com/roboticforce/sugar",
       "homepage": "https://roboticforce.io/sugar",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "ai-agents",
         "ai-coding",
@@ -77006,7 +77007,7 @@
       "description": "MCP server with persistent memory + FTS5 search for Claude Code conversation history. Index your ~/.claude/projects/, expose 10 MCP tools, browse via web UI. MIT-licensed.",
       "repo_url": "https://github.com/kunwar-shah/claudex",
       "homepage": "https://kunwar-shah.github.io/claudex/",
-      "category": "databases",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agent",
@@ -77681,7 +77682,7 @@
       "description": "🧠 High-performance persistent memory system for Model Context Protocol (MCP) powered by libSQL. Features vector search, semantic knowledge storage, and efficient relationship management - perfect for AI agents and knowledge graph applications.",
       "repo_url": "https://github.com/spences10/mcp-memory-libsql",
       "homepage": null,
-      "category": "storage",
+      "category": "agent-memory",
       "topics": [
         "ai-tools",
         "embeddings",
@@ -77862,7 +77863,7 @@
       "description": "Catch intent conflicts before code conflicts. The open-source coordination protocol for coding agents, built above Git.",
       "repo_url": "https://github.com/naw103/foremerge",
       "homepage": "https://foremerge.com",
-      "category": "databases",
+      "category": "ai-agents",
       "topics": [
         "ai-agents",
         "cli",
@@ -77941,7 +77942,7 @@
       "description": "Persistent, interactive MCP Apps for any MCP host: the AI builds an app once, you both reuse it — data outlives the conversation. Ships an engine, a 22-app App Store, and a hosted version at openmcp.app",
       "repo_url": "https://github.com/2nd1st/open-mcp-apps",
       "homepage": "https://openmcp.app",
-      "category": "databases",
+      "category": "uncategorized",
       "topics": [
         "ai",
         "claude",
@@ -78783,7 +78784,7 @@
       "description": "CLI + Local MCP - A shared structured memory store across Claude Code, Cursor, Windsurf, Antigravity, and every MCP client. Semantically queryable.",
       "repo_url": "https://github.com/decisionnode/DecisionNode",
       "homepage": "https://decisionnode.dev",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agentic-workflow",
         "ai",
@@ -79315,7 +79316,7 @@
       "description": "Token-efficient navigation substrate for AI coding agents. Index code once and retrieve only the symbols you need.",
       "repo_url": "https://github.com/eresende/pitlane-mcp",
       "homepage": null,
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "ai",
         "code-navigation",
@@ -79670,7 +79671,7 @@
       "description": "Repo memory for coding agents. Local-first MCP for Claude Code, Cursor, Windsurf, and Codex CLI: symbol graph, blast radius, diff-aware review, and git-pinned decisions. MIT; no API keys or code upload.",
       "repo_url": "https://github.com/sverklo/sverklo",
       "homepage": "https://sverklo.com",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "agent-memory",
         "ai-agents",
@@ -79859,7 +79860,7 @@
       "description": "Search global patents across WIPO, EPO, USPTO, CNIPA, JPO, KIPO and other authorities, together with scientific literature from PubMed, arXiv, Nature, Science and other major sources using natural-language, semantic, keyword and structured search.",
       "repo_url": "https://github.com/patsnap/patent-literature-search-mcp",
       "homepage": "https://open.patsnap.com/marketplace/mcp-servers/patsnap-search",
-      "category": "search",
+      "category": "agent-memory",
       "topics": [
         "academic-search",
         "ai-agents",

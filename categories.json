@@ -9,11 +9,18 @@
       "match": ["browser", "browser-automation", "playwright", "puppeteer", "selenium", "chrome", "chromium", "webdriver", "scrape", "scraping", "crawler", "web-scraping", "headless-browser", "hyperbrowser", "camoufox", "web-research"]
     },
     {
+      "slug": "agent-memory",
+      "name": "Agent Memory & Knowledge",
+      "description": "MCP servers that give an agent memory and knowledge that outlast a session — persistent memory layers, knowledge graphs, semantic search over your own code and documents, and the codebase-intelligence tools built on them.",
+      "intro": "This shelf exists because memory turned out to be its own problem, not a kind of database. Most of what lives here indexes code rather than prose, so an agent can hold a whole project in mind; the rest does the same for notes and documents. Storage underneath varies with no clear winner: graphs, vector stores, and plain files on disk are all common, and that choice decides portability and cost. A good number keep everything local, which for accumulated context is often the point.",
+      "match": ["agent-memory", "ai-memory", "persistent-memory", "memory-layer", "agent memory", "persistent memory", "memory for ai", "memory for agents", "long-term memory", "memory system", "memory server", "memory mcp", "knowledge-graph", "knowledge graph", "semantic-search", "semantic search", "codebase-memory", "code intelligence", "codebase intelligence"]
+    },
+    {
       "slug": "databases",
       "name": "Databases",
       "description": "MCP servers for relational, document, vector, and time-series databases — Postgres, MySQL, SQLite, MongoDB, Redis, Snowflake, BigQuery, and vector stores.",
       "intro": "Database servers let an agent inspect a schema and run queries without a person pasting results into a chat window. Before connecting one to anything real, find out whether it can write as well as read — few descriptions say, and the difference is the difference between a useful assistant and an unreviewed migration. Check what the connection itself grants and take into consideration: a server inherits whatever its credentials carry, which is easy to over-scope by accident.",
-      "match": ["postgres", "postgresql", "mysql", "sqlite", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric", "olap", "dbt", "powerbi", "power bi"]
+      "match": ["postgres", "postgresql", "mysql", "mongodb", "mongo", "redis", "clickhouse", "duckdb", "snowflake", "bigquery", "neo4j", "supabase", "qdrant", "pinecone", "weaviate", "chroma", "milvus", "database", "sql", "elasticsearch", "opensearch", "vector-db", "vector-database", "timeseries", "neon", "pg-mcp", "doris", "lakehouse", "query-engine", "etl-pipeline", "data-platform", "keboola", "power-bi", "microsoft-fabric", "olap", "dbt", "powerbi", "power bi"]
     },
     {
       "slug": "communication",
@@ -89,7 +96,7 @@
       "slug": "search",
       "name": "Search & Retrieval",
       "description": "MCP servers for web search, semantic search, and retrieval-augmented generation — Brave, Perplexity, Tavily, Exa, and vector-search backends.",
-      "intro": "Retrieval servers answer what a model cannot answer from its own weights. Most here are retrieval over a corpus you supply — RAG pipelines and semantic search that need an index you build and keep current. A smaller set wrap a commercial web-search API and need a key. The cost profiles differ sharply: one spends disk and setup time before it answers anything, the other bills per query and knows nothing about your documents.",
+      "intro": "Retrieval servers answer what a model cannot answer from its own weights, and this shelf holds two different ways of doing that. Some retrieve over a corpus you supply — RAG pipelines and document search that need an index you build and keep current — while others wrap a commercial web-search API and need a key. The cost profiles differ: one spends disk and setup time before it answers anything, the other bills per query and knows nothing about your documents. Memory and knowledge-graph tools have their own shelf.",
       "match": ["search", "retrieval", "rag", "semantic-search", "brave-search", "brave", "serp", "perplexity", "tavily", "exa", "vector-search", "web-search", "search-engine", "mapbox", "openstreetmap", "location-based", "geospatial"]
     },
     {
@@ -123,8 +130,8 @@
     {
       "slug": "ai-agents",
       "name": "AI Agents",
-      "description": "MCP servers for agent frameworks, agent memory, orchestration, and general agentic infrastructure — LangChain, LangGraph, multi-agent systems, and agent skills.",
-      "intro": "Servers here deal in scaffolding rather than a single capability: orchestration, memory that outlives a session, planning loops, and coordination between several agents. Many are frameworks first and MCP servers second, so it is worth reading what a project actually exposes over the protocol before assuming its headline features are reachable from your client. The gap between what a framework does and what it serves over MCP can be wide.",
+      "description": "MCP servers for agent frameworks, orchestration, and general agentic infrastructure — LangChain, LangGraph, multi-agent systems, and agent skills.",
+      "intro": "Servers here deal in scaffolding rather than a single capability: orchestration, planning loops, tool routing, and coordination between several agents. Many are frameworks first and MCP servers second, so it is worth reading what a project actually exposes over the protocol before assuming its headline features are reachable from your client. The gap between what a framework does and what it serves over MCP can be wide.",
       "match": ["agent", "agents", "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "agent-framework", "agent-memory", "agent-skills", "swarm", "autonomous", "langchain", "langgraph", "autogen", "crewai", "dify"]
     },
     {
