@@ -115,7 +115,7 @@
       "lastmod": "2026-09-05"
     },
     "/data/mcp_servers.json": {
-      "sig": "a2eca9a7e03b7de0426b8ba08f3fcdce",
+      "sig": "4f2847d23afe12a42ac94414b80c3797",
       "lastmod": "2026-09-05"
     },
     "/licensing": {
@@ -799,8 +799,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/argoproj-labs--mcp-for-argocd": {
-      "sig": "67b4d9a4e43aa52a3fe5d1a01c1a8111",
-      "lastmod": "2026-09-04"
+      "sig": "ac93113d25bbac5e3695b3f405e3aaf1",
+      "lastmod": "2026-09-05"
     },
     "/servers/ariadng--metatrader-mcp-server": {
       "sig": "790f0bd28b54fb2f43db318d8552f6f2",
@@ -2371,8 +2371,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/firecrawl--firecrawl-mcp-server": {
-      "sig": "ec85ee372fa8d707f1e328dad91f3fd4",
-      "lastmod": "2026-09-04"
+      "sig": "ff94b228c52593f0f4df7b51fb1cf663",
+      "lastmod": "2026-09-05"
     },
     "/servers/fireredteam--firered-openstoryline": {
       "sig": "45663b8519fc88de48e446aa561a5386",
@@ -3171,8 +3171,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/intuit--quickbooks-online-mcp-server": {
-      "sig": "28f83c2c18c45d09b785270dcbd09efd",
-      "lastmod": "2026-09-04"
+      "sig": "7723a990cf847440a29d1b542ed18773",
+      "lastmod": "2026-09-05"
     },
     "/servers/intuitem--ciso-assistant-community": {
       "sig": "f58110ec749dcf91842fcd54e5ddaf13",
@@ -4663,8 +4663,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/n8n-io--n8n": {
-      "sig": "0bd449b9ab1112cdac9ce543682736a0",
-      "lastmod": "2026-09-04"
+      "sig": "86bf61e3d447952c2c3414fc86555040",
+      "lastmod": "2026-09-05"
     },
     "/servers/nageoffer--ragent": {
       "sig": "5cdf826c82231f80e300d93ef18e877a",
@@ -6083,8 +6083,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/southleft--figma-console-mcp": {
-      "sig": "837884bf0d3716b0abea8f38e9879cc1",
-      "lastmod": "2026-09-04"
+      "sig": "52a28a4f02d334a38da7b00f15f3b5e0",
+      "lastmod": "2026-09-05"
     },
     "/servers/soxoj--awesome-osint-mcp-servers": {
       "sig": "6e44e30fa350a5d57aee47b0dad53350",
@@ -6135,8 +6135,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/ssut--remote-mcp": {
-      "sig": "77865fa767b9f94c2eb6b594d89e7ab0",
-      "lastmod": "2026-09-04"
+      "sig": "cb4a8637681c110d132e51187e73bd55",
+      "lastmod": "2026-09-05"
     },
     "/servers/st3v3nmw--sourcerer-mcp": {
       "sig": "6acc701d76e374841af6194cf1569d51",
@@ -6191,8 +6191,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/stickerdaniel--linkedin-mcp-server": {
-      "sig": "b54df24f7e7fc42b45a72759253ccc36",
-      "lastmod": "2026-09-04"
+      "sig": "b4b990deb093f908edf7d1ed43da3d1f",
+      "lastmod": "2026-09-05"
     },
     "/servers/storybloq--storybloq": {
       "sig": "5c598b7d2175700c1369e44032ef5c0c",
@@ -6419,8 +6419,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/tbxark--mcp-proxy": {
-      "sig": "6c4e970bed5f5f72e343bf259bb0cd7a",
-      "lastmod": "2026-09-04"
+      "sig": "6c14302fa6c001c3b735dcdf1afd76a4",
+      "lastmod": "2026-09-05"
     },
     "/servers/teleai-uagi--telemem": {
       "sig": "986726ae889292d9722b75ba83877902",
