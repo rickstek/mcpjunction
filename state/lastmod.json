@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "db188de0b9d881bf2aef16891e19c539",
+      "sig": "77399fb76634ace43809885db3f132e8",
       "lastmod": "2026-09-06"
     },
     "/badge": {
@@ -11,7 +11,7 @@
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "aab297f67bdab7897ec2097ab0b111f5",
+      "sig": "fd7d4e2a034ac97e9a45d2db1b272375",
       "lastmod": "2026-09-06"
     },
     "/categories/agent-memory": {
@@ -23,7 +23,7 @@
       "lastmod": "2026-09-06"
     },
     "/categories/ai-coding": {
-      "sig": "ea7ea3161ae435e614fe9768c8eda0df",
+      "sig": "d7bf3267114116fcf9d8c132cc1d3ce8",
       "lastmod": "2026-09-06"
     },
     "/categories/ai-media": {
@@ -39,7 +39,7 @@
       "lastmod": "2026-09-06"
     },
     "/categories/cloud-devops": {
-      "sig": "51ee88b6d9ae99e9c97fc6d6178c5193",
+      "sig": "d0b9c03e7fb9178a7ac7885915b0f8fb",
       "lastmod": "2026-09-06"
     },
     "/categories/communication": {
@@ -107,15 +107,15 @@
       "lastmod": "2026-09-04"
     },
     "/data": {
-      "sig": "911479cfd3079ec23661cd95c10f8472",
+      "sig": "84bc43ceca097db22619a2da4c0a70d4",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.csv": {
-      "sig": "413f9f4dc49cdd5cd62d56d7eea8f23c",
+      "sig": "36625ddb8ac3dc4827495d3f6b676c61",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.json": {
-      "sig": "75a3fd857bb14eaf84e3d2957b5f3d23",
+      "sig": "3f31111325f8578a565550eb2641c275",
       "lastmod": "2026-09-06"
     },
     "/licensing": {
@@ -435,7 +435,7 @@
       "lastmod": "2026-09-04"
     },
     "/servers/agenvoy--agenvoy": {
-      "sig": "719800ae15bde861e4d17b8b767c512e",
+      "sig": "386645dd15b7b8f6eff673e626290005",
       "lastmod": "2026-09-06"
     },
     "/servers/agoda-com--api-agent": {
