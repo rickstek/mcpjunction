@@ -67,8 +67,11 @@ jobs:
         # field allowlist, URL-safe topic slugs, and the CSV formula guard.
         # It also compares the five editorial trust fields against the copy in
         # HEAD, so automation can neither invent a `security_reviewed` flag
-        # nor silently drop a sponsor tier a human set. See the module
-        # docstring for why description CONTENT is deliberately not screened.
+        # nor silently drop a sponsor tier a human set, and re-asserts that
+        # nothing named in exclusions.json is published — a takedown that
+        # regressed would otherwise show only as a repo quietly reappearing.
+        # See the module docstring for why description CONTENT is deliberately
+        # not screened.
         run: |
           set -euo pipefail
           test -s public/data/mcp_servers.json || { echo "MISSING: public/data/mcp_servers.json"; exit 1; }
