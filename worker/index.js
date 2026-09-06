@@ -210,10 +210,14 @@ function publicEntry(s) {
 //     10 req/s sustained, which is 864,000 requests/day from a single IP that
 //     never trips the rule — 8.6x the free plan's 100,000/day Worker limit,
 //     exhausting it in under three hours. For scale, real /mcp traffic is
-//     ~1,780/day total (0.02 req/s) and the busiest single source IP is 550/day.
-//     Raising the PERIOD to 1 minute while leaving the count at 100 keeps the
-//     same burst allowance for a legitimate agent and cuts the sustained
-//     ceiling six-fold.
+//     ~1,780/day total (0.02 req/s), the busiest single source IP is 550/day,
+//     and the nightly workflow's own /mcp check is 2 requests. The count is
+//     the only lever: the free plan locks Period to 10 seconds, so lengthening
+//     the window to trade burst tolerance for a lower sustained ceiling is not
+//     available. 20/10s would put the ceiling at 172,800/day (1.7x) while
+//     still allowing an agent 20 calls in ten seconds; 10/10s is the only
+//     setting that lands under the quota, and it is tight enough to risk a
+//     legitimate burst.
 //   - It exists only in the dashboard. Nothing in this repository creates it,
 //     and no gate in the nightly workflow proves it is still there — unlike
 //     robots.txt, crawler allow/block and markdown negotiation, which are all
