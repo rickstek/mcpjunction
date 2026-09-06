@@ -42,7 +42,9 @@ everything else, including the deploy, still runs.
 Order of operations:
 
 1. **Refresh dataset** — `scripts/pipeline.py` with `PAGES_PER_QUERY=6`, `REQUEST_SLEEP=2.5`
-2. **Sanity check** — required files non-empty; dataset `count >= 200` or the run stops
+2. **Sanity check** — required files non-empty, then `scripts/verify_dataset.py`: dataset
+   `count >= 200`, plus the data-shape invariants (see *Dataset invariants* below) or the
+   run stops before the build
 3. **Build** — `npm ci`, `astro build`, then `scripts/build_sitemap.py`
 4. **Post-build verification** — 11 required files in `dist/`, more than 100 server pages,
    more than 5 category pages, a byte-identity `diff` of the five passthrough files
@@ -158,9 +160,19 @@ commit; `merge()` carries them forward. They are dropped deliberately if the rep
 numeric GitHub id changes under the same `owner--repo` id, which covers renames and
 released usernames.
 
+Those five are **frozen fields**: `verify_dataset.py` compares them against the copy in
+`HEAD` on every run and fails the build if any changed. A hand edit passes because it is
+committed first, so `HEAD` already agrees. What cannot pass is automation introducing a
+trust signal or silently losing one — the pipeline claiming a server is
+`security_reviewed`, or a carry-forward regression wiping a `sponsor_tier`. Two things
+follow from this: **commit the JSON edit before the next run**, and note that
+`security_notes` and `editorial_notes` are published in the dataset but rendered on no
+page — they are world-readable and permanent in git history, so write them as if a repo
+owner will read them, because one can.
+
 ## Taxonomy
 
-`categories.json` at the repo root — 20 categories, each with a slug, name, description,
+`categories.json` at the repo root — 24 categories, each with a slug, name, description,
 and `match` keyword list. Assignment is **first match in file order**, so ordering is
 policy: domain integrations deliberately precede the `ai-*` family, which is why a Postgres
 MCP server for Cursor lands in `databases` rather than `ai-coding`.
@@ -215,10 +227,75 @@ column — a crawler ignoring the published policy is a licensing-enforcement le
 just a nuisance. Note that Cloudflare miscategorises `Claude-User` as an AI Crawler; it
 is a user-initiated fetcher and must stay allowed.
 
+## Security maintenance
+
+Calibrate against what is actually at risk. This site has no accounts, no sessions, no
+database, no PII collected and no payments — there is nothing to breach in the usual
+sense. The exposure is exactly two things: **the credentials in the Actions environment**,
+and **defacement through the nightly pipeline**, which performs roughly 365 unattended
+production deploys a year from ~1,900 third-party repositories.
+
+That is why there is no scanner on a schedule. Scanning code that has not changed on a
+calendar is theatre. What belongs on a calendar is only what **decays on its own** —
+credentials, third-party advisories, dashboard configuration, upstream data shape. Code
+review is event-driven.
+
+| Cadence | What | Owner |
+| --- | --- | --- |
+| Every run | `scripts/verify_dataset.py` — dataset invariants, before the build | automated |
+| Continuous | Dependabot (`.github/dependabot.yml`) for `npm` and `github-actions` | automated; review PRs |
+| Monthly, ~15 min | Cloudflare API token scope and expiry; `permissions:` in `nightly.yml` still `contents: write` and nothing more; Cloudflare rules still match what the code claims — **including the rate-limit rule** | human |
+| Quarterly, ~2 hrs | Full review: rotate `CLOUDFLARE_API_TOKEN`, re-run the data scanner, and re-read every public claim (footer, README, licensing, badge) against what the code actually does | human |
+| On change | Any edit to `worker/index.js`, `scripts/pipeline.py`, `nightly.yml`, or a new public surface | human |
+
+The quarterly **claims-versus-code** pass is the highest-value item and the one nobody
+schedules. Copy gets written faster than code and nothing in CI checks prose against
+behaviour: the site footer promises that takedown requests are honoured promptly, and the
+pipeline has no exclusion mechanism, so a hand-deleted entry returns on the next refresh.
+The rate-limit claim in `worker/index.js` is the same class of drift. Quarterly is roughly
+how fast new public claims accumulate.
+
+Not worth doing: DAST, penetration testing, WAF tuning. There is no input the site accepts,
+no session to hijack and no query to inject for them to find.
+
+### Dataset invariants
+
+`scripts/verify_dataset.py` runs in step 2, before the build, so a violation never becomes
+a site and never reaches the deploy step — the previously deployed version stays live.
+Each check backs a guarantee something downstream already assumes:
+
+| Invariant | What it protects |
+| --- | --- |
+| `count >= 200` | A bad night at the GitHub API cannot publish a gutted directory over a good one |
+| id matches `^[a-z0-9._+-]+--[a-z0-9._+-]+$` | `id` is a URL path segment on three surfaces (asset store, the Worker's markdown rewrite, the sitemap); a separator or dot-segment is a traversal primitive |
+| Category is in `categories.json` | A retired slug cannot leave a broken `/categories/<slug>` link |
+| Homepage is `http(s)://` or null | `javascript:` and scheme-less values never reach an `href` |
+| Install hint has no shell metacharacters in the command half | The hint renders in a code block for a human to paste into a shell. Our own `CLONE_NOTE` annotations contain `&&`, but only after the `#` marker, which is why only the command half is checked |
+| Status in `{active, archived_or_removed}` | Catches an invented state such as `sponsored` |
+| Field allowlist | `_hay` and `_topics` are precomputed search fields that must never persist into the published artifact |
+| Topic slugs URL-safe | Approved topics become `/topics/<tag>` |
+| Frozen editorial fields match `HEAD` | Automation can neither invent a trust signal nor drop one a human set — see *Editing curated fields* |
+| CSV formula guard applied | Every cell starting `= + - @ \t \r` is actually `'`-prefixed, not just supposed to be |
+
+**Deliberately not checked: the content of repository descriptions.** They are arbitrary
+third-party prose, republished as such and labelled as such on every surface.
+Pattern-matching them for "suspicious" text would produce a gate that cries wolf nightly
+and gets switched off within a week.
+
+Run it locally against the current data with:
+
+```bash
+python3 scripts/verify_dataset.py
+```
+
 ## Troubleshooting
 
-**A run failed at "Sanity check dataset before build."** The GitHub API returned too little
-data. The previous dataset is untouched — re-run rather than intervening.
+**A run failed at "Sanity check dataset before build."** Either the GitHub API returned too
+little data, or a dataset invariant was violated — the log names which and prints up to
+five offending entries. The previous dataset is untouched and the live site is unchanged.
+For a volume failure, re-run rather than intervening. For an invariant failure, read the
+named entries first: the gate is asserting something downstream depends on, so a "fix" that
+loosens the check needs the downstream consumer checked too.
 
 **A run failed at "Post-build verification."** Either Astro produced fewer pages than
 expected, or a `public/` file no longer matches its `dist/` copy. Check the `diff` output in

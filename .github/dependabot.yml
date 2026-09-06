@@ -1,0 +1,47 @@
+# Dependency alerting for the two ecosystems that can reach a credential.
+#
+# Nothing this site serves to a visitor is affected by these packages: the
+# build emits zero .js files and the CSP forbids script outright. The exposure
+# is entirely build-side — `npm ci` in the nightly workflow runs 300 packages'
+# lifecycle scripts in a job that holds CLOUDFLARE_API_TOKEN and a
+# `contents: write` checkout credential. So the reason to patch is protecting
+# the deploy path, not protecting readers.
+#
+# Deliberately NOT wired into the workflow as `npm audit`: a new advisory
+# published overnight would fail the run and stop the nightly deploy over
+# something that cannot affect the served site. Alerts open pull requests;
+# they never block a deploy.
+#
+# Note that pull requests here run no checks — the workflow triggers on push
+# to main, not on pull_request. Merging is what tests an update, and the
+# build and post-build verification steps both run before the deploy step,
+# so a broken bump fails without reaching production.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for the routine noise, so the inbox stays readable and a
+      # genuine security bump is not buried among nine patch bumps.
+      dev-dependencies:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Every action in nightly.yml is pinned to a full commit SHA with the tag
+    # recorded in a trailing comment (see the header of that file). Dependabot
+    # understands that convention and rewrites both the SHA and the comment,
+    # so accepting a PR here keeps the pin discipline intact rather than
+    # quietly reverting it to a mutable tag.
+    commit-message:
+      prefix: "actions"

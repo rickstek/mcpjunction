@@ -59,6 +59,16 @@ jobs:
         # Runs BEFORE the build so a gutted dataset never produces a gutted
         # site. If the API had a bad day and returned < 200 servers, we
         # refuse to deploy — the previous good version stays live.
+        #
+        # scripts/verify_dataset.py carries the volume check that used to be
+        # inline here, plus the data-shape invariants the rest of the system
+        # assumes: id shape (a path segment on three surfaces), category
+        # membership, homepage scheme, install-hint safety, the published
+        # field allowlist, URL-safe topic slugs, and the CSV formula guard.
+        # It also compares the five editorial trust fields against the copy in
+        # HEAD, so automation can neither invent a `security_reviewed` flag
+        # nor silently drop a sponsor tier a human set. See the module
+        # docstring for why description CONTENT is deliberately not screened.
         run: |
           set -euo pipefail
           test -s public/data/mcp_servers.json || { echo "MISSING: public/data/mcp_servers.json"; exit 1; }
@@ -67,14 +77,7 @@ jobs:
           for f in public/robots.txt public/license.xml public/llms.txt; do
             test -s "$f" || { echo "MISSING OR EMPTY: $f"; exit 1; }
           done
-          python3 - <<'PY'
-          import json, sys, pathlib
-          d = json.loads(pathlib.Path("public/data/mcp_servers.json").read_text())
-          n = d.get("count", 0)
-          print(f"dataset OK: {n} active servers, generated {d.get('generated_at')}")
-          if n < 200:
-              sys.exit(f"REFUSING TO DEPLOY: only {n} servers (expected 200+)")
-          PY
+          python3 scripts/verify_dataset.py
 
       - name: Install site dependencies
         run: npm ci
