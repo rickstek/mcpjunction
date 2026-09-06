@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "cdcc25d7c909ed46d69e40a933448997",
+      "sig": "f1734077d96e31cb0c41506d35a2b621",
       "lastmod": "2026-09-06"
     },
     "/badge": {
@@ -11,7 +11,7 @@
       "lastmod": "2026-09-04"
     },
     "/categories": {
-      "sig": "fd7d4e2a034ac97e9a45d2db1b272375",
+      "sig": "bbf50526dcbb0c6cc4998970501dd305",
       "lastmod": "2026-09-06"
     },
     "/categories/agent-memory": {
@@ -19,7 +19,7 @@
       "lastmod": "2026-09-06"
     },
     "/categories/ai-agents": {
-      "sig": "3c444b1f409ab489da201a98916ed263",
+      "sig": "ffd6ed78a65361978955a0ca52b74455",
       "lastmod": "2026-09-06"
     },
     "/categories/ai-coding": {
@@ -83,7 +83,7 @@
       "lastmod": "2026-09-06"
     },
     "/categories/monitoring": {
-      "sig": "98e064809197fec87867ee5c057b6b6a",
+      "sig": "41a02f29f8ab2b58824e6a4baa6e7b66",
       "lastmod": "2026-09-06"
     },
     "/categories/productivity": {
@@ -107,15 +107,15 @@
       "lastmod": "2026-09-06"
     },
     "/data": {
-      "sig": "fd017c08378d297a7aa38078bbee6446",
+      "sig": "b5b195d2d02ffe2be755d3670df4246d",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.csv": {
-      "sig": "75b5782352fed9831d5bddce92407286",
+      "sig": "9158d716ce8ffb419f64b0421c343d36",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.json": {
-      "sig": "4f0e100d6944710e244a1a095666f652",
+      "sig": "c051b9969d05c2585cb2ea6c8dba7450",
       "lastmod": "2026-09-06"
     },
     "/licensing": {
@@ -3770,6 +3770,10 @@
       "sig": "613ecb95439664eb817b88ffebd8d09b",
       "lastmod": "2026-09-06"
     },
+    "/servers/laradashboard--laradashboard": {
+      "sig": "b9ba429ffd0d143ced06f1b53efbe12a",
+      "lastmod": "2026-09-06"
+    },
     "/servers/laravel--boost": {
       "sig": "8c9e4ef4ca4a9096148eb05d1593e2fc",
       "lastmod": "2026-09-06"
@@ -4220,10 +4224,6 @@
     },
     "/servers/metorial--metorial-index": {
       "sig": "9e6930279d63d040e4bc1426cbe52297",
-      "lastmod": "2026-09-06"
-    },
-    "/servers/metorial--metorial-platform": {
-      "sig": "747bf9b6d8ea41578c8eb0e331918f76",
       "lastmod": "2026-09-06"
     },
     "/servers/mex-memory--mex": {
