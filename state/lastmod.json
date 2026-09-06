@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "eb703f636eb90cdb010730ff019e5dcf",
+      "sig": "9e2f274812aa34d6652b1e365ebc4d3e",
       "lastmod": "2026-09-06"
     },
     "/badge": {
@@ -107,15 +107,15 @@
       "lastmod": "2026-09-04"
     },
     "/data": {
-      "sig": "76c4d3003d1be9246cf4fa2ff427baec",
+      "sig": "a6acebb55bd124d8a726aa0cb9fa2455",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.csv": {
-      "sig": "c4709f573d884fecc6188142cf81c927",
+      "sig": "3572e70eec332d82e228180b342fd74a",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.json": {
-      "sig": "6bcddcc3ed66a1cb541ed8027f5abafd",
+      "sig": "77e84b19a4d962507fce1470d109fd9f",
       "lastmod": "2026-09-06"
     },
     "/licensing": {
@@ -435,8 +435,8 @@
       "lastmod": "2026-09-04"
     },
     "/servers/agenvoy--agenvoy": {
-      "sig": "d5df5fbc740b9d9fd402e5f4afe17a6c",
-      "lastmod": "2026-09-04"
+      "sig": "719800ae15bde861e4d17b8b767c512e",
+      "lastmod": "2026-09-06"
     },
     "/servers/agoda-com--api-agent": {
       "sig": "fbaddf273c49f4874e1618c60485670d",
