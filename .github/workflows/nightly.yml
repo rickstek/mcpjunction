@@ -428,6 +428,26 @@ jobs:
               print(f"  {u}")
           PY
 
+      - name: Verify edge rate limiting rule
+        # The last edge-policy claim with no gate. robots.txt, the crawler
+        # allow/block split and markdown negotiation are all asserted against
+        # production above; the rate limiting rule protecting /mcp lived only
+        # in the dashboard, and a comment in worker/index.js describing it was
+        # wrong twice in one day — first over-claiming, then under-claiming.
+        #
+        # Reads the rule through the API rather than reasoning about it. Fails
+        # the run if it is gone, disabled, or no longer blocking; warns without
+        # failing if the threshold has been loosened, because the threshold is
+        # a judgement call and this should not overrule one.
+        #
+        # SKIPS, loudly, while CLOUDFLARE_READ_TOKEN is unset — a deliberately
+        # separate read-only token, so the deploy credential gains no scope it
+        # does not need. Until that secret exists this step proves nothing.
+        env:
+          CLOUDFLARE_READ_TOKEN: ${{ secrets.CLOUDFLARE_READ_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: python3 scripts/verify_edge_rules.py
+
       - name: Verify robots.txt directives survived the edge
         # Cloudflare's managed robots.txt is documented as prepending to your
         # file but was observed replacing it, which silently drops the two

@@ -303,9 +303,39 @@ keeping as worked examples of the two ways this drift resolves:
 
   The lesson is not "the claim was fine after all". A claim nobody could verify from the
   repository is a claim that will eventually be wrong in one direction or the other, and
-  this one was wrong twice — first over-claiming, then under-claiming. **The fix that
-  actually closes it is a gate**, which does not exist yet: the rule can be deleted or
-  disabled in the dashboard and nothing here would notice.
+  this one was wrong twice — first over-claiming, then under-claiming. The fix that
+  actually closes it is `scripts/verify_edge_rules.py`, which reads the rule through the
+  Cloudflare API on every run instead of reasoning about it. See below.
+
+### Arming the edge rule check
+
+`scripts/verify_edge_rules.py` runs in the nightly workflow and **skips, doing nothing,
+until `CLOUDFLARE_READ_TOKEN` exists**. Until then the rate limiting rule is still
+unverified — the step prints a notice saying so on every run.
+
+To arm it, create a **second** Cloudflare API token (not the deploy token — reading
+configuration does not need deploy rights, and the deploy token should not gain scope it
+has no use for):
+
+1. dash.cloudflare.com → My Profile → API Tokens → Create Token → Custom token
+2. Permissions: **Zone → WAF → Read** and **Zone → Zone → Read**
+3. Zone Resources: Include → Specific zone → `mcpjunction.ai`
+4. Add it as the repository secret **`CLOUDFLARE_READ_TOKEN`**
+
+Optionally also set `CLOUDFLARE_ZONE_ID`, which skips the zone lookup and lets you drop
+the Zone→Zone→Read permission.
+
+What it asserts, and the deliberate split: a rule covering `/mcp` must exist, be enabled,
+and have action `block` — any of those failing **fails the run**. The threshold only
+**warns**, and only when it has been loosened past what `ACCEPTED_REQUESTS` in that file
+records. A threshold is a judgement call; a gate that warned on every acceptable setting
+would be noise, and noise gets ignored. Matching is on the rule's expression, not its
+name, so renaming the rule in the dashboard does not break the build.
+
+**Known gap, deliberate:** no free-plan setting keeps a single source under the Workers
+daily quota except 10 requests/10s, which is tight enough to risk blocking a legitimate
+agent burst. The rule stops hammering; it does not protect the quota. See the comment in
+`worker/index.js` for the arithmetic.
 
 Quarterly is roughly how fast new public claims accumulate.
 
