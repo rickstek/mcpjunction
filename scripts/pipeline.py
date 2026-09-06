@@ -14,6 +14,9 @@ Compliance notes (do not remove):
 - Sleeps between requests and backs off on 403/429 rate-limit responses.
 - Public repo metadata only. The only personal data republished is public
   GitHub owner handles, with attribution and a takedown contact on-site.
+- Takedown and erasure requests are honoured via exclusions.json, re-applied
+  on every run. Deleting a row from the published JSON is NOT sufficient: the
+  next crawl restores it. See docs/OPERATIONS.md.
 
 v0.2 changes vs v0.1:
 - Editorial fields (security_reviewed, verified_badge, sponsor_tier,
@@ -48,6 +51,7 @@ JSON_PATH = DATA_DIR / "mcp_servers.json"
 CSV_PATH = DATA_DIR / "mcp_servers.csv"
 CATEGORIES_PATH = ROOT / "categories.json"
 TOPICS_PATH = ROOT / "topics.json"
+EXCLUSIONS_PATH = ROOT / "exclusions.json"
 SUMMARIES_PATH = ROOT / "editorial" / "summaries.md"
 
 CONTACT = "admin@mcpjunction.ai"
@@ -141,8 +145,65 @@ def _load_category_overrides(valid_slugs):
     return out
 
 
+def _load_exclusions():
+    """Repositories and owners removed on request, from exclusions.json.
+
+    This is what makes the takedown promise on /licensing, /data, /badge, the
+    site footer and the README actually true. Deleting an entry from the
+    published JSON by hand does nothing lasting: every run rebuilds the dataset
+    from the GitHub API, so the repo reappears the same night. Exclusion has to
+    be re-applied on each run, which means it has to live in a file the run
+    reads.
+
+    Two granularities. An `id` removes one repository. An `owner` removes every
+    repository from that account -- an erasure request is about the handle, and
+    the handle is the only personal data this directory republishes, so it must
+    be possible to honour one without playing whack-a-mole with repo names.
+
+    Returns (ids, owners) as lowercase sets.
+    """
+    if not EXCLUSIONS_PATH.exists():
+        # Absent is not an error -- but say so, because a takedown request that
+        # arrives while this file is missing has nowhere to go.
+        print("note: exclusions.json not found; no exclusions applied")
+        return set(), set()
+
+    raw = json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8"))
+    ids, owners = set(), set()
+
+    for rec in raw.get("ids") or []:
+        value = str(rec.get("id", "") if isinstance(rec, dict) else rec).strip().lower()
+        if not ID_RE.match(value):
+            sys.exit(f"REFUSING TO RUN: exclusions.json lists '{value}' under "
+                     f"'ids', which is not an owner--repo id. A malformed entry "
+                     f"would silently exclude nothing, and this file is the "
+                     f"record that a removal request was honoured.")
+        ids.add(value)
+
+    for rec in raw.get("owners") or []:
+        value = str(rec.get("owner", "") if isinstance(rec, dict) else rec).strip().lower()
+        if not OWNER_RE.match(value):
+            sys.exit(f"REFUSING TO RUN: exclusions.json lists '{value}' under "
+                     f"'owners', which is not a GitHub handle.")
+        owners.add(value)
+
+    return ids, owners
+
+
+# GitHub handles: alphanumeric and hyphens. Ids are two of those joined by "--",
+# which is also what verify_dataset.py asserts over the published dataset.
+OWNER_RE = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,38})$")
+ID_RE = re.compile(r"^[a-z0-9._+-]+--[a-z0-9._+-]+$")
+
 CATEGORY_RULES = _load_category_rules()
 CATEGORY_OVERRIDES = _load_category_overrides({slug for slug, _ in CATEGORY_RULES})
+EXCLUDED_IDS, EXCLUDED_OWNERS = _load_exclusions()
+
+
+def is_excluded(entry):
+    """True if this entry is covered by a takedown or erasure request."""
+    return (str(entry.get("id", "")).lower() in EXCLUDED_IDS
+            or str(entry.get("owner", "")).lower() in EXCLUDED_OWNERS)
 # Ids that actually matched an entry this run. An override whose id is
 # misspelled is silently inert -- the slug is validated but the key is not, and
 # a hand-edited file WILL eventually carry a typo or an id for a repo that has
@@ -566,11 +627,36 @@ def main():
                      f"editorial fields. Fix or restore "
                      f"{JSON_PATH.relative_to(ROOT)} and re-run.")
 
+    # Drop excluded entries from the PREVIOUS dataset before anything reads it.
+    # Two reasons this cannot wait until after the merge: a removed repo would
+    # otherwise be carried forward as a status="archived_or_removed" ghost for
+    # the 30-day grace window -- still published, still naming the owner, which
+    # is precisely what was asked to be taken down -- and the collapse guard
+    # compares against this list, so both sides of that comparison have to have
+    # exclusions applied or a takedown reads as data loss.
+    if EXCLUDED_IDS or EXCLUDED_OWNERS:
+        kept = [e for e in previous if not is_excluded(e)]
+        if len(kept) != len(previous):
+            print(f"exclusions: dropped {len(previous) - len(kept)} carried-forward "
+                  f"entr{'y' if len(previous) - len(kept) == 1 else 'ies'}")
+        previous = kept
+
     print(f"auth: {'token' if TOKEN else 'UNAUTHENTICATED (slow, capped)'}")
     repos = fetch_all()
     print(f"\nunique repos matched: {len(repos)}")
 
     entries = merge([normalize(r) for r in repos.values()], previous)
+
+    # And again after the merge, which is where a freshly crawled repo enters.
+    # This is the half that makes exclusion permanent rather than a one-off
+    # deletion: the GitHub API returns the repo every night, and every night it
+    # is dropped here.
+    if EXCLUDED_IDS or EXCLUDED_OWNERS:
+        before = len(entries)
+        entries = [e for e in entries if not is_excluded(e)]
+        print(f"exclusions: {len(EXCLUDED_IDS)} id(s), {len(EXCLUDED_OWNERS)} owner(s) "
+              f"configured; {before - len(entries)} entr"
+              f"{'y' if before - len(entries) == 1 else 'ies'} withheld this run")
 
     # Apply human-written summaries. Set on EVERY entry (empty string when
     # absent) so the field always exists in the published schema.

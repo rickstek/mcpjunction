@@ -33,6 +33,7 @@ JSON_PATH = ROOT / "public" / "data" / "mcp_servers.json"
 CSV_PATH = ROOT / "public" / "data" / "mcp_servers.csv"
 CATEGORIES_PATH = ROOT / "categories.json"
 TOPICS_PATH = ROOT / "topics.json"
+EXCLUSIONS_PATH = ROOT / "exclusions.json"
 
 MIN_SERVERS = 200
 
@@ -190,6 +191,28 @@ def main():
                  "%d changed with no human commit (set or dropped by "
                  "automation): %s" % (len(drifted), drifted[:5]))
 
+    # --- takedowns are actually honoured ------------------------------------
+    # The pipeline drops these twice (from the carried-forward set and again
+    # after the merge), so this is redundant by design. It is here because the
+    # failure mode is silent and the promise is public: if the exclusion step
+    # regresses, the only symptom is a repo quietly reappearing on the site,
+    # and nobody is watching for that. A published entry someone asked to have
+    # removed is worth failing a deploy over.
+    if EXCLUSIONS_PATH.exists():
+        raw = json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8"))
+        ex_ids = {str(r.get("id", "") if isinstance(r, dict) else r).strip().lower()
+                  for r in (raw.get("ids") or [])}
+        ex_owners = {str(r.get("owner", "") if isinstance(r, dict) else r).strip().lower()
+                     for r in (raw.get("owners") or [])}
+        leaked = [s.get("id") for s in servers
+                  if str(s.get("id", "")).lower() in ex_ids
+                  or str(s.get("owner", "")).lower() in ex_owners]
+        if leaked:
+            fail("exclusions",
+                 "%d excluded entr%s still published: %s"
+                 % (len(leaked), "y is" if len(leaked) == 1 else "ies are",
+                    leaked[:5]))
+
     # --- CSV injection guard actually applied -------------------------------
     with CSV_PATH.open(encoding="utf-8", newline="") as fh:
         unguarded = [
@@ -217,7 +240,7 @@ def main():
           % (count, len(servers), data.get("generated_at")))
     print("  invariants held: id shape, category membership, homepage scheme, "
           "install-hint safety, status enum, field allowlist, topic slugs, "
-          "frozen editorial fields, CSV formula guard")
+          "frozen editorial fields, exclusions honoured, CSV formula guard")
     return 0
 
 

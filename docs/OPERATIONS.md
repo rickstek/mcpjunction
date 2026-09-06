@@ -227,6 +227,43 @@ column — a crawler ignoring the published policy is a licensing-enforcement le
 just a nuisance. Note that Cloudflare miscategorises `Claude-User` as an AI Crawler; it
 is a user-initiated fetcher and must stay allowed.
 
+## Honouring a takedown request
+
+`exclusions.json` at the repo root. This is the mechanism behind the promise made in the
+site footer, the README, `/licensing`, `/badge` and `/data` — the last of which commits to
+**3 business days**, so treat that as the clock.
+
+Deleting the entry from `public/data/mcp_servers.json` by hand does **nothing lasting**.
+Every run rebuilds the dataset from the GitHub API, so the repository reappears the same
+night. The removal has to be recorded in a file the run reads.
+
+```json
+{
+  "ids":    [{ "id": "owner--repo", "reason": "owner takedown request", "date": "2026-09-06" }],
+  "owners": [{ "owner": "someone",  "reason": "erasure request",        "date": "2026-09-06" }]
+}
+```
+
+**`ids` removes one repository. `owners` removes every repository from that account.** Use
+`owners` for an erasure request: the request is about the handle, and a public GitHub owner
+handle is the only personal data this directory republishes, so honouring one properly
+cannot mean chasing repo names one at a time.
+
+Keep `reason` and `date` filled in. This file is the record that a request was honoured,
+and it is the first thing to read if the same repository is ever proposed for re-listing.
+
+What happens on the next run: the entry is dropped from the carried-forward set *and*
+after the merge, so it leaves the JSON, the CSV, the sitemap, `/mcp` and every page, and
+`/servers/<id>` returns 404. It does **not** get the 30-day delisting grace window — that
+window exists to keep citations alive, which is the opposite of what was asked for. The
+exclusion is re-applied every night, so it holds permanently.
+
+To publish inside the 3-day window rather than waiting for 06:17 UTC, commit and push:
+every push to `main` runs the full refresh and deploy.
+
+A malformed id or handle **fails the run** rather than being skipped. A typo that silently
+excluded nothing would leave a request unhonoured while the file said otherwise.
+
 ## Security maintenance
 
 Calibrate against what is actually at risk. This site has no accounts, no sessions, no
@@ -249,11 +286,21 @@ review is event-driven.
 | On change | Any edit to `worker/index.js`, `scripts/pipeline.py`, `nightly.yml`, or a new public surface | human |
 
 The quarterly **claims-versus-code** pass is the highest-value item and the one nobody
-schedules. Copy gets written faster than code and nothing in CI checks prose against
-behaviour: the site footer promises that takedown requests are honoured promptly, and the
-pipeline has no exclusion mechanism, so a hand-deleted entry returns on the next refresh.
-The rate-limit claim in `worker/index.js` is the same class of drift. Quarterly is roughly
-how fast new public claims accumulate.
+schedules. Copy gets written faster than code, and nothing in CI checks prose against
+behaviour. The 2026-09-06 review found two instances, both since closed, and they are worth
+keeping as worked examples of the two ways this drift resolves:
+
+- The footer, README, `/licensing`, `/data` and `/badge` all promised that takedown
+  requests are honoured — `/data` commits to **3 business days** — while the pipeline had
+  no exclusion mechanism, so a hand-deleted entry returned on the next refresh. Fixed by
+  making the claim true: see *Honouring a takedown request* below.
+- `worker/index.js` asserted in a comment that an edge rate-limiting rule covered request
+  floods. Nothing in this repository configures one and no gate proves one exists. Fixed
+  the other way — by correcting the claim, since the infrastructure half is a Cloudflare
+  dashboard question that the repo cannot answer. **If you add that rule, update the
+  comment and add a gate.**
+
+Quarterly is roughly how fast new public claims accumulate.
 
 Not worth doing: DAST, penetration testing, WAF tuning. There is no input the site accepts,
 no session to hijack and no query to inject for them to find.
@@ -275,6 +322,7 @@ Each check backs a guarantee something downstream already assumes:
 | Field allowlist | `_hay` and `_topics` are precomputed search fields that must never persist into the published artifact |
 | Topic slugs URL-safe | Approved topics become `/topics/<tag>` |
 | Frozen editorial fields match `HEAD` | Automation can neither invent a trust signal nor drop one a human set — see *Editing curated fields* |
+| No excluded id or owner is published | A takedown that silently regressed would show only as a repo quietly reappearing, and nobody watches for that — see *Honouring a takedown request* |
 | CSV formula guard applied | Every cell starting `= + - @ \t \r` is actually `'`-prefixed, not just supposed to be |
 
 **Deliberately not checked: the content of repository descriptions.** They are arbitrary

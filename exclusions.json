@@ -1,0 +1,22 @@
+{
+  "_comment": [
+    "Repositories and owners excluded from the directory. This is the mechanism",
+    "behind the takedown promise made on /licensing, /data, /badge, in the site",
+    "footer and in the README. Without it a hand-deleted entry silently returns on",
+    "the next nightly refresh, because every run rebuilds from the GitHub API.",
+    "",
+    "An entry here is removed from the JSON, the CSV, the sitemap, /mcp, and every",
+    "page; its /servers/<id> URL then 404s. Exclusion is re-applied on every run,",
+    "so it holds permanently rather than until the next crawl.",
+    "",
+    "Add an id to remove one repository. Add an owner to remove every repository",
+    "from that account -- an erasure request covers the handle, which is the only",
+    "personal data this directory republishes. Keep `reason` and `date` filled in:",
+    "this file is the record of why something was removed, and it is the first",
+    "thing to read if the same repo is ever proposed for re-listing.",
+    "",
+    "See docs/OPERATIONS.md, section 'Honouring a takedown request'."
+  ],
+  "ids": [],
+  "owners": []
+}

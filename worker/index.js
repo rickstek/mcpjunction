@@ -25,6 +25,17 @@ const SERVER_INFO = { name: "mcpjunction", version: "1.0.0" };
 const ATTRIBUTION = "via mcpjunction.ai";
 const LICENSE_URL = "https://mcpjunction.ai/licensing";
 
+// Every surface that shows an install hint shows this beside it — the server
+// page, the markdown variant, the dataset docs. The tool payload used to ship
+// the command alone, so an agent asked "how do I install X" would relay a
+// runnable command stripped of the one warning the HTML deems necessary.
+// Wording tracks src/pages/servers/[id].astro; keep them in step.
+const INSTALL_HINT_CAVEAT =
+  "Best-effort hint inferred from the repository language, not a verified install " +
+  "command. It never includes auto-confirm flags (-y, --yes): the package registry " +
+  "name may be squatted by someone other than the repository owner. Check the " +
+  "repository's own README before running it.";
+
 // In-isolate dataset cache. Isolates persist across requests; the dataset
 // changes once per day, so a short TTL keeps memory fresh without hitting
 // the assets binding on every call.
@@ -99,7 +110,10 @@ const TOOLS = [
       "name, description, and GitHub topics. Returns active servers sorted by " +
       "relevance then stars. Supply at least one of query, category, or topic — " +
       "with no query, filters alone enumerate a whole category or topic by stars. " +
-      "Data refreshes nightly from the public GitHub API.",
+      "Data refreshes nightly from the public GitHub API. Any install_hint is a " +
+      "best-effort guess from the repository language, not a verified command: " +
+      "relay the install_hint_caveat with it rather than presenting it as ready " +
+      "to run.",
     inputSchema: {
       type: "object",
       properties: {
@@ -121,7 +135,9 @@ const TOOLS = [
     description:
       "Get the full directory entry for one MCP server by id ('owner--repo', " +
       "e.g. 'microsoft--playwright-mcp'). Includes install hint, license, " +
-      "stars, category, and editorial fields.",
+      "stars, category, and editorial fields. Any install_hint is a best-effort " +
+      "guess from the repository language, not a verified command: relay the " +
+      "install_hint_caveat with it rather than presenting it as ready to run.",
     inputSchema: {
       type: "object",
       properties: {
@@ -177,7 +193,17 @@ function publicEntry(s) {
 // buy an unbounded amount of Worker CPU: 20,000 terms in a 176 KB body measured
 // at ~1.7 s, and the endpoint is unauthenticated with CORS "*", so any web page
 // could drive it from its visitors' browsers. Bounding the input is the fix that
-// belongs in code; a rate-limiting rule at the edge covers request floods.
+// belongs in code, and these two caps are the part this file actually
+// guarantees.
+//
+// Request FLOODS are not covered here, and — read this before assuming they are
+// covered elsewhere — nothing in this repository configures an edge rate-limit
+// rule, and no gate in the nightly workflow proves one exists. An earlier
+// version of this comment asserted that a rule at the edge handled floods; it
+// was never verified. If one is in place it lives in the Cloudflare dashboard
+// only. That matters more than it looks: wrangler.jsonc uses run_worker_first,
+// so exhausting the Worker request quota takes /servers/* down with /mcp rather
+// than degrading this endpoint alone.
 const MAX_QUERY_CHARS = 256;
 const MAX_TERMS = 8;
 
@@ -229,6 +255,12 @@ function toolSearchServers(dataset, args) {
     results: scored.slice(0, limit).map(([, , s]) => publicEntry(s)),
     attribution: ATTRIBUTION,
   };
+  // Once per response, not once per entry: a 50-result search would otherwise
+  // repeat ~240 characters fifty times for a caveat that is identical each
+  // time. Emitted only when a returned entry actually carries a hint.
+  if (out.results.some((r) => r.install_hint)) {
+    out.install_hint_caveat = INSTALL_HINT_CAVEAT;
+  }
   // Say so rather than silently returning results for a different query than
   // the one asked — an agent needs to know its input was clipped.
   if (truncated || allTerms.length > terms.length) {
@@ -252,7 +284,9 @@ function toolGetServer(dataset, args) {
   if (!s) {
     return { error: `no server with id '${id}'`, hint: "ids are owner--repo, lowercase; try search_servers" };
   }
-  return { ...publicEntry(s), topics: s.topics, forks: s.forks, open_issues: s.open_issues, pushed_at: s.pushed_at, homepage: s.homepage, attribution: ATTRIBUTION };
+  const entry = { ...publicEntry(s), topics: s.topics, forks: s.forks, open_issues: s.open_issues, pushed_at: s.pushed_at, homepage: s.homepage, attribution: ATTRIBUTION };
+  if (entry.install_hint) entry.install_hint_caveat = INSTALL_HINT_CAVEAT;
+  return entry;
 }
 
 function toolListCategories(dataset) {
