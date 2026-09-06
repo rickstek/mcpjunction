@@ -3,7 +3,7 @@
   "_scheme": 2,
   "urls": {
     "/": {
-      "sig": "77399fb76634ace43809885db3f132e8",
+      "sig": "52b60706c0453b6bc451420674f51e1c",
       "lastmod": "2026-09-06"
     },
     "/badge": {
@@ -107,15 +107,15 @@
       "lastmod": "2026-09-04"
     },
     "/data": {
-      "sig": "84bc43ceca097db22619a2da4c0a70d4",
+      "sig": "8aba6503708fc899239403511c98b5ab",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.csv": {
-      "sig": "36625ddb8ac3dc4827495d3f6b676c61",
+      "sig": "8e611f8df29041981a3cbe486c4a056a",
       "lastmod": "2026-09-06"
     },
     "/data/mcp_servers.json": {
-      "sig": "3f31111325f8578a565550eb2641c275",
+      "sig": "f49b7fbb2cb10f81bd0d2251b5c9d050",
       "lastmod": "2026-09-06"
     },
     "/licensing": {
