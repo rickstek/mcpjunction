@@ -295,10 +295,17 @@ keeping as worked examples of the two ways this drift resolves:
   no exclusion mechanism, so a hand-deleted entry returned on the next refresh. Fixed by
   making the claim true: see *Honouring a takedown request* below.
 - `worker/index.js` asserted in a comment that an edge rate-limiting rule covered request
-  floods. Nothing in this repository configures one and no gate proves one exists. Fixed
-  the other way — by correcting the claim, since the infrastructure half is a Cloudflare
-  dashboard question that the repo cannot answer. **If you add that rule, update the
-  comment and add a gate.**
+  floods, with nothing in the repository configuring one and no gate proving it. The claim
+  was first corrected to say no such rule was known to exist — then checking the dashboard
+  showed **it does**: a rule named *MCP endpoint flood protection* matching `/mcp` and
+  `/mcp/`, action Block, active. The comment now records that, along with what the rule
+  does not cover.
+
+  The lesson is not "the claim was fine after all". A claim nobody could verify from the
+  repository is a claim that will eventually be wrong in one direction or the other, and
+  this one was wrong twice — first over-claiming, then under-claiming. **The fix that
+  actually closes it is a gate**, which does not exist yet: the rule can be deleted or
+  disabled in the dashboard and nothing here would notice.
 
 Quarterly is roughly how fast new public claims accumulate.
 

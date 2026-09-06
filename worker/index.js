@@ -196,14 +196,37 @@ function publicEntry(s) {
 // belongs in code, and these two caps are the part this file actually
 // guarantees.
 //
-// Request FLOODS are not covered here, and — read this before assuming they are
-// covered elsewhere — nothing in this repository configures an edge rate-limit
-// rule, and no gate in the nightly workflow proves one exists. An earlier
-// version of this comment asserted that a rule at the edge handled floods; it
-// was never verified. If one is in place it lives in the Cloudflare dashboard
-// only. That matters more than it looks: wrangler.jsonc uses run_worker_first,
-// so exhausting the Worker request quota takes /servers/* down with /mcp rather
-// than degrading this endpoint alone.
+// Request FLOODS are handled at the edge, not here. Verified in the Cloudflare
+// dashboard on 2026-09-06: a rate limiting rule named "MCP endpoint flood
+// protection", expression
+// `(http.request.uri.path eq "/mcp" or http.request.uri.path eq "/mcp/")`,
+// counting per IP, 100 requests / 10 seconds, action Block, active. It runs
+// ahead of this Worker, so blocked requests never become invocations.
+//
+// Three things about it that this file cannot tell you, in order of how much
+// they matter:
+//
+//   - The threshold stops hammering, NOT quota exhaustion. 100 per 10s is
+//     10 req/s sustained, which is 864,000 requests/day from a single IP that
+//     never trips the rule — 8.6x the free plan's 100,000/day Worker limit,
+//     exhausting it in under three hours. For scale, real /mcp traffic is
+//     ~1,780/day total (0.02 req/s) and the busiest single source IP is 550/day.
+//     Raising the PERIOD to 1 minute while leaving the count at 100 keeps the
+//     same burst allowance for a legitimate agent and cuts the sustained
+//     ceiling six-fold.
+//   - It exists only in the dashboard. Nothing in this repository creates it,
+//     and no gate in the nightly workflow proves it is still there — unlike
+//     robots.txt, crawler allow/block and markdown negotiation, which are all
+//     asserted against production on every run. It can be deleted or disabled
+//     and nothing here would notice.
+//   - It covers /mcp alone, while wrangler.jsonc sends /servers/*,
+//     /categories/* and /topics/* through run_worker_first too. Those invoke
+//     this Worker on every request and are not rate limited, so they reach the
+//     same quota. Deliberate: this site exists to be crawled hard by search and
+//     agent fetchers, and limiting /servers/* would risk the thing the whole
+//     strategy depends on. The zone is on the free plan, which allows exactly
+//     one rate limiting rule, so this is a choice between paths, not an
+//     omission.
 const MAX_QUERY_CHARS = 256;
 const MAX_TERMS = 8;
 
