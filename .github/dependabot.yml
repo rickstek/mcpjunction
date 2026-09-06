@@ -26,8 +26,11 @@ updates:
     open-pull-requests-limit: 5
     groups:
       # One PR for the routine noise, so the inbox stays readable and a
-      # genuine security bump is not buried among nine patch bumps.
-      dev-dependencies:
+      # genuine security bump is not buried among nine patch bumps. The
+      # pattern is every package, not just devDependencies — the group is
+      # defined by update TYPE (minor and patch), which is what makes it
+      # routine. A major bump is excluded and arrives as its own PR.
+      routine:
         patterns: ["*"]
         update-types: [minor, patch]
     commit-message:
