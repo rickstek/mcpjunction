@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import topicsFile from '../../../topics.json';
+import { mdText } from '../../lib/markdown';
 
 /** Markdown representation of each topic page. See servers/[id].md.ts. */
 
@@ -42,7 +43,7 @@ export const GET: APIRoute = ({ props }) => {
     for (const s of members) {
       const bits = [s.owner, s.language || 'language n/a', `${s.stars} stars`];
       if (s.security_reviewed) bits.push('reviewed');
-      L.push(`- [${s.name}](${BASE}/servers/${s.id}) — ${bits.join(' · ')}${s.description ? ` — ${s.description}` : ''}`);
+      L.push(`- [${s.name}](${BASE}/servers/${s.id}) — ${bits.join(' · ')}${s.description ? ` — ${mdText(s.description)}` : ''}`);
     }
   }
   L.push('');

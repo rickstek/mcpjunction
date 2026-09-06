@@ -364,10 +364,28 @@ function rpcError(id, code, message) {
   return { jsonrpc: "2.0", id, error: { code, message } };
 }
 
+// public/_headers applies the site's security headers to everything the ASSET
+// server returns — but /mcp is answered by this Worker, which builds its
+// headers from scratch, so none of them were reaching it. nosniff is the one
+// that matters here: this endpoint returns attacker-influenced repository text
+// as application/json, with CORS "*", to any origin that asks. A browser that
+// content-sniffs a JSON body into HTML is the whole reason that header exists.
+// The rest mirror _headers so the two surfaces do not drift.
+const SECURITY_HEADERS = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+  "X-Frame-Options": "DENY",
+};
+
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    headers: {
+      "Content-Type": "application/json",
+      ...SECURITY_HEADERS,
+      ...CORS_HEADERS,
+    },
   });
 }
 
@@ -497,6 +515,21 @@ function wantsMarkdown(request) {
  */
 function markdownPathFor(pathname) {
   if (pathname === "/") return null; // homepage has no .md variant
+  // The return value is resolved with `new URL(mdPath, url)`, and a path
+  // beginning with two slashes is protocol-relative: "//evil.com/x" resolves
+  // to "https://evil.com/x.md", which would then be handed to
+  // env.ASSETS.fetch(). Confirmed by replication, along with "///evil.com/y"
+  // and "/..//evil.com/z".
+  //
+  // It is NOT currently reachable in production — Cloudflare normalises the
+  // path and answers with a 307 before this Worker runs, verified with a live
+  // probe against an IANA-reserved domain. This guard exists because that is a
+  // property of the edge, not of this code: it holds only as long as the
+  // binding behaves that way, and nothing here would notice if it stopped.
+  // A single leading slash, no dot-segments.
+  if (!/^\/(?!\/)/.test(pathname) || pathname.split("/").some((seg) => seg === "..")) {
+    return null;
+  }
   const clean = pathname.replace(/\/$/, "");
   if (/\.(json|csv|xml|txt|ico|png|jpg|svg|webmanifest)$/i.test(clean)) return null;
   return `${clean}.md`;
@@ -557,7 +590,21 @@ export default {
         );
         return new Response(res.body, { status: res.status, headers });
       }
-      return res; // a real page that merely ends in .md — leave it alone
+      // A real page that merely ends in .md — leave the body alone, but this
+      // URL still has two representations. /servers/video-db--call.md is the
+      // canonical page of a repo named "call.md", AND the branch above serves
+      // markdown at the same URL from <id>.md.md when Accept asks for it. The
+      // markdown side already sets Vary: Accept; without it here the HTML side
+      // could be cached with no Vary and then reused for a markdown request,
+      // which is the exact failure the comment below this block describes.
+      // One id matches today (video-db--call).
+      const htmlHeaders = new Headers(res.headers);
+      htmlHeaders.set("Vary", "Accept");
+      return new Response(res.body, {
+        status: res.status,
+        statusText: res.statusText,
+        headers: htmlHeaders,
+      });
     }
 
     // Everything else: static assets, with html_handling and the 404 page

@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
 import topicsFile from '../../../topics.json';
+import { mdText } from '../../lib/markdown';
 
 /**
  * Markdown representation of each server page.
@@ -24,8 +25,10 @@ export function getStaticPaths() {
 
 const BASE = 'https://mcpjunction.ai';
 
-// Table cells are pipe-delimited, and repo descriptions are arbitrary text
-// from GitHub — an unescaped pipe silently splits the row into extra columns.
+// Table cells are pipe-delimited, so any value carrying a pipe silently splits
+// the row into extra columns. Homepage is the live case: it is free text from
+// GitHub, validated only to be an http(s) URL. Descriptions do not appear in
+// the table and are handled by mdText, which escapes far more than this.
 const cell = (v: unknown): string =>
   v === null || v === undefined || v === '' ? '—' : String(v).replace(/\|/g, '\\|');
 
@@ -72,7 +75,7 @@ export const GET: APIRoute = ({ props }) => {
 
   L.push('## Description from the repository');
   L.push('');
-  L.push(server.description || '*No description provided.*');
+  L.push(mdText(server.description) || '*No description provided.*');
   L.push('');
   L.push(`*Imported from public GitHub metadata for [${server.full_name}](${server.repo_url}). MCP Junction does not author or curate repository descriptions.*`);
   L.push('');
@@ -119,7 +122,7 @@ export const GET: APIRoute = ({ props }) => {
     L.push(`## Related servers in ${categoryName}`);
     L.push('');
     for (const s of related) {
-      L.push(`- [${s.name}](${BASE}/servers/${s.id}) — ${s.owner} · ${s.stars} stars${s.description ? ` — ${s.description}` : ''}`);
+      L.push(`- [${s.name}](${BASE}/servers/${s.id}) — ${s.owner} · ${s.stars} stars${s.description ? ` — ${mdText(s.description)}` : ''}`);
     }
     L.push('');
   }

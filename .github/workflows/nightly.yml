@@ -83,7 +83,20 @@ jobs:
           python3 scripts/verify_dataset.py
 
       - name: Install site dependencies
-        run: npm ci
+        # --ignore-scripts: this job holds CLOUDFLARE_API_TOKEN and a
+        # contents:write checkout credential, and it deploys. Without the flag,
+        # installing 285 packages hands arbitrary lifecycle code the run of
+        # that environment — the cheapest possible supply-chain path to the
+        # token, and one that does not require compromising anything we import
+        # at build time. Only two packages declare an install script (esbuild,
+        # fsevents); the build was verified to work without them.
+        #
+        # Not paired with persist-credentials:false on the checkout, which
+        # would be the natural companion: the "Commit refreshed data" step
+        # below pushes with exactly that credential, so removing it breaks the
+        # nightly refresh. The credential has to stay; what it is exposed to is
+        # what changed.
+        run: npm ci --ignore-scripts
 
       - name: Astro build
         env:
