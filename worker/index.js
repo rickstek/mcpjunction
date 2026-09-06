@@ -214,10 +214,12 @@ function publicEntry(s) {
 //     and the nightly workflow's own /mcp check is 2 requests. The count is
 //     the only lever: the free plan locks Period to 10 seconds, so lengthening
 //     the window to trade burst tolerance for a lower sustained ceiling is not
-//     available. 20/10s would put the ceiling at 172,800/day (1.7x) while
-//     still allowing an agent 20 calls in ten seconds; 10/10s is the only
-//     setting that lands under the quota, and it is tight enough to risk a
-//     legitimate burst.
+//     available. DECIDED 2026-09-06: lower it to 20/10s, a 172,800/day ceiling
+//     (1.7x) that still allows an agent 20 calls in ten seconds — faster than
+//     any real MCP session. 10/10s is the only setting under the quota and is
+//     tight enough to risk blocking a legitimate burst. The decision is
+//     recorded in scripts/verify_edge_rules.py, which reports the live rule as
+//     looser than accepted until the dashboard change is actually made.
 //   - It exists only in the dashboard. Nothing in this repository creates it,
 //     and no gate in the nightly workflow proves it is still there — unlike
 //     robots.txt, crawler allow/block and markdown negotiation, which are all

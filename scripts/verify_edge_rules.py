@@ -58,16 +58,24 @@ ZONE_NAME = "mcpjunction.ai"
 # arithmetic below is only meaningful relative to the real quota.
 WORKERS_DAILY_QUOTA = 100_000
 
-# The threshold as reviewed on 2026-09-06: 100 requests per 10 seconds per IP.
-# The warning fires when the live rule is LOOSER than this, not when it falls
-# short of some ideal. That distinction is the whole point: no setting available
-# on the free plan keeps a single source under the Workers quota except 10/10s,
-# which is tight enough to risk blocking a legitimate agent burst. A gate that
-# warned on every acceptable configuration would be noise, and noise gets
-# ignored -- so it warns only when someone has widened the gap since it was last
-# thought about. Tightening the rule is expected to make this constant stale;
-# lower it to match and the check keeps its meaning.
-ACCEPTED_REQUESTS = 100
+# The DECIDED threshold: 20 requests per 10 seconds per IP, chosen 2026-09-06.
+# The rule shipped at 100/10s, which permits 864,000 requests/day from a single
+# source against a 100,000/day Workers quota. 20 brings that to 172,800 while
+# still allowing an agent 20 calls in ten seconds, which is faster than any real
+# MCP session. 10/10s is the only setting that lands under the quota and is
+# tight enough to risk blocking a legitimate burst.
+#
+# This records the DECISION, not necessarily the live state -- the change is
+# made in the Cloudflare dashboard, and if it has not been applied the check
+# below reports the live rule as looser than accepted. That is the intended
+# behaviour: it is how you find out the decision never landed.
+#
+# The warning fires when the live rule is LOOSER than this, never when it is
+# tighter. No free-plan setting is genuinely safe, so a gate that warned
+# whenever the config fell short of ideal would fire on every acceptable value,
+# and a warning that always fires is ignored. Drift from a deliberate decision
+# is the thing worth flagging.
+ACCEPTED_REQUESTS = 20
 ACCEPTED_PERIOD = 10
 
 TOKEN = os.environ.get("CLOUDFLARE_READ_TOKEN", "").strip()
