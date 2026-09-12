@@ -133,7 +133,7 @@ export const GET: APIRoute = ({ props }) => {
   L.push(`- Dataset: ${BASE}/data/mcp_servers.json`);
   L.push(`- Dataset generated: ${generatedAt}`);
   L.push('- Attribution: via mcpjunction.ai');
-  L.push(`- Query this directory from an agent: POST ${BASE}/mcp — an MCP server over streamable HTTP, no auth. Tools: search_servers, get_server, list_categories, get_dataset_info.`);
+  L.push(`- Query this directory from an agent: POST ${BASE}/mcp — an MCP server over streamable HTTP, no auth. Tools: search_servers, get_server, list_categories, list_topics, get_dataset_info.`);
   L.push(`- Licensing: ${BASE}/licensing — agent retrieval free during launch with attribution; bulk retrieval and AI training require a license.`);
   L.push('');
   if (server.status === 'active') {
