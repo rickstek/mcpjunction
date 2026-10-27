@@ -61,6 +61,8 @@ TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
 PAGES_PER_QUERY = int(os.environ.get("PAGES_PER_QUERY", "4"))
 SLEEP = float(os.environ.get("REQUEST_SLEEP", "2.5" if TOKEN else "7.0"))
 MIN_STARS = int(os.environ.get("MIN_STARS", "2"))
+# How many times to re-request a search page GitHub flags incomplete_results.
+SEARCH_RETRIES = int(os.environ.get("SEARCH_RETRIES", "4"))
 
 QUERIES = [
     "topic:mcp-server",
@@ -475,6 +477,31 @@ def looks_like_mcp_server(repo):
 # Main
 # --------------------------------------------------------------------------
 
+def search_page(url, page):
+    """Fetch one search page, retrying while GitHub flags it incomplete.
+
+    When the search backend times out, GitHub answers 200 with
+    incomplete_results=true and a short (sometimes empty) page. Taken at face
+    value that short page reads as "end of results" and drops everything after
+    it, which is what collapsed the 2026-10-27 run. Re-ask a few times and keep
+    the fullest answer; the caller must not treat an incomplete page as the end.
+    """
+    best = None
+    for attempt in range(1, SEARCH_RETRIES + 1):
+        data = api_get(url)
+        if not data:
+            return best
+        if best is None or len(data.get("items") or []) > len(best.get("items") or []):
+            best = data
+        if not data.get("incomplete_results"):
+            return data
+        n = len(data.get("items") or [])
+        print(f"  page {page}: incomplete ({n} items); retry {attempt}/{SEARCH_RETRIES}",
+              file=sys.stderr)
+        time.sleep(SLEEP * 2 * attempt)
+    return best
+
+
 def fetch_all():
     found = {}
     for q in QUERIES:
@@ -484,7 +511,7 @@ def fetch_all():
                 "q": q, "sort": "stars", "order": "desc",
                 "per_page": 100, "page": page,
             })
-            data = api_get(f"https://api.github.com/search/repositories?{params}")
+            data = search_page(f"https://api.github.com/search/repositories?{params}", page)
             if not data:
                 break
             items = data.get("items") or []
@@ -496,8 +523,10 @@ def fetch_all():
                 if fn and fn not in found:
                     found[fn] = repo
                     kept += 1
-            print(f"  page {page}: {len(items)} returned, {kept} new")
-            if len(items) < 100:
+            incomplete = bool(data.get("incomplete_results"))
+            print(f"  page {page}: {len(items)} returned, {kept} new"
+                  + (" (still incomplete)" if incomplete else ""))
+            if len(items) < 100 and not incomplete:
                 break
             time.sleep(SLEEP)
         time.sleep(SLEEP)
