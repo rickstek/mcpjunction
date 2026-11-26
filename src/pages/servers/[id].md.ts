@@ -3,6 +3,7 @@ import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
 import topicsFile from '../../../topics.json';
 import { mdText } from '../../lib/markdown';
+import { describeDelisting } from '../../lib/delisting';
 
 /**
  * Markdown representation of each server page.
@@ -58,9 +59,12 @@ export const GET: APIRoute = ({ props }) => {
   L.push('');
 
   if (server.status === 'archived_or_removed') {
-    L.push(`> **Delisted.** This repository has been archived or removed from GitHub`);
-    L.push(`> since ${server.delisted_at}. This entry stays published for a 30-day`);
-    L.push(`> grace window so existing citations do not break, then returns 404.`);
+    const listedIds = new Set((dataset.servers as any[]).filter((s: any) => s.status === 'active').map((s: any) => s.id));
+    const d = describeDelisting(server, listedIds);
+    const moved = d.moved ? ` [${mdText(d.moved.label)}](${d.moved.href.startsWith('/') ? BASE + d.moved.href : d.moved.href})` : '';
+    L.push(`> **Delisted.** As of ${server.delisted_at}, ${d.reason}${moved}.`);
+    L.push(`> This entry stays published for a 30-day grace window so existing`);
+    L.push(`> citations do not break, then returns 404.`);
     L.push('');
   }
 

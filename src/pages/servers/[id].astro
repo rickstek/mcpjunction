@@ -5,6 +5,7 @@ import dataset from '../../../public/data/mcp_servers.json';
 import categoriesFile from '../../../categories.json';
 import topicsFile from '../../../topics.json';
 import { fmt } from '../../lib/format';
+import { describeDelisting } from '../../lib/delisting';
 
 export async function getStaticPaths() {
   return dataset.servers.map((s: any) => ({
@@ -38,6 +39,8 @@ const canonicalUrl = new URL(canonicalPath, Astro.site).toString().replace(/\/$/
 const datasetUrl = 'https://mcpjunction.ai/data/mcp_servers.json';
 
 const isDelisted = server.status === 'archived_or_removed';
+const listedIds = new Set((dataset.servers as any[]).filter((s) => s.status === 'active').map((s) => s.id));
+const delisting = isDelisted ? describeDelisting(server, listedIds) : null;
 
 // Repository topics as published by the owner. Third-party strings: a tag
 // links to /topics/<tag> only when it is in the approved list (topics.json,
@@ -174,10 +177,10 @@ const related = (() => {
 
 {isDelisted && (
   <p class="notice-delisted">
-    <strong>Delisted notice:</strong> this repository has been archived or
-    removed from GitHub since <code>{server.delisted_at}</code>. This page
-    remains available for a 30-day grace window so existing citations don't
-    break. After that it will 404. Contact <a href="mailto:licensing@mcpjunction.ai">licensing@mcpjunction.ai</a> for corrections.
+    <strong>Delisted notice:</strong> as of <code>{server.delisted_at}</code>,
+    {delisting!.reason}{delisting!.moved && (<> <a href={delisting!.moved.href}>{delisting!.moved.label}</a></>)}.
+    This page remains available for a 30-day grace window so existing citations
+    don't break. After that it will 404. Contact <a href="mailto:licensing@mcpjunction.ai">licensing@mcpjunction.ai</a> for corrections.
   </p>
 )}
 

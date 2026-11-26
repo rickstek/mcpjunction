@@ -59,6 +59,7 @@ ALLOWED_FIELDS = {
     "editorial_notes", "editorial_summary", "first_seen", "forks",
     "full_name", "github_repo_id", "homepage", "id", "install_hint",
     "install_verified",
+    "delisted_reason", "moved_to",
     "language", "license", "name", "open_issues", "owner", "pushed_at",
     "repo_url", "security_notes", "security_reviewed", "source",
     "sponsor_tier", "stars", "status", "topics", "verified_badge",
@@ -86,6 +87,11 @@ FROZEN_FIELDS = ("security_reviewed", "verified_badge", "sponsor_tier",
                  "security_notes", "editorial_notes")
 
 STATUSES = {"active", "archived_or_removed"}
+
+# Every delisted page states WHY it was delisted, and the reason is one GitHub
+# itself confirmed (see vanished.py). "unknown" covers only entries delisted
+# before reasons existed or whose lookup has failed every night since.
+DELIST_REASONS = {"removed", "archived", "moved", "no_longer_matches", "unknown"}
 
 failures = []
 notes = []
@@ -136,6 +142,7 @@ def main():
     bad_ids, bad_cats, bad_home, bad_hints, bad_status = [], [], [], [], []
     stray_fields, missing_fields = {}, []
     unverified_hints = []
+    bad_reasons = []
 
     for s in servers:
         sid = s.get("id", "<no id>")
@@ -162,6 +169,13 @@ def main():
 
         if s.get("status") not in STATUSES:
             bad_status.append("%s -> %r" % (sid, s.get("status")))
+        if s.get("status") == "archived_or_removed":
+            if s.get("delisted_reason") not in DELIST_REASONS:
+                bad_reasons.append("%s -> %r" % (sid, s.get("delisted_reason")))
+            elif s.get("delisted_reason") == "moved" and not s.get("moved_to"):
+                bad_reasons.append("%s -> moved without moved_to" % sid)
+        elif s.get("delisted_reason") or s.get("moved_to"):
+            bad_reasons.append("%s -> active entry carries a delisting reason" % sid)
 
         extra = set(s) - ALLOWED_FIELDS
         if extra:
@@ -183,6 +197,8 @@ def main():
         fail("install_hint verification", "%d registry hints name a package not "
              "confirmed to belong to the listed repo: %s"
              % (len(unverified_hints), unverified_hints[:5]))
+    if bad_reasons:
+        fail("delisting reason", "%d entries: %s" % (len(bad_reasons), bad_reasons[:5]))
     if bad_status:
         fail("status", "%d unknown: %s" % (len(bad_status), bad_status[:5]))
     if stray_fields:
@@ -262,7 +278,7 @@ def main():
     print("dataset OK: %d active servers, %d total, generated %s"
           % (count, len(servers), data.get("generated_at")))
     print("  invariants held: id shape, category membership, homepage scheme, "
-          "install-hint safety, install-hint verification, status enum, field allowlist, topic slugs, "
+          "install-hint safety, install-hint verification, status enum, delisting reasons, field allowlist, topic slugs, "
           "frozen editorial fields, exclusions honoured, CSV formula guard")
     return 0
 

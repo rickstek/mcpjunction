@@ -21,7 +21,7 @@ export interface Props {
 const { securityReviewed = false, sponsorTier = null, status = 'active' } = Astro.props;
 ---
 {status === 'archived_or_removed' && (
-  <span class="badge badge-delisted" title="This server has been archived or removed from GitHub. Kept published during a 30-day grace window for stable citation.">Delisted</span>
+  <span class="badge badge-delisted" title="No longer listed in this directory; the server page says why. Kept published during a 30-day grace window for stable citation.">Delisted</span>
 )}
 {securityReviewed && (
   <span class="badge badge-reviewed" title="Reviewed by hand. No automated process can grant this badge.">Reviewed</span>

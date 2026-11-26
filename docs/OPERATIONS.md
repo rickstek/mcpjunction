@@ -295,6 +295,39 @@ manifests — a deliberate later step, not a gap to paper over.
 N carried, N kept on registry trouble`. A rising "kept on registry trouble" count means a
 registry is failing for us.
 
+## Missing from the crawl is not the same as gone
+
+The crawl is five GitHub searches, each capped at the top 600 results by stars
+(`PAGES_PER_QUERY=6`). As the ecosystem grows the cutoff rises — 1,623 stars for
+`topic:mcp` by November 2026 — so healthy repositories fall out of the results every
+night. Until November 2026 the pipeline delisted every one of them with a page saying
+"archived or removed from GitHub"; measured on 2026-11-26, that was true for 32 of 252.
+
+Now `scripts/vanished.py` looks up every previously listed repository the crawl did not
+return, through GraphQL, 40 per request (about 1 rate-limit point each against the
+1,000/hour the workflow token gets; it logs the cost every night):
+
+| GitHub says | What happens |
+| --- | --- |
+| live, still matches the MCP rule | stays listed, metadata refreshed from the lookup |
+| renamed or transferred | old page: `delisted_reason: moved`, `moved_to`, links to the new name; new name listed |
+| deleted, private, or the name now belongs to a different repository | delisted, `removed` |
+| archived | delisted, `archived` |
+| live, no longer matches the MCP rule | delisted, `no_longer_matches` |
+| lookup failed (after 3 tries) | **nothing changes**: a listed repo stays listed until we actually know |
+
+Delisted pages still persist 30 days, then drop. The directory now grows with the
+ecosystem instead of being a sliding top-N window.
+
+**Known consequence:** inclusion false positives no longer drift out by luck — the
+Minecraft "Mod Coder Pack" (`hexeption/MCP-Reborn`) stays listed because its name
+matches `mcp`. The fix is the separate server/not-a-server rule, or `exclusions.json`
+case by case; not this mechanism.
+
+**Weekly glance:** the nightly lines `vanished: looked up N ... (N GraphQL points)` and
+`missing from crawl: ...`. A `::warning::` about failed lookups means GitHub's GraphQL
+API is failing for us; nothing is delisted while it does.
+
 ## Security maintenance
 
 Calibrate against what is actually at risk. This site has no accounts, no sessions, no
@@ -388,6 +421,7 @@ Each check backs a guarantee something downstream already assumes:
 | Install hint has no shell metacharacters in the command half | The hint renders in a code block for a human to paste into a shell. Our own `CLONE_NOTE` annotations contain `&&`, but only after the `#` marker, which is why only the command half is checked |
 | Every registry install hint has a matching `install_verified.package` | The published install command names a package whose own registry entry points back to the listed repository. A verifier regression fails the build instead of republishing squattable or third-party package names |
 | Status in `{active, archived_or_removed}` | Catches an invented state such as `sponsored` |
+| Every delisted entry has a `delisted_reason` (and `moved` has `moved_to`); active entries have neither | A delisted page states why, and the reason is one GitHub confirmed. A regression back to blanket "archived or removed" wording fails the build |
 | Field allowlist | `_hay` and `_topics` are precomputed search fields that must never persist into the published artifact |
 | Topic slugs URL-safe | Approved topics become `/topics/<tag>` |
 | Frozen editorial fields match `HEAD` | Automation can neither invent a trust signal nor drop one a human set — see *Editing curated fields* |
