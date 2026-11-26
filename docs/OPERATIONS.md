@@ -264,6 +264,37 @@ every push to `main` runs the full refresh and deploy.
 A malformed id or handle **fails the run** rather than being skipped. A typo that silently
 excluded nothing would leave a request unhonoured while the file said otherwise.
 
+## Install hints are identity-checked
+
+`scripts/install_hints.py`, called from the pipeline after the merge. Until November 2026
+every registry hint was `<runner> <repo name>` guessed from the language; measured on
+2026-11-26, 573 of 1,364 named an unpublished package anyone could register, and 239 named
+a package from a different repository — 228 of them a different owner, so the published
+command installed a stranger's code.
+
+**The rule:** a registry hint (npm, PyPI, crates.io, RubyGems, Packagist, pub.dev) is
+published only when that package's registry entry names the listed repository. The
+candidate name comes from the repository's own manifest first (`package.json`,
+`pyproject.toml`, `Cargo.toml`, `composer.json`, `pubspec.yaml`), then the repo name.
+Anything unconfirmed is `null` and the page hides the section. `go install` and
+`git clone` hints name the repository itself and are not checked. npm packages without an
+executable get `npm install`, not `npx`.
+
+**Caching:** each entry carries `install_verified` — the check date, plus registry,
+package and source when verified. Rejected names and reasons are deliberately NOT
+recorded, so the public dataset is not a list of squattable names. Entries are rechecked
+after 7 days or when the repository is pushed. A registry outage keeps the previous
+decision, so a bad night at npm cannot strip hundreds of pages. The first run after this
+shipped checks every entry and adds a few minutes to the nightly.
+
+**Monorepos** whose package lives in a subfolder (gemini-cli publishes `@google/gemini-cli`
+from `packages/cli`) are hidden, not guessed. Recovering them means reading workspace
+manifests — a deliberate later step, not a gap to paper over.
+
+**Weekly glance:** the nightly log line `install hints: N verified, N unverified (hidden),
+N carried, N kept on registry trouble`. A rising "kept on registry trouble" count means a
+registry is failing for us.
+
 ## Security maintenance
 
 Calibrate against what is actually at risk. This site has no accounts, no sessions, no
@@ -355,6 +386,7 @@ Each check backs a guarantee something downstream already assumes:
 | Category is in `categories.json` | A retired slug cannot leave a broken `/categories/<slug>` link |
 | Homepage is `http(s)://` or null | `javascript:` and scheme-less values never reach an `href` |
 | Install hint has no shell metacharacters in the command half | The hint renders in a code block for a human to paste into a shell. Our own `CLONE_NOTE` annotations contain `&&`, but only after the `#` marker, which is why only the command half is checked |
+| Every registry install hint has a matching `install_verified.package` | The published install command names a package whose own registry entry points back to the listed repository. A verifier regression fails the build instead of republishing squattable or third-party package names |
 | Status in `{active, archived_or_removed}` | Catches an invented state such as `sponsored` |
 | Field allowlist | `_hay` and `_topics` are precomputed search fields that must never persist into the published artifact |
 | Topic slugs URL-safe | Approved topics become `/topics/<tag>` |

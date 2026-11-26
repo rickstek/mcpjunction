@@ -58,11 +58,23 @@ ALLOWED_FIELDS = {
     "archived", "category", "created_at", "delisted_at", "description",
     "editorial_notes", "editorial_summary", "first_seen", "forks",
     "full_name", "github_repo_id", "homepage", "id", "install_hint",
+    "install_verified",
     "language", "license", "name", "open_issues", "owner", "pushed_at",
     "repo_url", "security_notes", "security_reviewed", "source",
     "sponsor_tier", "stars", "status", "topics", "verified_badge",
 }
 REQUIRED_FIELDS = {"id", "full_name", "owner", "category", "status"}
+
+# A registry-style hint names a package. It may only be published when
+# install_hints.py confirmed that the package's registry entry names this
+# repository, recorded as install_verified.package. This is the invariant the
+# whole change exists for: no published hint names a package we have not
+# confirmed, so a regression in the verifier fails the build instead of quietly
+# republishing squattable names. go install / git clone hints name the
+# repository itself and are not registry claims.
+REGISTRY_HINT = re.compile(
+    r"^(?:npx|npm install|pip install|uvx|cargo install|gem install|"
+    r"composer require|dart pub global activate) (\S+)$")
 
 # Trust signals. No automated path may introduce one, and no automated path may
 # drop one a human set. They are compared against the committed dataset rather
@@ -123,6 +135,7 @@ def main():
     # --- per-entry invariants ----------------------------------------------
     bad_ids, bad_cats, bad_home, bad_hints, bad_status = [], [], [], [], []
     stray_fields, missing_fields = {}, []
+    unverified_hints = []
 
     for s in servers:
         sid = s.get("id", "<no id>")
@@ -140,6 +153,12 @@ def main():
         cmd = command_half(s.get("install_hint"))
         if SHELL_METACHARS.search(cmd):
             bad_hints.append("%s -> %r" % (sid, cmd))
+
+        rh = REGISTRY_HINT.match(str(s.get("install_hint") or ""))
+        if rh:
+            pkg = (s.get("install_verified") or {}).get("package")
+            if pkg != rh.group(1):
+                unverified_hints.append("%s -> %r" % (sid, s.get("install_hint")))
 
         if s.get("status") not in STATUSES:
             bad_status.append("%s -> %r" % (sid, s.get("status")))
@@ -160,6 +179,10 @@ def main():
     if bad_hints:
         fail("install_hint", "%d contain shell metacharacters: %s"
                              % (len(bad_hints), bad_hints[:5]))
+    if unverified_hints:
+        fail("install_hint verification", "%d registry hints name a package not "
+             "confirmed to belong to the listed repo: %s"
+             % (len(unverified_hints), unverified_hints[:5]))
     if bad_status:
         fail("status", "%d unknown: %s" % (len(bad_status), bad_status[:5]))
     if stray_fields:
@@ -239,7 +262,7 @@ def main():
     print("dataset OK: %d active servers, %d total, generated %s"
           % (count, len(servers), data.get("generated_at")))
     print("  invariants held: id shape, category membership, homepage scheme, "
-          "install-hint safety, status enum, field allowlist, topic slugs, "
+          "install-hint safety, install-hint verification, status enum, field allowlist, topic slugs, "
           "frozen editorial fields, exclusions honoured, CSV formula guard")
     return 0
 

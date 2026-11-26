@@ -231,10 +231,12 @@ const related = (() => {
   <>
     <h2>Install hint</h2>
     <pre class="block"><code>{server.install_hint}</code></pre>
-    <p class="meta">Best-effort hint inferred from the repository language. Never
-    includes auto-confirm flags (<code>-y</code>, <code>--yes</code>) — the
-    package registry name may be squatted by someone other than the repo
-    owner. Verify against the repository's own README before running.</p>
+    <p class="meta">Shown only when the package's own registry entry points
+    back to this repository (<code>go install</code> and <code>git clone</code>
+    hints name the repository directly). That confirms who published the
+    package, not what it does — this is not a security review. Never includes
+    auto-confirm flags (<code>-y</code>, <code>--yes</code>). Check the
+    repository's README before running.</p>
   </>
 )}
 

@@ -114,7 +114,7 @@ export const GET: APIRoute = ({ props }) => {
     L.push(server.install_hint);
     L.push('```');
     L.push('');
-    L.push('*Best-effort hint inferred from the repository language. Deliberately excludes auto-confirm flags (`-y`, `--yes`): the package registry name may be held by someone other than the repository owner. Verify against the repository README before running.*');
+    L.push("*Shown only when the package's own registry entry points back to this repository (`go install` and `git clone` hints name the repository directly). That confirms who published the package, not what it does: this is not a security review. Never includes auto-confirm flags (`-y`, `--yes`). Check the repository README before running.*");
     L.push('');
   }
 
