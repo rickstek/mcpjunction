@@ -113,8 +113,13 @@ actually enforces:
   the previous dataset, or if more than 50 servers would be newly delisted at once. A
   separate check refuses to deploy below 200 servers. A bad day at the GitHub API should
   not silently gut the directory.
-- **Delisted repositories persist 30 days** as `status: archived_or_removed` with a
-  `delisted_at` timestamp, then drop. Stable URLs, without unbounded growth.
+- **Missing from search is not the same as gone.** The nightly search is capped, so a
+  listed repository it stops returning is looked up on GitHub directly. Live MCP
+  repositories stay listed; renamed ones point to their new name; only repositories
+  that were deleted, archived, or no longer describe themselves as MCP are delisted,
+  with that reason (`delisted_reason`) shown on the page. A failed lookup changes
+  nothing. Delisted pages persist 30 days (`status: archived_or_removed`,
+  `delisted_at`), then drop.
 - **Identity guard.** If a repository's numeric GitHub id changes under the same
   `owner--repo` name — a rename, or a released username claimed by someone else — the
   editorial state is dropped rather than inherited.

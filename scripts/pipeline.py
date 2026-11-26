@@ -42,6 +42,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import install_hints
+import vanished
 
 # --------------------------------------------------------------------------
 # Config
@@ -540,8 +541,13 @@ def fetch_all():
     return found
 
 
-def merge(new_entries, previous):
-    """Carry editorial fields forward; retain delisted repos for one cycle."""
+def merge(new_entries, previous, lookup=None):
+    """Carry editorial fields forward; decide what happened to repos the crawl missed.
+
+    `lookup` (vanished.resolve, bound to a token) is asked about every previously
+    listed repository absent from tonight's search results. See vanished.py for
+    why absence from a capped search is not evidence about a repository.
+    """
     prev_by_id = {e["id"]: e for e in previous}
     merged = {}
 
@@ -578,15 +584,63 @@ def merge(new_entries, previous):
         for eid, old_gh, new_gh in hijacked[:10]:
             print(f"  {eid}: github id {old_gh} -> {new_gh}", file=sys.stderr)
 
-    # Repos that vanished from the API: keep them (status=archived_or_removed)
-    # for a 30-day grace window so published URLs don't die overnight, then
-    # drop them for good. Without the timestamp check they'd be carried
-    # forward every night forever and the dataset would grow unbounded.
+    # Previously listed repos the crawl did not return. The crawl is capped (top
+    # 600 per query by stars), so missing from it says nothing about the repo:
+    # ask GitHub. Live MCP repos stay listed with fresh metadata; renamed ones
+    # point at their new name; only genuinely removed, archived or no-longer-MCP
+    # repos are delisted, each with that reason on the page. A failed lookup is
+    # not evidence: a listed repo stays listed until we actually know.
+    vanished_entries = [old for old_id, old in prev_by_id.items() if old_id not in merged]
+    resolved = lookup(vanished_entries) if (lookup and vanished_entries) else {}
+    retained = restored = moved_in = unknown_kept = 0
+
+    def carry_identity(new_entry, old_entry):
+        """Same GitHub repository under a fresh crawl: keep its editorial state."""
+        if (old_entry.get("github_repo_id") and new_entry.get("github_repo_id")
+                and old_entry["github_repo_id"] != new_entry["github_repo_id"]):
+            return
+        for f in EDITORIAL_FIELDS:
+            if f in old_entry:
+                new_entry[f] = old_entry[f]
+        new_entry["first_seen"] = old_entry.get("first_seen") or new_entry.get("created_at")
+
     now = datetime.now(timezone.utc)
-    for old_id, old in prev_by_id.items():
-        if old_id in merged:
+    for old in vanished_entries:
+        old_id = old["id"]
+        kind, repo = resolved.get(old_id, ("error", None))
+        reason, moved_to = None, None
+        if kind in ("live", "moved") and looks_like_mcp_server(repo):
+            fresh = normalize(repo)
+            carry_identity(fresh, old)
+            if kind == "live":
+                if old.get("status") == "archived_or_removed":
+                    restored += 1
+                else:
+                    retained += 1
+                merged[old_id] = fresh
+                continue
+            if fresh["id"] in merged:
+                carry_identity(merged[fresh["id"]], old)
+            else:
+                merged[fresh["id"]] = fresh
+                moved_in += 1
+            reason, moved_to = "moved", repo["full_name"]
+        elif kind in ("live", "moved"):
+            reason = "no_longer_matches"
+        elif kind == "archived":
+            reason = "archived"
+        elif kind == "removed":
+            reason = "removed"
+        elif old.get("status") != "archived_or_removed":
+            merged[old_id] = dict(old)
+            unknown_kept += 1
             continue
         old = dict(old)
+        old["delisted_reason"] = reason or old.get("delisted_reason") or "unknown"
+        if moved_to:
+            old["moved_to"] = moved_to
+        else:
+            old.pop("moved_to", None)
         if old.get("status") != "archived_or_removed":
             old["status"] = "archived_or_removed"
             old["delisted_at"] = now.isoformat(timespec="seconds")
@@ -610,6 +664,11 @@ def merge(new_entries, previous):
             "topics": old.get("topics") or [],
         })
         merged[old_id] = old
+
+    if vanished_entries:
+        print(f"missing from crawl: {len(vanished_entries)} -> {retained} still live and "
+              f"kept listed, {restored} restored, {moved_in} followed to a new name, "
+              f"{unknown_kept} left unchanged (lookup failed), rest delisted with a reason")
 
     return sorted(merged.values(), key=lambda e: (-int(e.get("stars") or 0),
                                                   e.get("full_name") or ""))
@@ -681,7 +740,8 @@ def main():
     repos = fetch_all()
     print(f"\nunique repos matched: {len(repos)}")
 
-    entries = merge([normalize(r) for r in repos.values()], previous)
+    entries = merge([normalize(r) for r in repos.values()], previous,
+                    lookup=lambda ents: vanished.resolve(ents, TOKEN, USER_AGENT))
 
     # And again after the merge, which is where a freshly crawled repo enters.
     # This is the half that makes exclusion permanent rather than a one-off
