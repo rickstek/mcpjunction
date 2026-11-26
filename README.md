@@ -121,9 +121,11 @@ actually enforces:
 - **CSV injection is neutralised.** Cells beginning `=`, `+`, `-`, or `@` are quote-prefixed
   before publication. Repository descriptions are attacker-controllable: anyone can name a
   GitHub repo.
-- **Install hints never auto-confirm.** No `npx -y`, no `--yes`. The registry package
-  sharing a repository's name may belong to someone else entirely, so hints are published
-  as unverified suggestions.
+- **Install hints are identity-checked.** A registry hint (npm, PyPI, crates.io and
+  others) is published only when that package's own registry entry names the listed
+  repository; otherwise the section is hidden. The package name comes from the
+  repository's manifest where it declares one. Hints never auto-confirm (no `npx -y`,
+  no `--yes`), and an identity check is not a security review.
 - **No dead links.** The sitemap lists only files present on disk at build time.
 - **One source, used as documented.** The official GitHub REST API, authenticated and
   rate-limit aware, public repository metadata only.

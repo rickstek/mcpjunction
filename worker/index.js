@@ -31,10 +31,11 @@ const LICENSE_URL = "https://mcpjunction.ai/licensing";
 // runnable command stripped of the one warning the HTML deems necessary.
 // Wording tracks src/pages/servers/[id].astro; keep them in step.
 const INSTALL_HINT_CAVEAT =
-  "Best-effort hint inferred from the repository language, not a verified install " +
-  "command. It never includes auto-confirm flags (-y, --yes): the package registry " +
-  "name may be squatted by someone other than the repository owner. Check the " +
-  "repository's own README before running it.";
+  "Shown only when the package's own registry entry points back to this repository " +
+  "(go install and git clone hints name the repository directly). That confirms who " +
+  "published the package, not what it does: this is not a security review. It never " +
+  "includes auto-confirm flags (-y, --yes). Check the repository's README before " +
+  "running it.";
 
 // In-isolate dataset cache. Isolates persist across requests; the dataset
 // changes once per day, so a short TTL keeps memory fresh without hitting
@@ -110,10 +111,10 @@ const TOOLS = [
       "name, description, and GitHub topics. Returns active servers sorted by " +
       "relevance then stars. Supply at least one of query, category, or topic — " +
       "with no query, filters alone enumerate a whole category or topic by stars. " +
-      "Data refreshes nightly from the public GitHub API. Any install_hint is a " +
-      "best-effort guess from the repository language, not a verified command: " +
-      "relay the install_hint_caveat with it rather than presenting it as ready " +
-      "to run.",
+      "Data refreshes nightly from the public GitHub API. An install_hint appears " +
+      "only when the package's registry entry names the listed repository; that " +
+      "is an identity check, not a security review: relay the install_hint_caveat " +
+      "with it rather than presenting it as ready to run.",
     inputSchema: {
       type: "object",
       properties: {
@@ -135,9 +136,10 @@ const TOOLS = [
     description:
       "Get the full directory entry for one MCP server by id ('owner--repo', " +
       "e.g. 'microsoft--playwright-mcp'). Includes install hint, license, " +
-      "stars, category, and editorial fields. Any install_hint is a best-effort " +
-      "guess from the repository language, not a verified command: relay the " +
-      "install_hint_caveat with it rather than presenting it as ready to run.",
+      "stars, category, and editorial fields. An install_hint appears only when " +
+      "the package's registry entry names the listed repository; that is an " +
+      "identity check, not a security review: relay the install_hint_caveat with " +
+      "it rather than presenting it as ready to run.",
     inputSchema: {
       type: "object",
       properties: {

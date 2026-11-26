@@ -41,6 +41,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+import install_hints
+
 # --------------------------------------------------------------------------
 # Config
 # --------------------------------------------------------------------------
@@ -287,7 +289,12 @@ def categorize(repo):
 
 
 def guess_install(repo):
-    """Best-effort install hint inferred from language. NEVER emit auto-confirm
+    """Language-based starting point for an install hint. For registry languages
+    this guess is NOT published: install_hints.apply() replaces it with a name the
+    registry confirms, or None. Only the go install and git clone forms below are
+    published as produced here, because they name the repository itself.
+
+    NEVER emit auto-confirm
     flags (npx -y, pipx --yes, etc.): the package registry name may be squatted
     by someone other than the repo owner, and a directory built on security
     review must not publish commands that execute unverified packages without
@@ -704,6 +711,13 @@ def main():
               f"(typo? delisted?): {', '.join(orphans[:8])}")
     print(f"editorial summaries applied: {len(summaries) - len(orphans)}")
 
+    # Install hints are published only when the package's own registry entry
+    # names this repository; everything else is nulled and the page hides the
+    # section. normalize() still produces the language-based guess, which now
+    # only matters for go install / git clone hints. See scripts/install_hints.py
+    # for what was measured and why.
+    install_hints.apply(entries, {e["id"]: e for e in previous})
+
     active = [e for e in entries if e.get("status") == "active"]
 
     # ---------------------------------------------------------------------
@@ -774,8 +788,10 @@ def main():
         "attribution": "via mcpjunction.ai",
         "source": "GitHub REST API (public repository metadata) + editorial review",
         "disclaimer": ("Not affiliated with Anthropic or the Model Context "
-                       "Protocol project. Install hints are best-effort and "
-                       "should be verified against each repo's own README."),
+                       "Protocol project. A registry install hint is published "
+                       "only when the package's registry entry names the listed "
+                       "repository (install_verified); that confirms who "
+                       "published it, not what it does. Not a security review."),
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "count": len(active),
         "count_including_delisted": len(entries),
